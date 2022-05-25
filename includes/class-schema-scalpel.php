@@ -48,7 +48,7 @@ class Schema_Scalpel
         if (defined('SCHEMA_SCALPEL_VERSION')) {
             $this->version = SCHEMA_SCALPEL_VERSION;
         } else {
-            $this->version = '1.2.2';
+            $this->version = '1.2.3';
         }
         $this->schema_scalpel = 'schema-scalpel';
 

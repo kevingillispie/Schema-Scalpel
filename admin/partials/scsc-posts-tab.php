@@ -31,7 +31,12 @@ endforeach;
             endif;
             $page_id = $all_posts[$key]['ID'];
             $page_title = $all_posts[$key]['post_title'];
-            echo esc_html('<option '.(($classes) ? 'class="font-weight-bold"' : '').' value="'.sanitize_text_field($page_id).'">'.sanitize_text_field($page_id).': '.sanitize_title($page_title).'</option>');
+
+        ?>
+
+            <option <?php echo ($classes) ? 'class="fw-bold"' : ''; ?> value="<?php echo sanitize_text_field($page_id); ?>"><?php echo sanitize_text_field($page_id); ?>: <?php echo sanitize_text_field($page_title); ?></option>
+
+        <?php
         endforeach;
 
         ?>
@@ -48,16 +53,17 @@ endforeach;
                     foreach ($results as $key => $value) :
                         $post_id = $results[$key]["post_id"];
                         $post_title = "";
-                        foreach($all_posts as $k => $v) :
-                            if ($all_posts[$k]['ID'] == $post_id):
+                        foreach ($all_posts as $k => $v) :
+                            if ($all_posts[$k]['ID'] == $post_id) :
                                 $post_title = $all_posts[$k]['post_title'];
                             endif;
                         endforeach;
                         $no_cereal = unserialize($results[$key]['custom_schema']);
-                        
-                        ?>
-                        <pre class="w-100 rounded d-none language-json" data-id="<?php echo sanitize_text_field($results[$key]['id']); ?>" data-post-id="<?php echo sanitize_text_field($post_id); ?>" data-schema="<?php echo sanitize_text_field($no_cereal); ?>">"<?php echo sanitize_title($post_title); ?>"\n</pre>
-                        <?php
+
+                ?>
+<pre class="w-100 rounded d-none language-json" data-id="<?php echo sanitize_text_field($results[$key]['id']); ?>" data-post-id="<?php echo sanitize_text_field($post_id); ?>" data-schema="<?php echo sanitize_text_field($no_cereal); ?>">"<?php echo sanitize_text_field($post_title); ?>"
+</pre>
+                <?php
 
                     endforeach;
                 endif;
@@ -69,7 +75,7 @@ endforeach;
 
         $current_partial_name = __FILE__;
         include("scsc-create-new-schema.php");
-        
+
         ?>
     </div>
 </div>

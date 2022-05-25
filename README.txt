@@ -3,8 +3,8 @@ Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json, microdata, search engine
 Requires at least: 3.0.1
-Tested up to: 5.9.3
-Stable tag: 1.2.2
+Tested up to: 6.0
+Stable tag: 1.2.3
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -48,6 +48,13 @@ Schema, also known as structured data, is a form of microdata. I know that clari
 Organizations, businesses, and individuals all have different types of information necessary for describing who and what they are and what they do. Schema is how that information is conveyed to search engines so that the websites associated with those entities show up in the most relevant search results.
 
 == Changelog ==
+
+= 1.2.3 =
+[UPDATED] Schema Scalpel works with WordPress 6.0!
+
+[FIXED] A few CSS class names that weren't updated to Bootstrap 5.x naming standards.
+
+[FIXED] Page and post titles were not displaying properly due to sanitization function.
 
 = 1.2.2 =
 [UDPATED] The schema/JSON-LD format error checking has been greatly improved. 

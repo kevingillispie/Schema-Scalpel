@@ -17,7 +17,7 @@ $results = $wpdb->get_results($get_schema, ARRAY_A);
     <p class="alert alert-info mb-0" role="alert">Get a jumpstart on your website's schema!</p>
     <p class="lead mt-3">Simply copy and paste any one of these schema types into the schema editor (i.e. <a href="/wp-admin/admin.php?page=scsc&set_tab=home">Home</a>, <a href="/wp-admin/admin.php?page=scsc&set_tab=global">Global</a>, etc) of your choice.</p>
 
-    <h5 class="mt-5 font-weight-bold">1. Select Schema Type:</h5>
+    <h5 class="mt-5 fw-bold">1. Select Schema Type:</h5>
     <ul class="nav nav-pills bg-light p-3 rounded border">
         <?php
         if ($results) :
@@ -34,7 +34,7 @@ $results = $wpdb->get_results($get_schema, ARRAY_A);
         endif;
         ?>
     </ul>
-    <h5 class="mt-5 font-weight-bold">2. Copy Schema:</h5>
+    <h5 class="mt-5 fw-bold">2. Copy Schema:</h5>
     <div id="example_fieldsets" class="editor-container d-flex flex-column">
 
         <?php

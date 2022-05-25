@@ -38,7 +38,7 @@ $all_posts = get_posts(array(
 </style>
 
 <main class="container mt-5 ms-0">
-    <img src="<?php echo plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ); ?>admin/images/schema-scalpel-logo.svg" width="200" />
+    <img src="<?php echo plugin_dir_url(SCHEMA_SCALPEL_PLUGIN); ?>admin/images/schema-scalpel-logo.svg" width="200" />
     <hr>
     <div class="editor-container d-flex flex-column flex-lg-row">
         <div class="d-flex flex-column w-50">
@@ -46,21 +46,36 @@ $all_posts = get_posts(array(
                 <h2>Pages</h2>
                 <select>
                     <option default="true">Choose a page to edit...</option>
+
                     <?php
-                    foreach ($all_pages as $key => $value) {
-                        echo esc_html("<option>" . sanitize_text_field($all_pages[$key]->ID) . ": " . sanitize_text_field($all_pages[$key]->post_title) . "</option>");
-                    }
+
+                    foreach ($all_pages as $key => $value) :
+
                     ?>
+                        <option><?php echo sanitize_text_field($all_pages[$key]->ID); ?>: <?php echo sanitize_text_field($all_pages[$key]->post_title); ?></option>
+                    <?php
+
+                    endforeach;
+
+                    ?>
+
                 </select>
             </div>
             <div class="mb-5">
                 <h2>Posts</h2>
                 <select>
                     <option default="true">Choose a post to edit...</option>
+
                     <?php
-                    foreach ($all_posts as $key => $value) {
-                        echo esc_html("<option>" . sanitize_text_field($all_posts[$key]->ID) . ": " . sanitize_text_field($all_posts[$key]->post_title) . "</option>");
-                    }
+
+                    foreach ($all_posts as $key => $value) :
+
+                    ?>
+                        <option><?php echo sanitize_text_field($all_posts[$key]->ID); ?>: <?php echo sanitize_text_field($all_posts[$key]->post_title); ?></option>
+                    <?php
+
+                    endforeach;
+
                     ?>
                 </select>
             </div>
@@ -71,11 +86,11 @@ $all_posts = get_posts(array(
                     global $wpdb;
                     $get_schema = "SELECT * FROM {$wpdb->prefix} . scsc_custom_schemas;";
                     $results = $wpdb->get_results($get_schema, ARRAY_A);
-                    if ($results) {
-                        foreach ($results as $key => $value) {
+                    if ($results) :
+                        foreach ($results as $key => $value) :
                             echo esc_html(json_decode($results[0]["global_schema"]));
-                        }
-                    }
+                        endforeach;
+                    endif;
                     ?>
                 </div>
                 <textarea id="global_schema" class="w-75"></textarea>
@@ -99,7 +114,7 @@ $all_posts = get_posts(array(
                 function updateGlobalSchema() {
                     let request = new XMLHttpRequest();
                     let value = document.getElementById("global_schema").value;
-                    let formatted = value.replaceAll(/(\r\n|\n|\r|\t)/gm,"").replaceAll(" ", "");
+                    let formatted = value.replaceAll(/(\r\n|\n|\r|\t)/gm, "").replaceAll(" ", "");
                     request.onreadystatechange = () => {
                         if (request.readyState == 4) {
                             location.reload();

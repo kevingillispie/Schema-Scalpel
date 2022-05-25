@@ -22,19 +22,19 @@ endforeach;
 <div class="mb-5">
     <h2>Page Schema</h2>
     <select id="pages_list" class="py-2">
-        <option >Choose a page to view or edit...</option>
+        <option>Choose a page to view or edit...</option>
         <?php
 
         foreach ($all_pages as $key => $value) :
             if ($all_pages[$key]['ID'] !== get_option('page_on_front')) :
                 $classes = '';
                 if (in_array($all_pages[$key]['ID'], $existing_schema_ids)) :
-                    $classes = 'font-weight-bold';
+                    $classes = 'fw-bold';
                 endif;
 
-                ?>
-                <option class="<?php echo sanitize_html_class($classes); ?>" value="<?php echo sanitize_text_field($all_pages[$key]['ID']); ?>"><?php echo sanitize_text_field($all_pages[$key]['ID']); ?>: <?php echo sanitize_title($all_pages[$key]['post_title']); ?></option>
-                <?php
+        ?>
+                <option class="<?php echo sanitize_html_class($classes); ?>" value="<?php echo sanitize_text_field($all_pages[$key]['ID']); ?>"><?php echo sanitize_text_field($all_pages[$key]['ID']); ?>: <?php echo sanitize_text_field($all_pages[$key]['post_title']); ?></option>
+        <?php
 
             endif;
         endforeach;
@@ -58,11 +58,12 @@ endforeach;
                         endforeach;
                         $no_cereal = unserialize($results[$key]['custom_schema']);
 
-                        ?>
+                ?>
                         <pre class="w-100 rounded d-none language-json" data-id="<?php echo sanitize_text_field($results[$key]['id']); ?>" data-post-id="<?php echo sanitize_text_field($post_id); ?>" data-schema="<?php echo esc_html($no_cereal); ?>"></pre>
-                        <?php 
+                <?php
 
                     endforeach;
+
                 endif;
 
                 ?>
