@@ -40,18 +40,30 @@ Organizations, businesses, and individuals all have different types of informati
 
 ## Changelog
 
+**1.2.3**
+
+[UPDATED] Schema Scalpel works with WordPress 6.0!
+
+[FIXED] A few CSS class names that weren't updated to Bootstrap 5.x naming standards.
+
+[FIXED] Page and post titles were not displaying properly due to sanitization function.
+
 **1.2.2**
+
 [UDPATED] The schema/JSON-LD format error checking has been greatly improved. 
 
 **1.2.1**
+
 [FIXED] Version 1.2 was pushed without updating every instance of version number within the plugin.
 
 **1.2**
+
 [NEW] Multisite activation is now possible!
 
 [UPDATED] Removed some comment clutter.
 
 **1.0.1**
+
 [FIXED] Replaced use of `wp_print_scripts` hook with `wp_enqueue_scripts` as the former prevented the loading of schema with some themes.
 
 [FIXED] A bunch of stuff I have changed since publishing Schema Scalpel but have forgotten about because I didn't know how to use my Subversion client.
@@ -63,4 +75,5 @@ Organizations, businesses, and individuals all have different types of informati
 [UPDATED] Schema Scalpel logo now uses font paths.
 
 **1.0**
+
 The unleashing of the Schema Scalpel upon the world. You might say that the plugin is now “off the chain”.
