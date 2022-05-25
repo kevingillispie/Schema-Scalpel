@@ -1,0 +1,116 @@
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtms-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+pre::before {
+    counter-reset: listing;
+}
+
+pre code {
+    counter-increment: listing;
+    padding-left: 0px;
+}
+
+pre code::before {
+    content: counter(listing) " ";
+    display: inline-block;
+    color: #555;
+    margin: 0 10px 0 4px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+button:disabled,
+div:disabled {
+    cursor: not-allowed;
+}
+
+[id*="_schema"] button:not([id*="new_line"]):not(.edit-line):not(.delete-line),
+[id*="_schema"] div:not([id*="new_line"]):not(.edit-line):not(.delete-line),
+.insert-line-label {
+    min-width: 167px;
+}
+
+.editor-container>div:first-child {
+    margin-right: 20px;
+}
+
+#element_preview>div {
+    font-size: 24px;
+}
+
+#element_preview input {
+    font-size: 18px;
+}
+
+[id*="schema_preview"] {
+    width: 100%;
+}
+
+#add_line {
+    margin-top: 45px;
+}
+
+#add_line button {
+    height: 20px;
+    line-height: 0;
+}
+
+#add_line button:hover::after {
+    content: "Add schema to line "attr(data-btn-num);
+    line-height: normal;
+    position: absolute;
+    padding: 2px 5px;
+    margin: 0 0 0 10px;
+    background-color: white;
+    -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, .3);
+            box-shadow: 0 3px 3px rgba(0, 0, 0, .3);
+}
+
+#current_homepage_schema pre:hover,
+#current_global_schema pre:hover,
+#current_pages_schema pre:hover,
+#current_posts_schema pre:hover {
+    cursor: pointer;
+    opacity: .5;
+}
+
+#current_homepage_schema pre:hover::before,
+#current_global_schema pre:hover::before,
+#current_pages_schema pre:hover::before,
+#current_posts_schema pre:hover::before{
+    content: "Edit";
+    position: absolute;
+    color: white;
+    font-size: 24px;
+    text-shadow: 0 2px 3px black;
+    left: calc((100vw - 100px) / 2.5);
+    -webkit-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+}
+
+#current_homepage_schema pre.line-editable,
+#current_global_schema pre.line-editable,
+#current_pages_schema pre.line-editable,
+#current_posts_schema pre.line-editable,
+#example_schema pre.line-editable {
+    opacity: 1;
+    cursor: default;
+}
+
+#current_homepage_schema pre.line-editable::before,
+#current_global_schema pre.line-editable::before,
+#current_pages_schema pre.line-editable::before,
+#current_posts_schema pre.line-editable::before {
+    content: "";
+}
+
+.example-items {
+    cursor: pointer;
+}
