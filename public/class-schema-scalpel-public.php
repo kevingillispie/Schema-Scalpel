@@ -69,6 +69,45 @@ class Schema_Scalpel_Public
         wp_enqueue_script($this->schema_scalpel, SCHEMA_SCALPEL_DIRECTORY . '/public/js/schema-scalpel-public.js', array(), $this->version, false);
     }
 
+    private function get_page_title($url)
+    {
+        return get_the_title(url_to_postid($url));
+    }
+
+    private function format_breadcrumbs($root_domain, $breadcrumbs)
+    {
+        $crumb_list = '';
+        $crumb_path = '';
+        if ($breadcrumbs[0] != false) :
+            $i = 0;
+            while ($i < count($breadcrumbs)) :
+                $pos = $i + 1;
+                $crumb_path .= '/' . $breadcrumbs[$i];
+                $bc_page_title = Schema_Scalpel_Public::get_page_title($root_domain . $crumb_path) ? Schema_Scalpel_Public::get_page_title($root_domain . $crumb_path) : wp_get_document_title();
+
+                $crumb_list .= <<<CRUMBS
+{
+    "@type": "ListItem",
+    "position": "{$pos}",
+    "item": {
+        "@type": "WebPage",
+        "@id": "{$root_domain}{$crumb_path}",
+        "name": "{$bc_page_title}"
+    }
+}
+CRUMBS;
+                ($i + 1 == count($breadcrumbs)) ? '' : $crumb_list .= ',';
+                $i++;
+            endwhile;
+        endif;
+        return $crumb_list;
+    }
+
+    private function format_schema_html($html, $s)
+    {
+        printf("%s%s</script>", $html, $s);
+    }
+
     public function enqueue_inline_scripts()
     {
         /**
@@ -109,36 +148,36 @@ class Schema_Scalpel_Public
          * WEBSITE
          */
         $website_schema = <<<WEBSITE
-    {
-        "@context": "http://schema.org/",
-        "@id": "{$root_domain}/#website",
-        "@type": "WebSite",
-        "url": "{$root_domain}/",
-        "name": "{$site_title}",
-        "potentialAction": [
-            {
-                "@type": "SearchAction",
-                "target": {
-                    "@type": "EntryPoint",
-                    "urlTemplate": "{$root_domain}/?{$search_key}={search_term_string}"
-                },
-                "query-input": "required name=search_term_string"
-            }
-        ]
-    }
+{
+    "@context": "http://schema.org/",
+    "@id": "{$root_domain}/#website",
+    "@type": "WebSite",
+    "url": "{$root_domain}/",
+    "name": "{$site_title}",
+    "potentialAction": [
+        {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "{$root_domain}/?{$search_key}={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    ]
+}
 WEBSITE;
 
         /**
          * WEBPAGE
          */
         $webpage_schema = <<<WEBPAGE
-    {
-        "@context": "http://schema.org/",
-        "@id": "{$root_domain}{$path}#webpage",
-        "@type": "WebPage",
-        "url": "{$root_domain}{$path}",
-        "name": "{$page_title}"
-    }
+{
+    "@context": "http://schema.org/",
+    "@id": "{$root_domain}{$path}#webpage",
+    "@type": "WebPage",
+    "url": "{$root_domain}{$path}",
+    "name": "{$page_title}"
+}
 WEBPAGE;
 
         /**
@@ -153,62 +192,25 @@ WEBPAGE;
             $crumb = strtok("/");
         endwhile;
 
-        function get_page_title($url)
-        {
-            return get_the_title(url_to_postid($url));
-        }
-
-        function format_breadcrumbs($root_domain, $breadcrumbs)
-        {
-            $crumb_list = '';
-            $crumb_path = '';
-            if ($breadcrumbs[0] != false) :
-                $i = 0;
-                while ($i < count($breadcrumbs)) :
-                    $pos = $i + 1;
-                    $crumb_path .= '/' . $breadcrumbs[$i];
-                    $bc_page_title = get_page_title($root_domain . $crumb_path) ? get_page_title($root_domain . $crumb_path) : wp_get_document_title();
-
-                    $crumb_list .= <<<CRUMBS
-{
-    "@type": "ListItem",
-    "position": "{$pos}",
-    "item": {
-        "@type": "WebPage",
-        "@id": "{$root_domain}{$crumb_path}",
-        "name": "{$bc_page_title}"
-    }
-}
-CRUMBS;
-                    ($i + 1 == count($breadcrumbs)) ? '' : $crumb_list .= ',';
-                    $i++;
-                endwhile;
-            endif;
-            return $crumb_list;
-        }
-
-        $listElements = format_breadcrumbs($root_domain, $breadcrumbs);
+        $listElements = Schema_Scalpel_Public::format_breadcrumbs($root_domain, $breadcrumbs);
 
         $breadcrumb_schema = <<<BREAD
-    {
-        "@context": "https://schema.org/",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {$listElements}
-        ]
-    }
+{
+    "@context": "https://schema.org/",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {$listElements}
+    ]
+}
 BREAD;
 
-        function format_schema_html($html, $s) {
-            printf("%s%s</script>", $html, $s);
-        }
         /**
          * INJECT GLOBAL SCHEMA
          */
         $global_schema = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_custom_schemas WHERE schema_type = 'global';", ARRAY_A);
         foreach ($global_schema as $key => $value) :
             $schema = str_replace("&apos;", "'", html_entity_decode(unserialize($value['custom_schema'])));
-            format_schema_html($schema_script_html, $schema);
+            Schema_Scalpel_Public::format_schema_html($schema_script_html, $schema);
         endforeach;
 
         /**
@@ -217,7 +219,7 @@ BREAD;
         $current_page_results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_custom_schemas WHERE post_id = '$page_id';", ARRAY_A);
         foreach ($current_page_results as $key => $value) :
             $schema = str_replace("&apos;", "'", html_entity_decode(unserialize($value['custom_schema'])));
-            format_schema_html($schema_script_html, $schema);
+            Schema_Scalpel_Public::format_schema_html($schema_script_html, $schema);
         endforeach;
 
         /**
@@ -227,7 +229,7 @@ BREAD;
             $home_schema = $wpdb->get_results("SELECT custom_schema FROM {$wpdb->prefix}scsc_custom_schemas WHERE schema_type = 'home';", ARRAY_A);
             foreach ($home_schema as $key => $value) :
                 $schema = str_replace("&apos;", "\'", html_entity_decode(unserialize($value['custom_schema'])));
-                format_schema_html($schema_script_html, $schema);
+                Schema_Scalpel_Public::format_schema_html($schema_script_html, $schema);
             endforeach;
         endif;
 
@@ -236,17 +238,17 @@ BREAD;
          */
         $check_website_setting = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_settings WHERE setting_key = 'website_schema';", ARRAY_A);
         if ($check_website_setting[0]['setting_value'] == '1') :
-            format_schema_html($schema_script_html, $website_schema);
+            Schema_Scalpel_Public::format_schema_html($schema_script_html, $website_schema);
         endif;
 
         $check_webpage_setting = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_settings WHERE setting_key = 'webpage_schema';", ARRAY_A);
         if ($check_webpage_setting[0]['setting_value'] == '1') :
-            format_schema_html($schema_script_html, $webpage_schema);
+            Schema_Scalpel_Public::format_schema_html($schema_script_html, $webpage_schema);
         endif;
 
         $check_bc_setting = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_settings WHERE setting_key = 'breadcrumb_schema';", ARRAY_A);
         if ($path != "/" && $check_bc_setting[0]['setting_value'] == '1') :
-            format_schema_html($schema_script_html, $breadcrumb_schema);
+            Schema_Scalpel_Public::format_schema_html($schema_script_html, $breadcrumb_schema);
         endif;
         /**
          * 

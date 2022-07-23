@@ -33,7 +33,7 @@ endif;
 <fieldset class="d-flex flex-column justify-content-between bg-light border rounded p-3 mt-5">
     <legend class="px-3 pb-1 border rounded bg-white" style="width:auto">Create:</legend>
     <div class="d-flex flex-row justify-content-between">
-        <button id="<?php echo sanitize_text_field($tab_name[$index]); ?>_edit_schema_code_block" type="button" class="edit-block-button btn bg-success text-white px-5" onclick="editSchemaCodeBlock('<?php echo sanitize_text_field($tab_name[$index]); ?>', 'new', this.dataset.id, event)" data-bs-toggle="modal" data-bs-target="#schemaBlockEditModal" data-id="<?php echo sanitize_text_field(($set_tab == "home" || $set_tab == "global") ? "-1": ""); ?>" <?php echo sanitize_text_field(($tab_name[$index] != "global" && $tab_name[$index] != "home") ? 'disabled="true"' : null); ?>>Edit Code Block</button>
+        <button id="<?php echo sanitize_text_field($tab_name[$index]); ?>_edit_schema_code_block" type="button" class="edit-block-button btn bg-success text-white px-5" onclick="editSchemaCodeBlock('<?php echo sanitize_text_field($set_tab); ?>', 'new', this.dataset.id, event)" data-bs-toggle="modal" data-bs-target="#schemaBlockEditModal" data-id="<?php echo sanitize_text_field(($set_tab == "home" || $set_tab == "global") ? "-1": ""); ?>" <?php echo sanitize_text_field(($tab_name[$index] != "global" && $tab_name[$index] != "home") ? 'disabled="true"' : null); ?>>Edit Code Block</button>
         <div class="d-flex flex-row">
             <div class="insert-line-label btn-secondary py-2 px-3 rounded-left text-white text-center">Insert Line After</div>
             <input type="text" id="<?php echo sanitize_text_field($tab_name[$index]); ?>_add_new_line_after" placeholder="Line #" class="rounded-0 border-secondary bg-light" style="width: 60px" />
@@ -52,6 +52,6 @@ endif;
 </pre>
     </div>
     <div>
-        <button id="<?php echo sanitize_text_field($tab_name[$index]); ?>_schema_create" class="btn btn-primary py-2 px-5" type="submit" onclick="createNewSchema(<?php echo esc_html('&apos;' . sanitize_text_field($tab_name[$index]) . '&apos;,' . $post_id); ?>)" <?php echo sanitize_text_field(($tab_name[$index] != "global" && $tab_name[$index] != "home") ? 'disabled="true"' : ''); ?>>Create</button>
+        <button id="<?php echo sanitize_text_field($tab_name[$index]); ?>_schema_create" class="btn btn-primary py-2 px-5" type="submit" onclick="createNewSchema(<?php echo esc_html('&apos;' . sanitize_text_field($set_tab) . '&apos;,' . $post_id); ?>)" <?php echo sanitize_text_field(($tab_name[$index] != "global" && $tab_name[$index] != "home") ? 'disabled="true"' : ''); ?>>Create</button>
     </div>
 </fieldset>
