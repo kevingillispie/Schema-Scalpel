@@ -20,7 +20,7 @@ endforeach;
 ?>
 <div class="mb-5">
     <h2>Post Schema</h2>
-    <select id="posts_list" class="py-2">
+    <select id="posts_list" class="form-select py-2">
         <option default="true">Choose a post to view or edit...</option>
         <?php
 

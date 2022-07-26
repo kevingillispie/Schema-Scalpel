@@ -4,7 +4,7 @@ Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json, microdata, search engine
 Requires at least: 3.0.1
 Tested up to: 6.0
-Stable tag: 1.2.4.1
+Stable tag: 1.2.5.4
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -57,43 +57,61 @@ Most importantly, **[Google recommends that you use JSON-LD!](https://developers
 
 == Changelog ==
 
-= 1.2.4.2 =
-[UPDATED] Spaces after commas are now limited to one to maintain traditional punctuation practices. 
+= 1.2.5.4 =
+THIS IS A NECESSARY UPDATE.
+[FIX] The initial tab setting in the database has been updated to `homepage`. The schema-editing page will now load properly.
+
+[FIX] The initial search query parameter is now fully defaulted to `s`. 
+
+= 1.2.5.3 =
+[FIX] If the absolute path to the plugin contained the word `home` in it, the `scsc-create-new-schema.php` file wouldn't properly switch between the schema-type tabs. Naming standard changed to `homepage`.
+
+= 1.2.5.2 =
+[FIX] `admin/vars` directory didn't get pushed with last update. >:(
+
+= 1.2.5 =
+[NEW] Added new example schema as highlighted by the Google Developer documentation, including `COVID Announcement` schema.
+
+[UPDATE] Updated `NewsArticle` schema example to include `author` schema.
+
+[UPDATE] Exmample schema are now called directly from an array rather than the database.
+
+[FIX] Spaces after commas are now limited to one to maintain traditional punctuation practices. 
 
 = 1.2.4.1 =
-[FIXED] The create and edit schema buttons were being generated with the incorrect schema type. Each tab will now display the appropriate schema (i.e. home, global, pages, posts).
+[FIX] The create and edit schema buttons were being generated with the incorrect schema type. Each tab will now display the appropriate schema (i.e. home, global, pages, posts).
 
 = 1.2.4 =
-[FIXED] Should the `wp_head()` function be called more than once, some functions in the `/public/class-schema-scalpel-public.php` file would throw a fatal PHP error due to redundant declarations. 
+[FIX] Should the `wp_head()` function be called more than once, some functions in the `/public/class-schema-scalpel-public.php` file would throw a fatal PHP error due to redundant declarations. 
 
 = 1.2.3 =
-[UPDATED] Schema Scalpel works with WordPress 6.0!
+[UPDATE] Schema Scalpel works with WordPress 6.0!
 
-[FIXED] A few CSS class names that weren't updated to Bootstrap 5.x naming standards.
+[FIX] A few CSS class names that weren't updated to Bootstrap 5.x naming standards.
 
-[FIXED] Page and post titles were not displaying properly due to sanitization function.
+[FIX] Page and post titles were not displaying properly due to sanitization function.
 
 = 1.2.2 =
-[UDPATED] The schema/JSON-LD format error checking has been greatly improved. 
+[UPDATE] The schema/JSON-LD format error checking has been greatly improved. 
 
 = 1.2.1 =
-[FIXED] Version 1.2 was pushed without updating every instance of version number within the plugin.
+[FIX] Version 1.2 was pushed without updating every instance of version number within the plugin.
 
 = 1.2 =
 [NEW] Multisite activation is now possible!
 
-[UPDATED] Removed some comment clutter.
+[UPDATE] Removed some comment clutter.
 
 = 1.0.1 =
-[FIXED] Replaced use of `wp_print_scripts` hook with `wp_enqueue_scripts` as the former prevented the loading of schema with some themes.
+[FIX] Replaced use of `wp_print_scripts` hook with `wp_enqueue_scripts` as the former prevented the loading of schema with some themes.
 
-[FIXED] A bunch of stuff I have changed since publishing Schema Scalpel but have forgotten about because I didn't know how to use my Subversion client.
+[FIX] A bunch of stuff I have changed since publishing Schema Scalpel but have forgotten about because I didn't know how to use my Subversion client.
 
-[UPDATED] Plugin init function `run_schema_scalpel` now called via `plugins_loaded` hook.
+[UPDATE] Plugin init function `run_schema_scalpel` now called via `plugins_loaded` hook.
 
-[UPDATED] Changed the default search key to `s` to conform to WordPress's default search functionality.
+[UPDATE] Changed the default search key to `s` to conform to WordPress's default search functionality.
 
-[UPDATED] Schema Scalpel logo now uses font paths.
+[UPDATE] Schema Scalpel logo now uses font paths.
 
 = 1.0 =
 The unleashing of the Schema Scalpel upon the world. You might say that the plugin is now “off the chain”.

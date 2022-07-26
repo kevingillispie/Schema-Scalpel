@@ -75,7 +75,7 @@ endif;
     <hr />
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-link" id="nav-homepage-tab" data-toggle="tab" href="#nav-homepage" role="tab" aria-controls="nav-homepage" aria-selected="true">Home</a>
+            <a class="nav-link" id="nav-homepage-tab" data-toggle="tab" href="#nav-homepage" role="tab" aria-controls="nav-homepage" aria-selected="true">Home Page</a>
             <a class="nav-link" id="nav-global-tab" data-toggle="tab" href="#nav-global" role="tab" aria-controls="nav-global" aria-selected="true">Global</a>
             <a class="nav-link" id="nav-pages-tab" data-toggle="tab" href="#nav-pages" role="tab" aria-controls="nav-pages" aria-selected="false">Pages</a>
             <a class="nav-link" id="nav-posts-tab" data-toggle="tab" href="#nav-posts" role="tab" aria-controls="nav-posts" aria-selected="false">Posts</a>
@@ -162,7 +162,7 @@ endif;
 <script>
     <?php
     /**
-     * GET LAST ACTIVE PAGE AND POST SELECTIONS
+     * GET LAST ACTIVE PAGE / POST SELECTIONS
      */
     $result_page = $wpdb->get_results("SELECT setting_value FROM {$wpdb->prefix}scsc_settings WHERE setting_key='active_page';", ARRAY_A);
     $_page = $result_page[0]['setting_value'];

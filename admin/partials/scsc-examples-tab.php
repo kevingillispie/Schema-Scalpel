@@ -7,23 +7,21 @@ if (!defined('ABSPATH')) :
     exit('First of all, how dare you!');
 endif;
 
-global $wpdb;
-$get_schema = "SELECT * FROM {$wpdb->prefix}scsc_custom_schemas WHERE schema_type = 'example';";
-$results = $wpdb->get_results($get_schema, ARRAY_A);
+include_once(SCHEMA_SCALPEL_DIRECTORY . '/admin/vars/examples.php');
 
 ?>
 <div class="d-flex flex-column">
     <h2>Example Schema</h2>
     <p class="alert alert-info mb-0" role="alert">Get a jumpstart on your website's schema!</p>
-    <p class="lead mt-3">Simply copy and paste any one of these schema types into the schema editor (i.e. <a href="/wp-admin/admin.php?page=scsc&set_tab=home">Home</a>, <a href="/wp-admin/admin.php?page=scsc&set_tab=global">Global</a>, etc) of your choice.</p>
+    <p class="lead mt-3">Simply copy and paste any one of these schema types into the schema editor (i.e. <a href="/wp-admin/admin.php?page=scsc&set_tab=homepage">Home Page</a>, <a href="/wp-admin/admin.php?page=scsc&set_tab=global">Global</a>, etc) of your choice.</p>
 
     <h5 class="mt-5 fw-bold">1. Select Schema Type:</h5>
     <ul class="nav nav-pills bg-light p-3 rounded border">
         <?php
-        if ($results) :
+        if ($schema_examples) :
             $tab_count = 0;
-            foreach ($results as $key => $value) :
-                $schema_type = json_decode(html_entity_decode(unserialize($results[$key]['custom_schema']), ENT_QUOTES), true)['@type'];
+            foreach ($schema_examples as $key => $value) :
+                $schema_type = ucwords($key, " ");
         ?>
                 <li class="nav-item example-items noselect m-0" data-schema-type="<?php echo esc_html($schema_type); ?>">
                     <div class="nav-link example-nav <?php echo ($tab_count == "0") ? sanitize_text_field("active") : ""; ?>" aria-current="page"><?php echo esc_html($schema_type); ?></div>
@@ -38,19 +36,19 @@ $results = $wpdb->get_results($get_schema, ARRAY_A);
     <div id="example_fieldsets" class="editor-container d-flex flex-column">
 
         <?php
-        if ($results) :
+        if ($schema_examples) :
             $fieldset_count = 0;
-            foreach ($results as $key => $value) :
-                $schema_type = json_decode(html_entity_decode(unserialize($results[$key]['custom_schema']), ENT_QUOTES), true)['@type'];
+            foreach ($schema_examples as $key => $value) :
+                $schema_type = ucwords($key, " ");
         ?>
                 <fieldset <?php echo ($fieldset_count == 0) ?: esc_html('style=display:none!important') ?> class="d-flex flex-column justify-content-between bg-light border rounded p-3 noselect" data-schema-type="<?php echo esc_html($schema_type); ?>">
                     <legend class="px-3 pb-1 border rounded bg-white" style="width:auto"><?php echo esc_html($schema_type); ?>:</legend>
                     <button class="btn btn-primary py-2" onclick="copySchema(this.nextElementSibling)">Copy to Clipboard</button>
                     <div id="<?php echo sanitize_text_field("example_schema_" . $schema_type); ?>">
                         <?php
-                        $wet_cereal = unserialize($results[$key]['custom_schema']);
+                        $wet_cereal = $value;
                         ?>
-                        <pre class="w-100 rounded language-json" data-id="<?php echo sanitize_text_field($results[$key]['id']);?>" data-schema="<?php echo esc_html($wet_cereal); ?>"></pre>
+                        <pre class="w-100 rounded language-json" data-id="<?php echo $key; ?>" data-schema="<?php echo esc_html($wet_cereal); ?>"></pre>
                     </div>
                 </fieldset>
         <?php

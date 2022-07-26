@@ -1,4 +1,4 @@
-const TYPES = ["home", "global", "pages", "posts", "examples"];
+const TYPES = ["homepage", "global", "pages", "posts", "examples"];
 const CURRENT_SCHEMA_BY_POST_ID = [document.getElementById('current_pages_schema').children, document.getElementById('current_posts_schema').children];
 const TYPE_TABS = document.querySelectorAll(".nav-link:not(.example-nav)");
 const TYPE_TAB_CONTENTS = document.querySelectorAll(".tab-pane");
@@ -56,8 +56,8 @@ document.querySelectorAll("[id*='add_new_line_after']").forEach(el => {
 
 var schemaPreview = (type) => {
     switch (type) {
-        case "home":
-            return document.getElementById("home_schema_preview");
+        case "homepage":
+            return document.getElementById("homepage_schema_preview");
         case "global":
             return document.getElementById("global_schema_preview");
         case "pages":
@@ -71,7 +71,7 @@ var schemaPreview = (type) => {
 
 var existingSchema = (type) => {
     switch (type) {
-        case "home":
+        case "homepage":
             return document.getElementById("current_homepage_schema");
         case "global":
             return document.getElementById("current_global_schema");

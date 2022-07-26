@@ -21,7 +21,7 @@ endforeach;
 
 <div class="mb-5">
     <h2>Page Schema</h2>
-    <select id="pages_list" class="py-2">
+    <select id="pages_list" class="form-select py-2">
         <option>Choose a page to view or edit...</option>
         <?php
 
