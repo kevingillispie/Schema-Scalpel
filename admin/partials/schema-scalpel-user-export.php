@@ -2,15 +2,11 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) :
-    // If this file is called directly, EJECT EJECT EJECT!
-    exit('First of all, how dare you!');
-endif;
+if (!defined('ABSPATH')) exit();
 
 /**
  *
  * @link       https://schemascalpel.com/
-
  *
  * @package    Schema_Scalpel
  * @subpackage Schema_Scalpel/admin/partials
@@ -28,7 +24,7 @@ $results = $wpdb->get_results($get_schema, ARRAY_A);
 ?>
 <main class="container mt-5 ms-0">
     <header>
-        <h1>User Tools <img src="<?php echo plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ); ?>admin/images/scalpel_title.svg" class="mt-n4" /></h1>
+        <h1>User Tools <img src="<?= plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ); ?>admin/images/scalpel_title.svg" class="mt-n4" /></h1>
     </header>
 
     <hr />
@@ -57,12 +53,12 @@ $results = $wpdb->get_results($get_schema, ARRAY_A);
 
                 ?>
                             <tr>
-                                <th scope="row"><?php echo sanitize_text_field($results[$key]['id']); ?></th>
-                                <td><?php echo sanitize_text_field($results[$key]['created']); ?></td>
-                                <td><?php echo sanitize_text_field($results[$key]['updated']); ?></td>
-                                <td><?php echo sanitize_text_field($results[$key]['schema_type']); ?></td>
-                                <td><?php echo sanitize_text_field($results[$key]['post_id']); ?></td>
-                                <td><?php echo sanitize_text_field($trunked); ?></td>
+                                <th scope="row"><?= sanitize_text_field($results[$key]['id']); ?></th>
+                                <td><?= sanitize_text_field($results[$key]['created']); ?></td>
+                                <td><?= sanitize_text_field($results[$key]['updated']); ?></td>
+                                <td><?= sanitize_text_field($results[$key]['schema_type']); ?></td>
+                                <td><?= sanitize_text_field($results[$key]['post_id']); ?></td>
+                                <td><?= sanitize_text_field($trunked); ?></td>
                             </tr>
                 <?php
 
@@ -78,11 +74,11 @@ $results = $wpdb->get_results($get_schema, ARRAY_A);
     <h2>Export Tool</h2>
     <fieldset class="d-flex flex-column justify-content-between bg-light border rounded p-3 mt-5">
         <legend class="px-3 pb-1 border rounded bg-white" style="width:auto">SQL:</legend>
-        <p class="h5">Current WordPress Database Prefix: <code class="rounded"><?php echo sanitize_text_field($prefix); ?></code></p>
+        <p class="h5">Current WordPress Database Prefix: <code class="rounded"><?= sanitize_text_field($prefix); ?></code></p>
         <p>Use this tool to export your schema as a SQL query. Simply copy and paste the code below into your database's query editor and run it.</p>
         <hr class="w-100" />
         <label for="wpdb_prefix"><i>Type the prefix of the WordPress database to which the schema is being transferred:</i></label>
-        <input id="wpdb_prefix" type="text" placeholder="<?php echo sanitize_text_field($prefix); ?>" onkeyup="updatePrefix(this)" />
+        <input id="wpdb_prefix" type="text" placeholder="<?= sanitize_text_field($prefix); ?>" onkeyup="updatePrefix(this)" />
         <button class="btn btn-primary py-2 mt-2" onclick="copySchema(this.nextElementSibling)">Copy SQL to Clipboard</button>
         <?php
 
@@ -95,7 +91,7 @@ $results = $wpdb->get_results($get_schema, ARRAY_A);
                     if ($results[$key]['schema_type'] != "example") :
                         $escaped = htmlentities($results[$key]['custom_schema']);
 
-                ?><code class="d-inline-block py-2 px-1 w-100">INSERT INTO <span class="wpdb-prefix"><?php echo sanitize_text_field($prefix); ?></span>scsc_custom_schemas (`schema_type`, `post_id`, `custom_schema`) VALUES ('<?php echo sanitize_text_field($results[$key]['schema_type']); ?>', '<?php echo sanitize_text_field($results[$key]['post_id']); ?>', '<?php echo $escaped; ?>');</code><br /><?php
+                ?><code class="d-inline-block py-2 px-1 w-100">INSERT INTO <span class="wpdb-prefix"><?= sanitize_text_field($prefix); ?></span>scsc_custom_schemas (`schema_type`, `post_id`, `custom_schema`) VALUES ('<?= sanitize_text_field($results[$key]['schema_type']); ?>', '<?= sanitize_text_field($results[$key]['post_id']); ?>', '<?= $escaped; ?>');</code><br /><?php
 
                     endif;
                 endforeach;
@@ -121,7 +117,7 @@ $results = $wpdb->get_results($get_schema, ARRAY_A);
 </script>
 <script>
     function updatePrefix(el) {
-        let newPrefix = (el.value == "") ? "<?php echo sanitize_text_field($prefix); ?>" : el.value;
+        let newPrefix = (el.value == "") ? "<?= sanitize_text_field($prefix); ?>" : el.value;
         document.querySelectorAll('.wpdb-prefix').forEach(prefix => {
             prefix.innerText = newPrefix;
         });

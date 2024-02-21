@@ -2,10 +2,7 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) :
-    // If this file is called directly, EJECT EJECT EJECT!
-    exit('First of all, how dare you!');
-endif;
+if (!defined('ABSPATH')) exit();
 
 ?>
 <div class="d-flex flex-column">
@@ -17,20 +14,22 @@ endif;
             <legend class="px-3 pb-1 border rounded bg-white" style="width:auto">Current:</legend>
             <div id="current_homepage_schema">
                 <?php
+
                 global $wpdb;
                 $homepageID = get_option('page_on_front');
-                $get_schema = "SELECT * FROM {$wpdb->prefix}scsc_custom_schemas WHERE schema_type = 'home';";
+                $get_schema = "SELECT * FROM {$wpdb->prefix}scsc_custom_schemas WHERE schema_type = 'homepage';";
                 $results = $wpdb->get_results($get_schema, ARRAY_A);
                 if ($results) :
                     foreach ($results as $key => $value) :
                         $wet_cereal = unserialize($results[$key]['custom_schema']);
 
                         ?>
-                        <pre class="w-100 rounded language-json" data-id="<?php echo sanitize_text_field($results[$key]['id']); ?>" data-schema="<?php echo esc_html($wet_cereal); ?>"></pre>
+                        <pre class="w-100 rounded language-json" onclick="editSchemaCodeBlock('homepage', '', this.dataset.id, event)" data-id="<?= sanitize_text_field($results[$key]['id']); ?>" data-schema="<?= esc_html($wet_cereal); ?>"></pre>
                         <?php
 
                     endforeach;
                 endif;
+
                 ?>
             </div>
         </fieldset>

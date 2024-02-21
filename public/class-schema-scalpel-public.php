@@ -3,67 +3,31 @@
 namespace SchemaScalpel;
 
 /**
- *
  * @link       https://schemascalpel.com
  *
- * @package    Schema_Scalpel
- * @subpackage Schema_Scalpel/public
- */
-
-/**
  * @package    Schema_Scalpel
  * @subpackage Schema_Scalpel/public
  * @author     Kevin Gillispie
  */
 
-// If this file is called directly, EJECT EJECT EJECT!
-if (!defined('ABSPATH')) exit;
+if (!defined('ABSPATH')) exit();
 
 class Schema_Scalpel_Public
 {
-
-    /**
-     * The ID of this plugin.
-     *
-     * @access   private
-     * @var      string    $schema_scalpel    The ID of this plugin.
-     */
     private $schema_scalpel;
-
-    /**
-     * The version of this plugin.
-     *
-     * @access   private
-     * @var      string    $version    The current version of this plugin.
-     */
     private $version;
 
-    /**
-     * Initialize the class and set its properties.
-     *
-     * @param      string    $schema_scalpel       The name of the plugin.
-     * @param      string    $version    The version of this plugin.
-     */
     public function __construct($schema_scalpel, $version)
     {
-
         $this->schema_scalpel = $schema_scalpel;
         $this->version = $version;
     }
 
-    /**
-     * Register the stylesheets for the public-facing side of the site.
-     *
-     */
     public function enqueue_styles()
     {
         wp_enqueue_style($this->schema_scalpel, SCHEMA_SCALPEL_DIRECTORY . '/public/css/schema-scalpel-public.css', array(), $this->version, 'all');
     }
 
-    /**
-     * Register the JavaScript for the public-facing side of the site.
-     *
-     */
     public function enqueue_scripts()
     {
         wp_enqueue_script($this->schema_scalpel, SCHEMA_SCALPEL_DIRECTORY . '/public/js/schema-scalpel-public.js', array(), $this->version, false);
@@ -121,12 +85,13 @@ CRUMBS;
          * 
          */
 
+        global $wpdb;
+        $current_page_results = array();
         $site_title = get_bloginfo('name');
         $page_id = get_the_ID();
         /**
          * CHECK DATABASE EXCLUSIONS
          */
-        global $wpdb;
         $current_excluded_results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_settings WHERE setting_key = 'exclude';", ARRAY_A);
         foreach ($current_excluded_results as $key => $value) :
             if (in_array($page_id, $current_excluded_results[$key])) :
@@ -214,9 +179,27 @@ BREAD;
         endforeach;
 
         /**
+         * INJECT POST SCHEMA
+         */
+        if (is_single()) :
+            $current_page_results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_custom_schemas WHERE post_id = '$page_id' AND schema_type = 'posts';", ARRAY_A);
+            foreach ($current_page_results as $key => $value) :
+                $schema = str_replace("&apos;", "'", html_entity_decode(unserialize($value['custom_schema'])));
+                Schema_Scalpel_Public::format_schema_html($schema_script_html, $schema);
+                error_log(print_r($page_id, true));
+            endforeach;
+        endif;
+
+        /**
          * INJECT PAGE SCHEMA
          */
-        $current_page_results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_custom_schemas WHERE post_id = '$page_id';", ARRAY_A);
+        if (!is_front_page() && is_home()) :
+            $blog_page_id = get_option('page_for_posts');
+            $current_page_results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_custom_schemas WHERE post_id = '$blog_page_id' AND schema_type = 'pages';", ARRAY_A);
+        else :
+            $current_page_results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}scsc_custom_schemas WHERE post_id = '$page_id' AND schema_type = 'pages';", ARRAY_A);
+        endif;
+
         foreach ($current_page_results as $key => $value) :
             $schema = str_replace("&apos;", "'", html_entity_decode(unserialize($value['custom_schema'])));
             Schema_Scalpel_Public::format_schema_html($schema_script_html, $schema);
@@ -226,7 +209,7 @@ BREAD;
          * INJECT HOMEPAGE SCHEMA
          */
         if ($path == "/") :
-            $home_schema = $wpdb->get_results("SELECT custom_schema FROM {$wpdb->prefix}scsc_custom_schemas WHERE schema_type = 'home';", ARRAY_A);
+            $home_schema = $wpdb->get_results("SELECT custom_schema FROM {$wpdb->prefix}scsc_custom_schemas WHERE schema_type = 'homepage';", ARRAY_A);
             foreach ($home_schema as $key => $value) :
                 $schema = str_replace("&apos;", "\'", html_entity_decode(unserialize($value['custom_schema'])));
                 Schema_Scalpel_Public::format_schema_html($schema_script_html, $schema);
@@ -250,8 +233,5 @@ BREAD;
         if ($path != "/" && $check_bc_setting[0]['setting_value'] == '1') :
             Schema_Scalpel_Public::format_schema_html($schema_script_html, $breadcrumb_schema);
         endif;
-        /**
-         * 
-         */
     }
 }

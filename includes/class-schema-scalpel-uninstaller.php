@@ -2,9 +2,7 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) :
-    exit('First of all, how dare you!');
-endif;
+if (!defined('ABSPATH')) exit();
 
 /**
  *

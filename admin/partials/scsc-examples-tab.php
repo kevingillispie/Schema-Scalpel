@@ -2,10 +2,7 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) :
-    // If this file is called directly, EJECT EJECT EJECT!
-    exit('First of all, how dare you!');
-endif;
+if (!defined('ABSPATH')) exit();
 
 include_once(SCHEMA_SCALPEL_DIRECTORY . '/admin/vars/examples.php');
 
@@ -23,8 +20,8 @@ include_once(SCHEMA_SCALPEL_DIRECTORY . '/admin/vars/examples.php');
             foreach ($schema_examples as $key => $value) :
                 $schema_type = ucwords($key, " ");
         ?>
-                <li class="nav-item example-items noselect m-0" data-schema-type="<?php echo esc_html($schema_type); ?>">
-                    <div class="nav-link example-nav <?php echo ($tab_count == "0") ? sanitize_text_field("active") : ""; ?>" aria-current="page"><?php echo esc_html($schema_type); ?></div>
+                <li class="nav-item example-items noselect m-0" data-schema-type="<?= esc_html($schema_type); ?>">
+                    <div class="nav-link example-nav <?= ($tab_count == "0") ? sanitize_text_field("active") : ""; ?>" aria-current="page"><?= esc_html($schema_type); ?></div>
                 </li>
         <?php
                 $tab_count++;
@@ -41,14 +38,14 @@ include_once(SCHEMA_SCALPEL_DIRECTORY . '/admin/vars/examples.php');
             foreach ($schema_examples as $key => $value) :
                 $schema_type = ucwords($key, " ");
         ?>
-                <fieldset <?php echo ($fieldset_count == 0) ?: esc_html('style=display:none!important') ?> class="d-flex flex-column justify-content-between bg-light border rounded p-3 noselect" data-schema-type="<?php echo esc_html($schema_type); ?>">
-                    <legend class="px-3 pb-1 border rounded bg-white" style="width:auto"><?php echo esc_html($schema_type); ?>:</legend>
+                <fieldset <?= ($fieldset_count == 0) ?: esc_html('style=display:none!important') ?> class="d-flex flex-column justify-content-between bg-light border rounded p-3 noselect" data-schema-type="<?= esc_html($schema_type); ?>">
+                    <legend class="px-3 pb-1 border rounded bg-white" style="width:auto"><?= esc_html($schema_type); ?>:</legend>
                     <button class="btn btn-primary py-2" onclick="copySchema(this.nextElementSibling)">Copy to Clipboard</button>
-                    <div id="<?php echo sanitize_text_field("example_schema_" . $schema_type); ?>">
+                    <div id="<?= sanitize_text_field("example_schema_" . $schema_type); ?>">
                         <?php
                         $wet_cereal = $value;
                         ?>
-                        <pre class="w-100 rounded language-json" data-id="<?php echo $key; ?>" data-schema="<?php echo esc_html($wet_cereal); ?>"></pre>
+                        <pre class="w-100 rounded language-json" data-id="<?= $key; ?>" data-schema="<?= esc_html($wet_cereal); ?>"></pre>
                     </div>
                 </fieldset>
         <?php

@@ -2,10 +2,7 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) :
-    // If this file is called directly, EJECT EJECT EJECT!
-    exit('First of all, how dare you!');
-endif;
+if (!defined('ABSPATH')) exit();
 
 $page_query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type='page' ORDER BY post_title ASC;";
 $all_pages = $wpdb->get_results($page_query, ARRAY_A);
@@ -33,7 +30,7 @@ endforeach;
                 endif;
 
         ?>
-                <option class="<?php echo sanitize_html_class($classes); ?>" value="<?php echo sanitize_text_field($all_pages[$key]['ID']); ?>"><?php echo sanitize_text_field($all_pages[$key]['ID']); ?>: <?php echo sanitize_text_field($all_pages[$key]['post_title']); ?></option>
+                <option class="<?= sanitize_html_class($classes); ?>" value="<?= sanitize_text_field($all_pages[$key]['ID']); ?>"><?= sanitize_text_field($all_pages[$key]['ID']); ?>: <?= sanitize_text_field($all_pages[$key]['post_title']); ?></option>
         <?php
 
             endif;
@@ -44,10 +41,11 @@ endforeach;
     <div id="page_schema">
         <fieldset class="d-flex flex-column justify-content-between bg-light border rounded p-3 mt-5">
             <legend class="px-3 pb-1 border rounded bg-white" style="width:auto">Current:</legend>
-            <form id="current_pages_schema" class="form-select">
+            <div id="current_pages_schema">
                 <?php
 
                 if ($results) :
+
                     foreach ($results as $key => $value) :
                         $post_id = $results[$key]['post_id'];
                         $post_title = "";
@@ -59,7 +57,7 @@ endforeach;
                         $no_cereal = unserialize($results[$key]['custom_schema']);
 
                 ?>
-                        <pre class="w-100 rounded d-none language-json" data-id="<?php echo sanitize_text_field($results[$key]['id']); ?>" data-post-id="<?php echo sanitize_text_field($post_id); ?>" data-schema="<?php echo esc_html($no_cereal); ?>"></pre>
+                        <pre class="w-100 rounded d-none language-json" onclick="editSchemaCodeBlock('pages', '', this.dataset.id, event)" data-id="<?= sanitize_text_field($results[$key]['id']); ?>" data-post-id="<?= sanitize_text_field($post_id); ?>" data-schema="<?= esc_html($no_cereal); ?>"></pre>
                 <?php
 
                     endforeach;
@@ -67,7 +65,7 @@ endforeach;
                 endif;
 
                 ?>
-            </form>
+            </div>
         </fieldset>
         <?php
 

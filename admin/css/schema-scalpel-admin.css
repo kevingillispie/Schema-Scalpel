@@ -14,6 +14,7 @@ pre::before {
 pre code {
     counter-increment: listing;
     padding-left: 0px;
+    font-size: .75em !important;
 }
 
 pre code::before {

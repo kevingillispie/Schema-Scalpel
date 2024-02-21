@@ -2,10 +2,7 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) :
-    // If this file is called directly, EJECT EJECT EJECT!
-    exit('First of all, how dare you!');
-endif;
+if (!defined('ABSPATH')) exit();
 
 
 /**
@@ -35,6 +32,11 @@ class Schema_Scalpel_Activator
 
         if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $custom_schema_table)) != $custom_schema_table) :
             dbDelta($custom_schema_sql);
+        else :
+            /**
+             * UPDATE schema_type COLUMN
+             */
+            $wpdb->update($custom_schema_table, array('schema_type' => 'homepage'), array('schema_type' => 'home'));
         endif;
 
         $schema_settings_table = $wpdb->prefix . "scsc_settings";
@@ -141,7 +143,7 @@ class Schema_Scalpel_Activator
                 restore_current_blog();
 
             endforeach;
-            
+
         else :
             Schema_Scalpel_Activator::db_tables_initializer();
         endif;

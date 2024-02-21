@@ -2,10 +2,7 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) :
-    // If this file is called directly, EJECT EJECT EJECT!
-    exit('First of all, how dare you!');
-endif;
+if (!defined('ABSPATH')) exit();
 
 ?>
 <div class="d-flex flex-column">
@@ -26,7 +23,7 @@ endif;
                         $wet_cereal = unserialize($results[$key]['custom_schema']);
 
                         ?>
-                        <pre class="w-100 rounded language-json" data-id="<?php echo sanitize_text_field($results[$key]['id']); ?>" data-schema="<?php echo esc_html($wet_cereal); ?>"></pre>
+                        <pre class="w-100 rounded language-json" onclick="editSchemaCodeBlock('global', '', this.dataset.id, event)" data-id="<?= sanitize_text_field($results[$key]['id']); ?>" data-schema="<?= esc_html($wet_cereal); ?>"></pre>
                         <?php
 
                     endforeach;

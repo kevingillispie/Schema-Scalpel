@@ -2,20 +2,11 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) :
-    // If this file is called directly, EJECT EJECT EJECT!
-    exit('First of all, how dare you!');
-endif;
+if (!defined('ABSPATH')) exit();
 
 /**
- *
  * @link       https://schemascalpel.com
  *
- * @package    Schema_Scalpel
- * @subpackage Schema_Scalpel/includes
- */
-
-/**
  * @package    Schema_Scalpel
  * @subpackage Schema_Scalpel/includes
  * @author     Kevin Gillispie
@@ -45,11 +36,7 @@ class Schema_Scalpel
 
     public function __construct()
     {
-        if (defined('SCHEMA_SCALPEL_VERSION')) {
-            $this->version = SCHEMA_SCALPEL_VERSION;
-        } else {
-            $this->version = '1.2.5.4';
-        }
+        $this->version = SCHEMA_SCALPEL_VERSION;
         $this->schema_scalpel = 'schema-scalpel';
 
         $this->load_dependencies();
@@ -138,6 +125,11 @@ class Schema_Scalpel
     private function register()
     {
         add_action('admin_menu', array($this, 'add_admin_pages'));
+        add_action('admin_head', function () {
+            echo <<<STYLE
+            <style>img[src*="menu_icon.svg"]{padding: 0 !important;}</style>
+            STYLE;
+        });
     }
 
     function admin_index_page()
@@ -150,17 +142,54 @@ class Schema_Scalpel
         require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/partials/schema-scalpel-user-settings.php';
     }
 
-    function user_tools_page()
+    function user_export_page()
     {
-        require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/partials/schema-scalpel-user-tools.php';
+        require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/partials/schema-scalpel-user-export.php';
     }
 
     function add_admin_pages()
     {
-        add_menu_page('Schema Scalpel Plugin', 'Schema Scalpel', 'manage_options', 'scsc', array($this, 'admin_index_page'), plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_menu.svg', 100);
+        add_action( "admin_head", function() {
+            echo '<style class="scsc-admin">.toplevel_page_scsc img {margin-top:6px}</style>';
+        });
+        
+        add_menu_page(
+            'Schema Scalpel Plugin',
+            'Schema Scalpel',
+            'manage_options',
+            'scsc',
+            array($this, 'admin_index_page'),
+            plugin_dir_url(SCHEMA_SCALPEL_PLUGIN) . 'admin/images/menu_icon.svg',
+            100
+        );
 
-        add_submenu_page('scsc', 'Schema Scalpel | Settings', 'Settings', 'manage_options', 'scsc_settings', array($this, 'user_settings_page'), 1);
+        add_submenu_page(
+            __('scsc', SCHEMA_SCALPEL_TEXT_DOMAIN),
+            __('Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN),
+            __('Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN),
+            'manage_options',
+            SCHEMA_SCALPEL_TEXT_DOMAIN,
+            array($this, 'admin_index_page'),
+        );
 
-        add_submenu_page('scsc', 'Schema Scalpel | Tools', 'Tools', 'manage_options', 'scsc_tools', array($this, 'user_tools_page'), 2);
+        add_submenu_page(
+            __('scsc', SCHEMA_SCALPEL_TEXT_DOMAIN),
+            'Schema Scalpel | Settings',
+            'Settings',
+            'manage_options',
+            SCHEMA_SCALPEL_SLUG . 'settings',
+            array($this, 'user_settings_page'),
+            1
+        );
+
+        add_submenu_page(
+            'scsc',
+            'Schema Scalpel | Export',
+            'Export',
+            'manage_options',
+            SCHEMA_SCALPEL_SLUG . 'export',
+            array($this, 'user_export_page'),
+            2
+        );
     }
 }

@@ -98,10 +98,6 @@ TYPES.forEach(type => {
             let jsonified = jsonify(container[i].dataset.schema);
 
             displaySchemaLoop(container[i], jsonified, tabCount, syntax, lineBreak);
-
-            container[i].addEventListener("click", function () {
-                existingSchemaEditActions(type, i);
-            });
         }
     }
 });
@@ -258,6 +254,7 @@ function onPostSelectChange(el) {
         btn.dataset.id = el.value;
     });
     let buttons = [document.querySelector("button[id^=\"" + type + "_edit_schema_code_block\""), document.querySelector("button[id^=\"" + type + "_schema_create\"")];
+    console.log(buttons);
     buttons.forEach(btn => {
         btn.dataset.id = el.value;
         if (el.selectedIndex != 0) {
@@ -277,7 +274,6 @@ function showPostSchema(id) {
     CURRENT_SCHEMA_BY_POST_ID.forEach(post_type => {
         for (i in post_type) {
             if (!post_type[i].dataset) continue;
-            // (!post_type[i].classList.contains("d-none")) ? post_type[i].classList.add("d-none"): "";
             if (post_type[i].dataset.postId == id) {
                 post_type[i].classList.remove("d-none");
             } else {
@@ -289,63 +285,6 @@ function showPostSchema(id) {
 
 function disableCreateSchemaButtons(button) {
     button.setAttribute("disabled", "true");
-}
-
-/**
- * 
- */
-function existingSchemaEditActions(type, child) {
-    if (!document.getElementById("current_" + type + "_actions")) {
-        let el = existingSchema(type).children[child];
-        el.insertAdjacentHTML("beforebegin", `<hr><div class="d-flex flex-row justify-content-between"><button type="button" class="btn btn-success px-5" onclick="editSchemaCodeBlock('${type}', '', '${el.dataset.id}', event)" data-bs-toggle="modal" data-bs-target="#schemaBlockEditModal">Edit Code Block</button><div class="d-flex flex-row"><div class="insert-line-label bg-secondary py-2 px-3 rounded-left text-white text-center">Insert Line After</div><input type="text" id="new_line_input_${el.dataset.id}" placeholder="Line #" class="rounded-0 border-secondary bg-light" style="width: 60px" /><button id="new_line" class="btn btn-secondary rounded-0" style="border-top-right-radius:3px!important;border-bottom-right-radius:3px!important" onClick="addLine('${el.dataset.id}', event)"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" /></svg></button></div></div>`);
-        el.insertAdjacentHTML("afterend", `<div id="current_${type}_actions" class="d-flex flex-row justify-content-between"><div><button class="btn btn-primary px-5" onclick="updateCurrentSchema('${el.dataset.id}', 'line', event)">Update</button><button class="btn btn-secondary px-5 ms-2" onclick="location.reload()">Cancel</button></div><button class="btn btn-danger px-5" onclick="deleteCurrentSchema('${el.dataset.id}', event)">Delete</button></div><hr>`);
-        el.classList.add("line-editable");
-        for (let i = 0; i < el.children.length; i++) {
-            el.children[i].setAttribute("onmouseenter", "addEditButtons(this)");
-            el.children[i].setAttribute("onmouseleave", "removeEditButtons(this)");
-        }
-    }
-}
-
-function addEditButtons(el) {
-    el.insertAdjacentHTML("beforeend", `<div class="edit-container position-absolute d-flex flex-row" style="margin-top:-26px;left:950px"><button onClick="editLine(this, event)" class="edit-line border-0 bg-transparent me-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/></svg></button><button onClick="deleteLine(this, event)" class="delete-line border-0 bg-transparent"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></div>`);
-    el.setAttribute("style", "background-color: gray");
-}
-
-function removeEditButtons(el) {
-    el.removeAttribute("style");
-    for (let edit of el.children) {
-        if (edit.classList.contains("edit-container")) {
-            edit.remove();
-        }
-    }
-}
-
-function editLine(el, event) {
-    event.preventDefault();
-    try {
-        let line = el.parentElement.parentElement;
-        line.setAttribute("contenteditable", "true");
-        line.focus();
-    } catch (e) {
-        alert(e);
-        return;
-    }
-}
-
-function deleteLine(el, event) {
-    event.preventDefault();
-    el.parentElement.parentElement.remove();
-    let preTag = document.getElementById("global_schema_preview");
-    let tempArray = [];
-    for (let i = 0; i < preTag.children.length; i++) {
-        tempArray.push(preTag.children[i]);
-    }
-    preTag.innerHTML = "";
-    while (tempArray.length > 0) {
-        preTag.insertAdjacentHTML("beforeend", tempArray[0].outerHTML + lineBreak);
-        tempArray.shift();
-    }
 }
 
 function printJSONLoop(container, jObject, tab) {
@@ -387,19 +326,6 @@ function insertTabs(count) {
     return t;
 }
 
-function addLine(id, event, tab = "") {
-    event.preventDefault();
-    let lineNo, selector;
-    if (parseInt(id)) {
-        lineNo = document.querySelector("#new_line_input_" + id).value - 1;
-        selector = "pre[data-id=\"" + id + "\"]";
-    } else {
-        lineNo = document.querySelector("#" + tab + "_add_new_line_after").value - 1;
-        selector = "#" + tab + "_schema_preview";
-    }
-    document.querySelector(selector).children[lineNo].insertAdjacentHTML("afterend", `${lineBreak}<code class="d-inline-block w-100" onmouseenter="addEditButtons(this)" onmouseleave="removeEditButtons(this)"></code>`);
-}
-
 function editSchemaCodeBlock(type, isNew, id, event) {
     event.preventDefault();
     var schema = "";
@@ -410,6 +336,7 @@ function editSchemaCodeBlock(type, isNew, id, event) {
         schema = document.querySelector("pre[data-id=\"" + id + "\"]").innerText;
     }
     document.querySelector("#schemaBlockEditSave").dataset.id = id;
+    document.querySelector("#schemaBlockEditDelete").dataset.id = id;
     document.querySelector("#schemaTextareaEdit").innerHTML = schema;
     document.querySelector("#schemaTextareaEdit").value = schema;
     document.getElementsByTagName("BODY")[0].style.overflow = "hidden";
@@ -424,6 +351,7 @@ function editSchemaCodeBlock(type, isNew, id, event) {
 function closeSchemaTextareaEditModal(event) {
     event.preventDefault();
     document.querySelector("#schemaBlockEditSave").dataset.id = "";
+    document.querySelector("#schemaBlockEditDelete").dataset.id = "";
     document.querySelector("#schemaTextareaEdit").innerHTML = "";
     document.querySelector("#schemaTextareaEdit").value = "";
     document.getElementsByTagName("BODY")[0].style.overflow = "";

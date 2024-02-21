@@ -2,9 +2,9 @@
 Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json, microdata, search engine
-Requires at least: 3.0.1
-Tested up to: 6.0
-Stable tag: 1.2.5.4
+Requires at least: 3.0
+Tested up to: 6.4
+Stable tag: 1.3.1
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -57,6 +57,31 @@ Most importantly, **[Google recommends that you use JSON-LD!](https://developers
 
 == Changelog ==
 
+= 1.3.1 =
+[UPDATE] Added clarification to the BlogPosting schema generator process.
+
+= 1.3 =
+[NEW] You can now auto-generate schema for all your blog posts with one click! 
+[UPDATE] CSS framework updated to Bootstrap v5.3.2. 
+[UPDATE] Various UI improvements. 
+[UPDATE] Various PHP updates throughout the plugin.
+[FIX] Menu item logo sizing.
+
+= 1.2.7.1 =
+[FIX] Click-to-edit feature added to global, pages, and posts tabs.
+
+= 1.2.7 =
+[UPDATE] Clicking on schema will immediately open the popup textbox for editing. 
+[FIX] Bug fixes.
+
+= 1.2.6.2 =
+[UPDATE] Replaced menu icon, and updated menu names.
+[UPDATE] Minor updates to the codebase in anticipation of an imminent overhaul(!).
+
+= 1.2.5.5 =
+[FIX] The `schema_type` for homepage schema as found in the custom schema table is now consistent across all PHP file partials.
+_Please deactivate and re-activate the plugin to initiate the update._
+
 = 1.2.5.4 =
 THIS IS A NECESSARY UPDATE.
 [FIX] The initial tab setting in the database has been updated to `homepage`. The schema-editing page will now load properly.
@@ -76,26 +101,26 @@ THIS IS A NECESSARY UPDATE.
 
 [UPDATE] Exmample schema are now called directly from an array rather than the database.
 
-[FIX] Spaces after commas are now limited to one to maintain traditional punctuation practices. 
+[FIXED] Spaces after commas are now limited to one to maintain traditional punctuation practices. 
 
 = 1.2.4.1 =
-[FIX] The create and edit schema buttons were being generated with the incorrect schema type. Each tab will now display the appropriate schema (i.e. home, global, pages, posts).
+[FIXED] The create and edit schema buttons were being generated with the incorrect schema type. Each tab will now display the appropriate schema (i.e. home, global, pages, posts).
 
 = 1.2.4 =
-[FIX] Should the `wp_head()` function be called more than once, some functions in the `/public/class-schema-scalpel-public.php` file would throw a fatal PHP error due to redundant declarations. 
+[FIXED] Should the `wp_head()` function be called more than once, some functions in the `/public/class-schema-scalpel-public.php` file would throw a fatal PHP error due to redundant declarations. 
 
 = 1.2.3 =
 [UPDATE] Schema Scalpel works with WordPress 6.0!
 
-[FIX] A few CSS class names that weren't updated to Bootstrap 5.x naming standards.
+[FIXED] A few CSS class names that weren't updated to Bootstrap 5.x naming standards.
 
-[FIX] Page and post titles were not displaying properly due to sanitization function.
+[FIXED] Page and post titles were not displaying properly due to sanitization function.
 
 = 1.2.2 =
-[UPDATE] The schema/JSON-LD format error checking has been greatly improved. 
+[UDPATED] The schema/JSON-LD format error checking has been greatly improved. 
 
 = 1.2.1 =
-[FIX] Version 1.2 was pushed without updating every instance of version number within the plugin.
+[FIXED] Version 1.2 was pushed without updating every instance of version number within the plugin.
 
 = 1.2 =
 [NEW] Multisite activation is now possible!
@@ -103,9 +128,9 @@ THIS IS A NECESSARY UPDATE.
 [UPDATE] Removed some comment clutter.
 
 = 1.0.1 =
-[FIX] Replaced use of `wp_print_scripts` hook with `wp_enqueue_scripts` as the former prevented the loading of schema with some themes.
+[FIXED] Replaced use of `wp_print_scripts` hook with `wp_enqueue_scripts` as the former prevented the loading of schema with some themes.
 
-[FIX] A bunch of stuff I have changed since publishing Schema Scalpel but have forgotten about because I didn't know how to use my Subversion client.
+[FIXED] A bunch of stuff I have changed since publishing Schema Scalpel but have forgotten about because I didn't know how to use my Subversion client.
 
 [UPDATE] Plugin init function `run_schema_scalpel` now called via `plugins_loaded` hook.
 

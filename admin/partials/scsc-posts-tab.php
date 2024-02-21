@@ -2,11 +2,7 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) :
-    // If this file is called directly, EJECT EJECT EJECT!
-    exit('First of all, how dare you!');
-endif;
-
+if (!defined('ABSPATH')) exit();
 
 $post_query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type='post' ORDER BY post_title ASC;";
 $all_posts = $wpdb->get_results($post_query, ARRAY_A);
@@ -17,6 +13,7 @@ $existing_schema_ids = [];
 foreach ($results as $key => $value) :
     array_push($existing_schema_ids, $results[$key]['post_id']);
 endforeach;
+
 ?>
 <div class="mb-5">
     <h2>Post Schema</h2>
@@ -31,12 +28,13 @@ endforeach;
             endif;
             $page_id = $all_posts[$key]['ID'];
             $page_title = $all_posts[$key]['post_title'];
+            if (stripos(strtolower($page_title), 'auto draft') > -1) continue;
 
         ?>
-
-            <option <?php echo ($classes) ? 'class="fw-bold"' : ''; ?> value="<?php echo sanitize_text_field($page_id); ?>"><?php echo sanitize_text_field($page_id); ?>: <?php echo sanitize_text_field($page_title); ?></option>
+            <option <?= ($classes) ? 'class="fw-bold"' : ''; ?> value="<?= sanitize_text_field($page_id); ?>"><?= sanitize_text_field($page_id); ?>: <?= sanitize_text_field($page_title); ?></option>
 
         <?php
+
         endforeach;
 
         ?>
@@ -52,16 +50,10 @@ endforeach;
                 if ($results) :
                     foreach ($results as $key => $value) :
                         $post_id = $results[$key]["post_id"];
-                        $post_title = "";
-                        foreach ($all_posts as $k => $v) :
-                            if ($all_posts[$k]['ID'] == $post_id) :
-                                $post_title = $all_posts[$k]['post_title'];
-                            endif;
-                        endforeach;
                         $no_cereal = unserialize($results[$key]['custom_schema']);
 
                 ?>
-<pre class="w-100 rounded d-none language-json" data-id="<?php echo sanitize_text_field($results[$key]['id']); ?>" data-post-id="<?php echo sanitize_text_field($post_id); ?>" data-schema="<?php echo sanitize_text_field($no_cereal); ?>">"<?php echo sanitize_text_field($post_title); ?>"
+                        <pre class="w-100 rounded d-none language-json" onclick="editSchemaCodeBlock('posts', '', this.dataset.id, event)" data-id="<?= sanitize_text_field($results[$key]['id']); ?>" data-post-id="<?= sanitize_text_field($post_id); ?>" data-schema="<?= sanitize_text_field($no_cereal); ?>">
 </pre>
                 <?php
 
@@ -79,3 +71,28 @@ endforeach;
         ?>
     </div>
 </div>
+<?php
+
+add_action("admin_footer", function () {
+    echo <<<SCRIPT
+    <script class="scsc-footer">
+        document.addEventListener("DOMContentLoaded", () => {
+            var schemaPostTypeBtns = document.querySelectorAll("input[name=\"schemaPostType\"]");
+            var schemaAuthorTypeBtns = document.querySelectorAll("input[name=\"schemaAuthorType\"]");
+            var postTypeExample = document.querySelector("#schemaPostType span.token.string");
+            var schemaAuthorTypeExample = document.querySelector("#schemaAuthorType span.token.string");
+            
+            schemaPostTypeBtns.forEach(btn => {
+                btn.addEventListener("change", () => {
+                    postTypeExample.innerText = '"' + btn.dataset.label + '"';
+                })
+            })
+            schemaAuthorTypeBtns.forEach(btn => {
+                btn.addEventListener("change", () => {
+                    schemaAuthorTypeExample.innerText = '"' + btn.dataset.label + '"';
+                })
+            })
+        });
+    </script>
+    SCRIPT;
+});
