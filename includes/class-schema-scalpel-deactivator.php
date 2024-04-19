@@ -2,9 +2,12 @@
 
 namespace SchemaScalpel;
 
-if (!defined('ABSPATH')) exit();
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 
 /**
+ * Future deactivation actions.
  *
  * @link       https://schemascalpel.com/
  *
@@ -12,11 +15,12 @@ if (!defined('ABSPATH')) exit();
  * @subpackage Schema_Scalpel/includes
  * @author     Kevin Gillispie
  */
+class Schema_Scalpel_Deactivator {
 
-class Schema_Scalpel_Deactivator
-{
-    public static function deactivate()
-    {
-        // todo
-    }
+	/**
+	 * Deactivation procedure.
+	 */
+	public static function deactivate() {
+		// todo.
+	}
 }

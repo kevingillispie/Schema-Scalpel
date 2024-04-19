@@ -1,24 +1,26 @@
 <?php
 
-namespace SchemaScalpel;
-
 /**
- * @link       https://schemascalpel.com
+ * Run installation process.
  *
+ * @link       https://schemascalpel.com
  * @package    Schema_Scalpel
  */
 
-if (!defined('WP_UNINSTALL_PLUGIN')) exit();
+namespace SchemaScalpel;
+
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+	exit();
+}
 
 global $wpdb;
-$table = [
-	$wpdb->prefix . "scsc_settings",
-	$wpdb->prefix . "scsc_custom_schemas"
-];
+$table = array(
+	$wpdb->prefix . 'scsc_settings',
+	$wpdb->prefix . 'scsc_custom_schemas',
+);
 
-foreach ($table as $key => $value) {
-	$sql = "DROP TABLE IF EXISTS $value";
-	$wpdb->query($sql);
+foreach ( $table as $key => $value ) {
+	$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %1s', $value ) );
 }
 
 flush_rewrite_rules();

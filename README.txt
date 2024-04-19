@@ -3,8 +3,8 @@ Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json, microdata, search engine
 Requires at least: 3.0
-Tested up to: 6.4
-Stable tag: 1.3.1
+Tested up to: 6.5
+Stable tag: 1.4.1
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -53,18 +53,37 @@ Both of these forms of structured data will provide to search engines and their 
 
 The primary difference is that microdata is written into and dispersed throughout the HTML of your page. This makes maintenance thereof very impractical. JavaScript Object Notation for Linked Data (JSON-LD), on the other hand, is contained wholly within a single set of `script` tags making it very easy to create, update, and improve. 
 
-Most importantly, **[Google recommends that you use JSON-LD!](https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data#format-placement)** Give the search engines what they ask for in the format that they prefer, and they'll rank your site higher.
+Most importantly, **[Google recommends that you use JSON-LD!](https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data#format-placement "Introduction to Structured Data")** Give the search engines what they ask for in the format that they prefer, and they'll rank your site higher.
 
 == Changelog ==
+
+= 1.4.1 =
+[FIX] Exterminated bug that prevented admin pages from loading.
+
+= 1.4 =
+[NEW] The entire codebase has been rebuilt with the addition of a custom HTML generator! Simple, yet effective.
+
+[UPDATE] Extensive updates were made to bring new and existing code into conformity with the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards "WordPress Coding Standards for PHP_CodeSniffer").
+
+[UPDATE] Admin JavaScript has been tightened up, which leads to...
+
+[FIX] The schema-editing JS should be in tip-top shape!
+
+= 1.3.2 =
+[UPDATE] Brought the codebase into greater conformity with the WordPress Coding Standards.
 
 = 1.3.1 =
 [UPDATE] Added clarification to the BlogPosting schema generator process.
 
 = 1.3 =
 [NEW] You can now auto-generate schema for all your blog posts with one click! 
+
 [UPDATE] CSS framework updated to Bootstrap v5.3.2. 
+
 [UPDATE] Various UI improvements. 
+
 [UPDATE] Various PHP updates throughout the plugin.
+
 [FIX] Menu item logo sizing.
 
 = 1.2.7.1 =
@@ -76,6 +95,7 @@ Most importantly, **[Google recommends that you use JSON-LD!](https://developers
 
 = 1.2.6.2 =
 [UPDATE] Replaced menu icon, and updated menu names.
+
 [UPDATE] Minor updates to the codebase in anticipation of an imminent overhaul(!).
 
 = 1.2.5.5 =

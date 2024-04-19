@@ -1,4 +1,8 @@
-<?php 
+<?php
+
 /**
- * There is no spoon.
+ * Placeholder file.
+ *
+ * @package    Schema_Scalpel
+ * @author     Kevin Gillispie
  */

@@ -1,5 +1,4 @@
 const TYPES = ["homepage", "global", "pages", "posts", "examples"];
-const CURRENT_SCHEMA_BY_POST_ID = [document.getElementById('current_pages_schema').children, document.getElementById('current_posts_schema').children];
 const TYPE_TABS = document.querySelectorAll(".nav-link:not(.example-nav)");
 const TYPE_TAB_CONTENTS = document.querySelectorAll(".tab-pane");
 
@@ -14,13 +13,13 @@ const TYPE_TAB_CONTENTS = document.querySelectorAll(".tab-pane");
         tab.classList.remove("active");
         tab.classList.remove("show");
     });
-    let i = TYPES.indexOf(params.get('set_tab'));
-    TYPE_TABS[i].classList.add("active");
-    TYPE_TAB_CONTENTS[i].classList.add("active");
-    TYPE_TAB_CONTENTS[i].classList.add("show");
-    TYPE_TABS.forEach((tab, i) => {
+    let currentTab = TYPES.indexOf(params.get('set_tab'));
+    TYPE_TABS[currentTab].classList.add("active");
+    TYPE_TAB_CONTENTS[currentTab].classList.add("active");
+    TYPE_TAB_CONTENTS[currentTab].classList.add("show");
+    TYPE_TABS.forEach((tab, currentTab) => {
         tab.addEventListener('click', function () {
-            setActiveTab(TYPES[i]);
+            setActiveTab(TYPES[currentTab]);
         });
     });
 }();
@@ -31,10 +30,6 @@ function setActiveTab(tab) {
 }
 
 /**
- * 
- */
-
-/**
  * RESET PAGE AND POST SELECTIONS
  */
 document.querySelectorAll("select").forEach(s => {
@@ -43,16 +38,10 @@ document.querySelectorAll("select").forEach(s => {
 
 TYPES.forEach(type => {
     if (type == "pages" && type == "posts") {
-        document.querySelector("button[id^=\"" + type + "_schema_create\"").setAttribute("disabled", "true");
+        document.querySelector('button[id^="' + type + '_schema_create"').setAttribute("disabled", "true");
     }
 });
-/**
- * 
- */
-
-document.querySelectorAll("[id*='add_new_line_after']").forEach(el => {
-    el.value = "";
-});
+/////////////////////
 
 var schemaPreview = (type) => {
     switch (type) {
@@ -84,6 +73,9 @@ var existingSchema = (type) => {
     }
 }
 
+/**
+ * Formatting displayed schema
+ */
 var tabCount = 1;
 var lineBreak = "\n";
 var syntax = {
@@ -118,7 +110,11 @@ function displaySchemaLoop(container, jsonified, tabCount, syntax, lineBreak) {
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["object"][1]},</code>${lineBreak}`);
     }
 }
+/////////////////////
 
+/**
+ * Schema formatting functions.
+ */
 function jsonify(j) {
     return JSON.parse('{"schema":' + j + '}');
 }
@@ -145,12 +141,19 @@ function correctBracketCount(w) {
 
 function removeIllegalCharacters(v) {
     let w, x;
-    if (v.match(/{/gm) == null || v.match(/}/gm) == null) alert("ILLEGAL CHARACTER: An error in SYNTAX has been detected.\nPlease review your schema.");
-    (v.match(/{/gm).length < v.match(/}/gm).length && v.substring(v.length - 2, v.length) == "}}") ? v = v.substring(0, v.length - 1) : "";
+    v = v.trim()
+    if (v.match(/{/gm) == null || v.match(/}/gm) == null) {
+        alert("MISSING CHARACTER: An error in formatting has been detected.\nPlease review your schema.");
+    }
+    if (v.match(/{/gm).length < v.match(/}/gm).length && v.substring(v.length - 2, v.length) == "}}") {
+        v = v.substring(0, v.length - 1);
+    }
     do {
         w = v;
-        (v.substring(0, 2) == "{{") ? v = v.substring(1, v.length) : "";
-        v = v.replaceAll(/(\n|\r|\t)/gmi, "")
+
+        if (v.substring(0, 2) == "{{") v = v.substring(1, v.length);
+
+        v = v.replaceAll(/(\n|\r|\r\n|\n\r|\t)/g, "")
             .replaceAll(" {", "{")
             .replaceAll("{ ", "{")
             .replaceAll(",}", "}")
@@ -168,63 +171,27 @@ function removeIllegalCharacters(v) {
             .replaceAll(": ", ":")
             .replaceAll("; ", ";")
             .replaceAll("::", ":");
-        x = v;
-    } while (x !== w);
-    if (w[w.length - 1] == ",") {
-        w = w.substring(0, w.length - 1);
-    }
-    let formatted = finalFormattingCheck(correctBracketCount(w));
-    formatted = formatted.replaceAll("\"", "&quot;").replaceAll("\'", "&apos;");
-    return formatted;
-}
 
-function removePostTitle(s) {
-    return s.substring(s.search("{"));
+        x = v;
+
+    } while (x !== w);
+
+    if (w[w.length - 1] == ",") w = w.substring(0, w.length - 1);
+
+    let formatted = finalFormattingCheck(correctBracketCount(w));
+    formatted = formatted.replaceAll(`"`, `&quot;`).replaceAll(`'`, `&apos;`);
+    return formatted;
 }
 
 function finalFormattingCheck(theSchema) {
     try {
         JSON.parse(theSchema);
         return theSchema;
-    } catch(e) {
+    } catch (e) {
         alert("There is an error in your schema. Please review.\n\n" + e);
     }
 }
-
-function createNewSchema(type, id, from = "") {
-    let schema = "";
-    if (from == "block") {
-        schema = document.querySelector("#schemaTextareaEdit").value;
-    } else {
-        for (let i = 0; i < schemaPreview(type).children.length; i++) {
-            schema += schemaPreview(type).children[i].innerText;
-        }
-    }
-
-    let formatted = removeIllegalCharacters(schema);
-    let request = new XMLHttpRequest();
-    request.onreadystatechange = () => {
-        if (request.readyState == 4) location.reload();
-    }
-    request.open("GET", '/wp-admin/admin.php?page=scsc&schemaType=' + type + '&postID=' + id + '&create=' + encodeURIComponent(formatted));
-    request.send();
-}
-
-function updateCurrentSchema(id, from = "", event) {
-    event.preventDefault();
-    let schema = (from == "line") ? document.querySelector("pre[data-id=\"" + id + "\"]").innerText : document.querySelector("#schemaTextareaEdit").value;
-    schema = removePostTitle(schema);
-    let formatted = removeIllegalCharacters(schema);
-    let request = new XMLHttpRequest();
-
-    request.onreadystatechange = () => {
-        if (request.readyState == 4) {
-            location.reload();
-        }
-    }
-    request.open("GET", "/wp-admin/admin.php?page=scsc&update=" + id + "&schema=" + encodeURIComponent(formatted));
-    request.send();
-}
+/////////////////////////
 
 function deleteCurrentSchema(id, event) {
     event.preventDefault();
@@ -241,27 +208,34 @@ function deleteCurrentSchema(id, event) {
 /**
  * SELECT POST => UPDATE CREATE BUTTON
  */
-
-document.querySelectorAll("[id*=\"_list\"]").forEach(list => {
+document.querySelectorAll('[id*="_list"]').forEach(list => {
     list.addEventListener("change", function () {
         onPostSelectChange(this);
     });
 });
+
+function disableCreateSchemaButtons(button) {
+    button.setAttribute("disabled", "true");
+}
 
 function onPostSelectChange(el) {
     let type = el.id.substring(0, 5);
     document.querySelectorAll(".edit-block-button").forEach(btn => {
         btn.dataset.id = el.value;
     });
-    let buttons = [document.querySelector("button[id^=\"" + type + "_edit_schema_code_block\""), document.querySelector("button[id^=\"" + type + "_schema_create\"")];
-    console.log(buttons);
+    let buttons = [
+        document.querySelector('button[id^="' + type + '_create_schema_code_block"'),
+        document.querySelector('button[id^="' + type + '_schema_create"')
+    ];
     buttons.forEach(btn => {
-        btn.dataset.id = el.value;
-        if (el.selectedIndex != 0) {
-            btn.removeAttribute("disabled");
-            showPostSchema(el.value);
-        } else {
-            disableCreateSchemaButtons(btn);
+        if (btn) {
+            btn.dataset.id = el.value;
+            if (0 < parseInt(el.selectedIndex)) {
+                btn.removeAttribute("disabled");
+                showPostSchema(el.value);
+            } else {
+                disableCreateSchemaButtons(btn);
+            }
         }
     });
     let activePageOrPost = (type == "pages") ? "active_page" : "active_post";
@@ -271,10 +245,11 @@ function onPostSelectChange(el) {
 }
 
 function showPostSchema(id) {
+    var CURRENT_SCHEMA_BY_POST_ID = [document.getElementById('current_pages_schema').children, document.getElementById('current_posts_schema').children];
     CURRENT_SCHEMA_BY_POST_ID.forEach(post_type => {
         for (i in post_type) {
-            if (!post_type[i].dataset) continue;
-            if (post_type[i].dataset.postId == id) {
+            if (isNaN(parseInt(i))) continue;
+            if (post_type.length > 0 && post_type[i].classList.contains('post-id-' + id)) {
                 post_type[i].classList.remove("d-none");
             } else {
                 (!post_type[i].classList.contains("d-none")) ? post_type[i].classList.add("d-none") : "";
@@ -282,9 +257,28 @@ function showPostSchema(id) {
         }
     });
 }
+////////////////////
 
-function disableCreateSchemaButtons(button) {
-    button.setAttribute("disabled", "true");
+/**
+ * Print schema
+ */
+function isNumber(n) {
+    return Number.isInteger(parseInt(n));
+}
+
+function checkType(thing) {
+    if (Array.isArray(thing)) {
+        return "array";
+    }
+    return typeof (thing);
+}
+
+function insertTabs(count) {
+    let t = "";
+    for (i = 0; i < count; i++) {
+        t += "&#9;";
+    }
+    return t;
 }
 
 function printJSONLoop(container, jObject, tab) {
@@ -306,37 +300,54 @@ function printJSONLoop(container, jObject, tab) {
         }
     }
 }
+//////////////////////////
 
-function isNumber(n) {
-    return Number.isInteger(parseInt(n));
-}
-
-function checkType(thing) {
-    if (Array.isArray(thing)) {
-        return "array";
+function createNewSchema(type, id) {
+    console.log(type, id);
+    let schema = "";
+    schema = document.querySelector("#schemaTextareaCreate").value;
+    document.querySelector("#schemaBlockSave").dataset.id = id;
+    let formatted = removeIllegalCharacters(schema);
+    let request = new XMLHttpRequest();
+    request.onreadystatechange = () => {
+        if (request.readyState == 4) location.reload();
     }
-    return typeof (thing);
+    request.open("GET", '/wp-admin/admin.php?page=scsc&schemaType=' + type + '&postID=' + id + '&create=' + encodeURIComponent(formatted));
+    request.send();
 }
 
-function insertTabs(count) {
-    let t = "";
-    for (i = 0; i < count; i++) {
-        t += "&#9;";
+function updateCurrentSchema(id, event) {
+    event.preventDefault();
+    let schema = document.querySelector("#schemaTextareaEdit").value;
+    let formatted = removeIllegalCharacters(schema);
+    let request = new XMLHttpRequest();
+
+    request.onreadystatechange = () => {
+        if (request.readyState == 4) {
+            location.reload();
+        }
     }
-    return t;
+    request.open("GET", "/wp-admin/admin.php?page=scsc&update=" + id + "&schema=" + encodeURIComponent(formatted));
+    request.send();
 }
 
-function editSchemaCodeBlock(type, isNew, id, event) {
+function getSchemaIDFromDataAttribute(element) {
+    let id = element.dataset.id;
+    if (isNaN(parseInt(id))) {
+        id = getSchemaIDFromDataAttribute(element.parentElement);
+    }
+    return id;
+}
+
+function editSchemaCodeBlock(id, event) {
     event.preventDefault();
     var schema = "";
-    if (isNew == "new") {
-        document.querySelector("#schemaBlockEditSave").setAttribute("onclick", `createNewSchema('${type}', '${id}', 'block', event)`);
-        schema = document.querySelector("pre[data-create=\"new\"]").innerText;
-    } else {
-        schema = document.querySelector("pre[data-id=\"" + id + "\"]").innerText;
+    if (isNaN(parseInt(id))) {
+        id = getSchemaIDFromDataAttribute(event.target);
     }
-    document.querySelector("#schemaBlockEditSave").dataset.id = id;
-    document.querySelector("#schemaBlockEditDelete").dataset.id = id;
+    schema = document.querySelector('pre[data-id="' + id + '"]').innerText;
+    document.querySelector("#schemaBlockEditSaveButton").dataset.id = id;
+    document.querySelector("#schemaBlockEditDeleteButton").dataset.id = id;
     document.querySelector("#schemaTextareaEdit").innerHTML = schema;
     document.querySelector("#schemaTextareaEdit").value = schema;
     document.getElementsByTagName("BODY")[0].style.overflow = "hidden";
@@ -348,10 +359,26 @@ function editSchemaCodeBlock(type, isNew, id, event) {
     modal.setAttribute("style", "display:block;background-color:rgba(0,0,0,.5);");
 }
 
+!function () {
+    var params = new URLSearchParams(document.location.search);
+    var currentTabName = params.get("set_tab");
+    document.querySelectorAll('.edit-block').forEach(element => {
+        element.addEventListener('click', (e) => {
+            editSchemaCodeBlock(e.target.dataset.id, e);
+        });
+    });
+    document.getElementById('schemaBlockEditSaveButton').addEventListener('click', (e) => {
+        updateCurrentSchema(e.target.dataset.id, event);
+    });
+    document.getElementById('schemaBlockSave').addEventListener('click', (e) => {
+        createNewSchema(currentTabName, document.querySelector('#' + currentTabName + '_create_schema_code_block').dataset.id);
+    });
+}();
+
 function closeSchemaTextareaEditModal(event) {
     event.preventDefault();
-    document.querySelector("#schemaBlockEditSave").dataset.id = "";
-    document.querySelector("#schemaBlockEditDelete").dataset.id = "";
+    document.querySelector("#schemaBlockEditSaveButton").dataset.id = "";
+    document.querySelector("#schemaBlockEditDeleteButton").dataset.id = "";
     document.querySelector("#schemaTextareaEdit").innerHTML = "";
     document.querySelector("#schemaTextareaEdit").value = "";
     document.getElementsByTagName("BODY")[0].style.overflow = "";
