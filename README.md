@@ -1,4 +1,4 @@
-=== Schema Scalpel ===
+# Schema Scalpel
 Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json, microdata, search engine
@@ -11,7 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
 Schema Scalpel helps you create rich text snippets for search engines in the format that they prefer.
 
-== Description ==
+## Description
 
 The **secret** to great schema is to _actually_ put it on your website! Many sites don't use schema, or use it incorrectly, thereby missing out on a powerful SEO and branding tool.
 
@@ -22,7 +22,7 @@ Schema Scalpel solves this problem by giving you complete control over your webs
 - Copy and paste from a collection of built-in schema templates recommended by Google
 - Works with the SEO plugins Yoast and All-in-One
 
-== Installation ==
+## Installation
 
 ### From your WordPress dashboard:
 
@@ -39,7 +39,7 @@ Schema Scalpel solves this problem by giving you complete control over your webs
 
 You will then find a Schema Scalpel menu item in your WordPress admin dashboard.
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions
 
 ### What is schema?
 
@@ -55,46 +55,46 @@ The primary difference is that microdata is written into and dispersed throughou
 
 Most importantly, **[Google recommends that you use JSON-LD!](https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data#format-placement)** Give the search engines what they ask for in the format that they prefer, and they'll rank your site higher.
 
-== Changelog ==
+## Changelog
 
-= 1.3.1 =
+#### 1.3.1
 [UPDATE] Added clarification to the BlogPosting schema generator process.
 
-= 1.3 =
+#### 1.3
 [NEW] You can now auto-generate schema for all your blog posts with one click! 
 [UPDATE] CSS framework updated to Bootstrap v5.3.2. 
 [UPDATE] Various UI improvements. 
 [UPDATE] Various PHP updates throughout the plugin.
 [FIX] Menu item logo sizing.
 
-= 1.2.7.1 =
+#### 1.2.7.1
 [FIX] Click-to-edit feature added to global, pages, and posts tabs.
 
-= 1.2.7 =
+#### 1.2.7
 [UPDATE] Clicking on schema will immediately open the popup textbox for editing. 
 [FIX] Bug fixes.
 
-= 1.2.6.2 =
+#### 1.2.6.2
 [UPDATE] Replaced menu icon, and updated menu names.
 [UPDATE] Minor updates to the codebase in anticipation of an imminent overhaul(!).
 
-= 1.2.5.5 =
+#### 1.2.5.5
 [FIX] The `schema_type` for homepage schema as found in the custom schema table is now consistent across all PHP file partials.
 _Please deactivate and re-activate the plugin to initiate the update._
 
-= 1.2.5.4 =
+#### 1.2.5.4
 THIS IS A NECESSARY UPDATE.
 [FIX] The initial tab setting in the database has been updated to `homepage`. The schema-editing page will now load properly.
 
 [FIX] The initial search query parameter is now fully defaulted to `s`. 
 
-= 1.2.5.3 =
+#### 1.2.5.3
 [FIX] If the absolute path to the plugin contained the word `home` in it, the `scsc-create-new-schema.php` file wouldn't properly switch between the schema-type tabs. Naming standard changed to `homepage`.
 
-= 1.2.5.2 =
+#### 1.2.5.2
 [FIX] `admin/vars` directory didn't get pushed with last update. >:(
 
-= 1.2.5 =
+#### 1.2.5
 [NEW] Added new example schema as highlighted by the Google Developer documentation, including `COVID Announcement` schema.
 
 [UPDATE] Updated `NewsArticle` schema example to include `author` schema.
@@ -103,31 +103,31 @@ THIS IS A NECESSARY UPDATE.
 
 [FIXED] Spaces after commas are now limited to one to maintain traditional punctuation practices. 
 
-= 1.2.4.1 =
+#### 1.2.4.1
 [FIXED] The create and edit schema buttons were being generated with the incorrect schema type. Each tab will now display the appropriate schema (i.e. home, global, pages, posts).
 
-= 1.2.4 =
+#### 1.2.4
 [FIXED] Should the `wp_head()` function be called more than once, some functions in the `/public/class-schema-scalpel-public.php` file would throw a fatal PHP error due to redundant declarations. 
 
-= 1.2.3 =
+#### 1.2.3
 [UPDATE] Schema Scalpel works with WordPress 6.0!
 
 [FIXED] A few CSS class names that weren't updated to Bootstrap 5.x naming standards.
 
 [FIXED] Page and post titles were not displaying properly due to sanitization function.
 
-= 1.2.2 =
+#### 1.2.2
 [UDPATED] The schema/JSON-LD format error checking has been greatly improved. 
 
-= 1.2.1 =
+#### 1.2.1
 [FIXED] Version 1.2 was pushed without updating every instance of version number within the plugin.
 
-= 1.2 =
+#### 1.2
 [NEW] Multisite activation is now possible!
 
 [UPDATE] Removed some comment clutter.
 
-= 1.0.1 =
+#### 1.0.1
 [FIXED] Replaced use of `wp_print_scripts` hook with `wp_enqueue_scripts` as the former prevented the loading of schema with some themes.
 
 [FIXED] A bunch of stuff I have changed since publishing Schema Scalpel but have forgotten about because I didn't know how to use my Subversion client.
@@ -138,7 +138,5 @@ THIS IS A NECESSARY UPDATE.
 
 [UPDATE] Schema Scalpel logo now uses font paths.
 
-= 1.0 =
+#### 1.0
 The unleashing of the Schema Scalpel upon the world. You might say that the plugin is now “off the chain”.
-
-== Upgrade Notice ==
