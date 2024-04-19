@@ -57,6 +57,21 @@ Most importantly, **[Google recommends that you use JSON-LD!](https://developers
 
 ## Changelog
 
+#### 1.4.1
+[FIX] Exterminated bug that prevented admin pages from loading.
+
+#### 1.4
+[NEW] The entire codebase has been rebuilt with the addition of a custom HTML generator! Simple, yet effective.
+
+[UPDATE] Extensive updates were made to bring new and existing code into conformity with the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards "WordPress Coding Standards for PHP_CodeSniffer").
+
+[UPDATE] Admin JavaScript has been tightened up, which leads to...
+
+[FIX] The schema-editing JS should be in tip-top shape!
+
+#### 1.3.2
+[UPDATE] Brought the codebase into greater conformity with the WordPress Coding Standards.
+
 #### 1.3.1
 [UPDATE] Added clarification to the BlogPosting schema generator process.
 
