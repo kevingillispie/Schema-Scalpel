@@ -1,12 +1,21 @@
 # Schema Scalpel
+
 Contributors: kevingillispie
+
 Donate link: https://schemascalpel.com/donate/
+
 Tags: seo, schema, structured data, json, microdata, search engine
+
 Requires at least: 3.0
+
 Tested up to: 6.4
+
 Stable tag: 1.3.1
+
 Requires PHP: 7.0
+
 License: GPLv3 or later
+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
 Schema Scalpel helps you create rich text snippets for search engines in the format that they prefer.
