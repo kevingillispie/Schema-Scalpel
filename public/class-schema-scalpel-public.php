@@ -253,7 +253,7 @@ BREAD;
 		if ( '/' === $path ) :
 			$home_schema = $wpdb->get_results( $wpdb->prepare( "SELECT custom_schema FROM %1s WHERE schema_type = 'homepage';", $wpdb->prefix . 'scsc_custom_schemas' ), ARRAY_A );
 			foreach ( $home_schema as $key => $value ) :
-				$schema = str_replace( '&apos;', "\'", html_entity_decode( unserialize( $value['custom_schema'] ) ) );
+				$schema = str_replace( '&apos;', "'", html_entity_decode( unserialize( $value['custom_schema'] ) ) );
 				self::format_schema_html( $schema_script_html, $schema );
 			endforeach;
 		endif;
