@@ -19,7 +19,7 @@ class Schema_Scalpel_Activator {
 	/**
 	 * Create database tables.
 	 */
-	public static function db_tables_initializer() {
+	private static function db_tables_initializer() {
 		include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		global $wpdb;
@@ -54,125 +54,36 @@ class Schema_Scalpel_Activator {
 			dbDelta( $settings_sql );
 		endif;
 
-		/**
-		 * If table exists, this prevents double entries of initial settings:
-		 */
-		$has_active_tab_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'active_tab';", $schema_settings_table ), ARRAY_A );
-		if ( ! isset( $has_active_tab_setting[0] ) ) :
-			$wpdb->insert(
-				$schema_settings_table,
-				array(
-					'setting_key'   => 'active_tab',
-					'setting_value' => 'homepage',
-				)
-			);
-		else :
-			$wpdb->update( $schema_settings_table, array( 'setting_value' => 'homepage' ), array( 'setting_key' => 'active_tab' ) );
-		endif;
+		$default_settings = array(
+			array( 'active_tab', 'homepage' ),
+			array( 'active_page', '-1' ),
+			array( 'active_post', '-1' ),
+			array( 'website_schema', '1' ),
+			array( 'webpage_schema', '1' ),
+			array( 'breadcrumb_schema', '1' ),
+			array( 'search_param', 's' ),
+			array( 'yoast_schema', '1' ),
+			array( 'aio_schema', '1' ),
+			array( 'delete_on_unistall', '0' ),
+		);
 
-		$has_active_page_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'active_page';", $schema_settings_table ), ARRAY_A );
-		if ( ! isset( $has_active_page_setting[0] ) ) :
-			$wpdb->insert(
-				$schema_settings_table,
-				array(
-					'setting_key'   => 'active_page',
-					'setting_value' => '-1',
-				)
-			);
-		else :
-			$wpdb->update( $schema_settings_table, array( 'setting_value' => '-1' ), array( 'setting_key' => 'active_page' ) );
-		endif;
-
-		$has_active_post_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'active_post';", $schema_settings_table ), ARRAY_A );
-		if ( ! isset( $has_active_post_setting[0] ) ) :
-			$wpdb->insert(
-				$schema_settings_table,
-				array(
-					'setting_key'   => 'active_post',
-					'setting_value' => '-1',
-				)
-			);
-		else :
-			$wpdb->update( $schema_settings_table, array( 'setting_value' => '-1' ), array( 'setting_key' => 'active_post' ) );
-		endif;
-
-		$has_website_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'website_schema';", $schema_settings_table ), ARRAY_A );
-		if ( ! isset( $has_website_setting[0] ) ) :
-			$wpdb->insert(
-				$schema_settings_table,
-				array(
-					'setting_key'   => 'website_schema',
-					'setting_value' => '1',
-				)
-			);
-		else :
-			$wpdb->update( $schema_settings_table, array( 'setting_value' => '1' ), array( 'setting_key' => 'website_schema' ) );
-		endif;
-
-		$has_webpage_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'webpage_schema';", $schema_settings_table ), ARRAY_A );
-		if ( ! isset( $has_webpage_setting[0] ) ) :
-			$wpdb->insert(
-				$schema_settings_table,
-				array(
-					'setting_key'   => 'webpage_schema',
-					'setting_value' => '1',
-				)
-			);
-		else :
-			$wpdb->update( $schema_settings_table, array( 'setting_value' => '1' ), array( 'setting_key' => 'webpage_schema' ) );
-		endif;
-
-		$has_breadcrumb_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'breadcrumb_schema';", $schema_settings_table ), ARRAY_A );
-		if ( ! isset( $has_breadcrumb_setting[0] ) ) :
-			$wpdb->insert(
-				$schema_settings_table,
-				array(
-					'setting_key'   => 'breadcrumb_schema',
-					'setting_value' => '1',
-				)
-			);
-		else :
-			$wpdb->update( $schema_settings_table, array( 'setting_value' => '1' ), array( 'setting_key' => 'breadcrumb_schema' ) );
-		endif;
-
-		$has_search_param_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'search_param';", $schema_settings_table ), ARRAY_A );
-		if ( ! isset( $has_search_param_setting[0] ) ) :
-			$wpdb->insert(
-				$schema_settings_table,
-				array(
-					'setting_key'   => 'search_param',
-					'setting_value' => 's',
-				)
-			);
-		else :
-			$wpdb->update( $schema_settings_table, array( 'setting_value' => 's' ), array( 'setting_key' => 'search_param' ) );
-		endif;
-
-		$has_yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'yoast_schema';", $schema_settings_table ), ARRAY_A );
-		if ( ! isset( $has_yoast_setting[0] ) ) :
-			$wpdb->insert(
-				$schema_settings_table,
-				array(
-					'setting_key'   => 'yoast_schema',
-					'setting_value' => '1',
-				)
-			);
-		else :
-			$wpdb->update( $schema_settings_table, array( 'setting_value' => '1' ), array( 'setting_key' => 'yoast_schema' ) );
-		endif;
-
-		$has_aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'aio_schema';", $schema_settings_table ), ARRAY_A );
-		if ( ! isset( $has_aio_setting[0] ) ) :
-			$wpdb->insert(
-				$schema_settings_table,
-				array(
-					'setting_key'   => 'aio_schema',
-					'setting_value' => '1',
-				)
-			);
-		else :
-			$wpdb->update( $schema_settings_table, array( 'setting_value' => '1' ), array( 'setting_key' => 'aio_schema' ) );
-		endif;
+		foreach ( $default_settings as $pair ) {
+			/**
+			 * If table exists, this prevents double entries of initial settings:
+			 */
+			$has_current_setting = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s WHERE setting_key = %s;', $schema_settings_table, $pair[0] ), ARRAY_A );
+			if ( ! isset( $has_current_setting[0] ) ) :
+				$wpdb->insert(
+					$schema_settings_table,
+					array(
+						'setting_key'   => $pair[0],
+						'setting_value' => $pair[1],
+					)
+				);
+			else :
+				$wpdb->update( $schema_settings_table, array( 'setting_value' => $pair[1] ), array( 'setting_key' => $pair[0] ) );
+			endif;
+		}
 	}
 
 	/**
