@@ -48,6 +48,7 @@ class Schema_Scalpel_Admin {
 			wp_enqueue_style( $this->schema_scalpel . '-bootstrap', plugins_url( '/admin/css/bootstrap.min.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
 			wp_enqueue_style( $this->schema_scalpel . '-prism', plugins_url( '/admin/css/prism.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
 			wp_enqueue_style( $this->schema_scalpel . '-admin', plugins_url( '/admin/css/schema-scalpel-admin.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
+			wp_enqueue_style( $this->schema_scalpel . '-tomselect', plugins_url( '/admin/css/tom-select.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
 		endif;
 	}
 
