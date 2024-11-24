@@ -166,9 +166,8 @@ function removeIllegalCharacters(v) {
             .replaceAll("{}", "")
             .replaceAll("[]", "")
             .replaceAll("{[", "")
-            .replaceAll(",  ", ", ")
+            .replaceAll("  ", " ")
             .replaceAll(" ,", ",")
-            .replaceAll(": ", ":")
             .replaceAll("; ", ";")
             .replaceAll("::", ":");
 

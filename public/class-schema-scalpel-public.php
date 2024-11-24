@@ -228,7 +228,6 @@ BREAD;
 			foreach ( $current_page_results as $key => $value ) :
 				$schema = str_replace( '&apos;', "'", html_entity_decode( unserialize( $value['custom_schema'] ) ) );
 				self::format_schema_html( $schema_script_html, $schema );
-				error_log( print_r( $page_id, true ) );
 			endforeach;
 		endif;
 

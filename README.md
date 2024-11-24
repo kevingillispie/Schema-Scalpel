@@ -49,10 +49,14 @@ Most importantly, **[Google recommends that you use JSON-LD!](https://developers
 
 ## Changelog
 
+#### 1.4.3
+[UPDATE] A few housekeeping updates.
+[UPDATE] Compatibility with WordPress 6.7
+
 #### 1.4.2
 
-[UPDATE] Compatibility with WordPress 6.6.\*
-[FIX] Schema Scalpel user [dantefff](https://github.com/dantefff "dantefff's GitHub Profile") went above and beyond and sumbitted a pull request to fix a longstanding bug! _Thank you!_
+[UPDATE] Compatibility with WordPress 6.6
+[FIX] Schema Scalpel user [dantefff](https://github.com/dantefff "dantefff's GitHub Profile") went above and beyond and submitted a pull request to fix a longstanding bug! _Thank you!_
 
 #### 1.4.1
 
@@ -124,7 +128,7 @@ THIS IS A NECESSARY UPDATE.
 
 [UPDATE] Updated `NewsArticle` schema example to include `author` schema.
 
-[UPDATE] Exmample schema are now called directly from an array rather than the database.
+[UPDATE] Example schema are now called directly from an array rather than the database.
 
 [FIXED] Spaces after commas are now limited to one to maintain traditional punctuation practices.
 
@@ -146,7 +150,7 @@ THIS IS A NECESSARY UPDATE.
 
 #### 1.2.2
 
-[UDPATED] The schema/JSON-LD format error checking has been greatly improved.
+[UPDATED] The schema/JSON-LD format error checking has been greatly improved.
 
 #### 1.2.1
 
