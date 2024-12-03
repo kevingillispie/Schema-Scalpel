@@ -812,6 +812,7 @@ if ( isset( $_GET['update_tab'] ) ) {
 				require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/schema-scalpel-admin-main.js';
 				require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/prism.js';
 				require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/bootstrap.min.js';
+				require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/tom-select.base.min.js';
 				echo '</script>';
 				echo <<<SCRIPTS
                 <script>
@@ -821,6 +822,8 @@ if ( isset( $_GET['update_tab'] ) ) {
                     document.getElementById('schemaBlockCancelButton').addEventListener('click', ()=>{
                         closeSchemaTextareaEditModal(event);
                     });
+                    new TomSelect('#pages_list',{});
+                    new TomSelect('#posts_list',{});
                 </script>
 SCRIPTS;
 			}
