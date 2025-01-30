@@ -4,7 +4,7 @@ Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json, microdata, search engine
 Requires at least: 3.0
 Tested up to: 6.7
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt

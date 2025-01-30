@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Run installation process.
  *

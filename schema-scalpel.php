@@ -1,10 +1,9 @@
 <?php
-
 /**
  * Plugin Name:       Schema Scalpel
  * Plugin URI:        https://schemascalpel.com/
  * Description:       A simple plugin to customize your site's schema on a per-page basis.
- * Version:           1.4.3
+ * Version:           1.4.4
  * Author:            Kevin Gillispie
  * Author URI:        https://kevingillispie.com
  * License:           GPL-3.0
@@ -24,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 
-define( 'SCHEMA_SCALPEL_VERSION', '1.4.3' );
+define( 'SCHEMA_SCALPEL_VERSION', '1.4.4' );
 define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'scsc' );
 define( 'SCHEMA_SCALPEL_SLUG', 'scsc_' );
 define( 'SCHEMA_SCALPEL_PLUGIN', __FILE__ );
