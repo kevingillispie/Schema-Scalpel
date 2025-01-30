@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class for outputting client-side data.
  *
@@ -125,14 +124,12 @@ CRUMBS;
 		if ( ! $post || is_admin() || is_customize_preview() ) :
 			return;
 		endif;
-		/**
-		 *
-		 */
 
 		global $wpdb;
 		$current_page_results = array();
 		$site_title           = get_bloginfo( 'name' );
 		$page_id              = get_the_ID();
+
 		/**
 		 * CHECK DATABASE EXCLUSIONS
 		 */

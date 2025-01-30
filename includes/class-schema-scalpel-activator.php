@@ -1,4 +1,11 @@
 <?php
+/**
+ * Class called upon activation.
+ *
+ * @package    Schema_Scalpel
+ * @subpackage Schema_Scalpel/includes
+ * @author     Kevin Gillispie
+ */
 
 namespace SchemaScalpel;
 
@@ -8,11 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Class called upon activation.
+ * Core activation class.
  *
- * @package    Schema_Scalpel
- * @subpackage Schema_Scalpel/includes
- * @author     Kevin Gillispie
+ * @since 1.0
  */
 class Schema_Scalpel_Activator {
 
@@ -35,7 +40,7 @@ class Schema_Scalpel_Activator {
             PRIMARY KEY  (id)
         ) $charset_collate;";
 
-		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $custom_schema_table ) ) != $custom_schema_table ) :
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $custom_schema_table ) ) !== $custom_schema_table ) :
 			dbDelta( $custom_schema_sql );
 		else :
 			/**

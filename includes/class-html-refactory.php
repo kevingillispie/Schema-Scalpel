@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class for properly generating HTML output.
  *
@@ -39,13 +38,6 @@ class HTML_Refactory {
 	private string $child_elements;
 
 	/**
-	 * Is element self-closing.
-	 *
-	 * @var bool $is_self_closing
-	 */
-	private bool $is_self_closing;
-
-	/**
 	 * Tag that should not be removed during sanitization.
 	 *
 	 * @var array $allowed_tags
@@ -67,16 +59,14 @@ class HTML_Refactory {
 	 * @param array  $attrs Element HTML attributes.
 	 * @param string $text Inner text.
 	 * @param string $children Child elements to be added.
-	 * @param bool   $is_self_closing Whether the new element will be self-closing.
 	 */
-	public function __construct( string $name = 'div', array $attrs = array(), string $text = '', string $children = '', bool $is_self_closing = false ) {
-		$this->tagname         = $name;
-		$this->attributes      = $attrs;
-		$this->inner_text      = $text;
-		$this->child_elements  = $children;
-		$this->is_self_closing = $is_self_closing;
-		$this->allowed_tags    = array( 'option', 'select' );
-		$this->result          = $this->assemble_html();
+	public function __construct( string $name = 'div', array $attrs = array(), string $text = '', string $children = '' ) {
+		$this->tagname        = $name;
+		$this->attributes     = $attrs;
+		$this->inner_text     = $text;
+		$this->child_elements = $children;
+		$this->allowed_tags   = array( 'option', 'select' );
+		$this->result         = $this->assemble_html();
 	}
 
 	/**
@@ -90,7 +80,7 @@ class HTML_Refactory {
 	 * String assembler.
 	 */
 	public function assemble_html() {
-		$tag = '<' . $this->tagname . $this->format_attributes() . ( false === $this->is_self_closing ? '>' . $this->inner_text . $this->child_elements . '</' . $this->tagname . '>' : '/>' );
+		$tag = '<' . $this->tagname . $this->format_attributes() . ( ( ! $this->is_void_element() ) ? '>' . $this->inner_text . $this->child_elements . '</' . $this->tagname . '>' : ' />' );
 		preg_match( '/<([^ ]+)/', $tag, $is_match );
 		return ( 0 <= array_search( $is_match[1], $this->allowed_tags ) ? $tag : wp_kses_post( $tag ) );
 	}
@@ -128,5 +118,13 @@ class HTML_Refactory {
 	 */
 	private function format_url_attribute( $value ): string {
 		return esc_url( $value );
+	}
+
+	/**
+	 * Check for self-closing HTML tag.
+	 */
+	private function is_void_element() {
+		$void_elements = array( 'area', 'base', 'br', 'circle', 'col', 'ellipse', 'embed', 'hr', 'img', 'input', 'line', 'link', 'meta', 'param', 'path', 'polygon', 'polyline', 'rect', 'source', 'track', 'wbr', 'command', 'frame', 'keygen', 'menuitem', 'tref' );
+		return in_array( $this->tagname, $void_elements );
 	}
 }

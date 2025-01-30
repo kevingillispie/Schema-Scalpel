@@ -1,4 +1,13 @@
 <?php
+/**
+ * Plugin core initialization class.
+ *
+ * @link       https://schemascalpel.com
+ *
+ * @package    Schema_Scalpel
+ * @subpackage Schema_Scalpel/includes
+ * @author     Kevin Gillispie
+ */
 
 namespace SchemaScalpel;
 
@@ -7,13 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Plugin init class.
+ * Init class.
  *
- * @link       https://schemascalpel.com
- *
- * @package    Schema_Scalpel
- * @subpackage Schema_Scalpel/includes
- * @author     Kevin Gillispie
+ * @since 1.0
  */
 class Schema_Scalpel {
 
@@ -54,6 +59,8 @@ class Schema_Scalpel {
 	}
 
 	/**
+	 * Load plugin dependencies.
+	 *
 	 * @access   private
 	 */
 	private function load_dependencies() {

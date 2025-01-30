@@ -8,12 +8,12 @@ const TYPE_TAB_CONTENTS = document.querySelectorAll(".tab-pane");
 ! function () {
     var url = new URL(window.location.href);
     var params = new URLSearchParams(url.search);
-
     TYPE_TABS.forEach(tab => {
         tab.classList.remove("active");
         tab.classList.remove("show");
     });
-    let currentTab = TYPES.indexOf(params.get('set_tab'));
+    let setTab = TYPES.indexOf(params.get("set_tab"));
+    let currentTab = (-1 === setTab) ? 0 : setTab;
     TYPE_TABS[currentTab].classList.add("active");
     TYPE_TAB_CONTENTS[currentTab].classList.add("active");
     TYPE_TAB_CONTENTS[currentTab].classList.add("show");
@@ -205,10 +205,27 @@ function deleteCurrentSchema(id, event) {
 }
 
 /**
+ * FILTER PAGE/POST LIST
+ */
+document.querySelectorAll('[id*="_filter"]').forEach(input => {
+    input.addEventListener('keyup', (e) => filterList(input.id.substring(0, 5), e.target.value))
+});
+function filterList(kind, value) {
+    let list = document.querySelector('#' + kind + '_list').children;
+    for (let i = 1; i < list.length; i++) {
+        if (list[i].innerText.toLowerCase().search(value.toLowerCase()) >= 0) {
+            list[i].classList.remove('d-none');
+        } else {
+            list[i].classList.add('d-none');
+        }
+    }
+}
+
+/**
  * SELECT POST => UPDATE CREATE BUTTON
  */
-document.querySelectorAll('[id*="_list"]').forEach(list => {
-    list.addEventListener("change", function () {
+document.querySelectorAll('[id*="_list"] li').forEach(list => {
+    list.addEventListener("click", function () {
         onPostSelectChange(this);
     });
 });
@@ -218,9 +235,11 @@ function disableCreateSchemaButtons(button) {
 }
 
 function onPostSelectChange(el) {
-    let type = el.id.substring(0, 5);
+    let type = el.id.substring(0, 5) || el.parentElement.id.substring(0, 5);
+    let postID = el.value || el.dataset.value;
+    let indexInList = el.selectedIndex || el.dataset.index;
     document.querySelectorAll(".edit-block-button").forEach(btn => {
-        btn.dataset.id = el.value;
+        btn.dataset.id = postID;
     });
     let buttons = [
         document.querySelector('button[id^="' + type + '_create_schema_code_block"'),
@@ -228,10 +247,10 @@ function onPostSelectChange(el) {
     ];
     buttons.forEach(btn => {
         if (btn) {
-            btn.dataset.id = el.value;
-            if (0 < parseInt(el.selectedIndex)) {
+            btn.dataset.id = postID;
+            if (0 <= parseInt(indexInList)) {
                 btn.removeAttribute("disabled");
-                showPostSchema(el.value);
+                showPostSchema(postID, type);
             } else {
                 disableCreateSchemaButtons(btn);
             }
@@ -239,11 +258,12 @@ function onPostSelectChange(el) {
     });
     let activePageOrPost = (type == "pages") ? "active_page" : "active_post";
     let request = new XMLHttpRequest();
-    request.open("GET", "/wp-admin/admin.php?page=scsc&" + activePageOrPost + "=" + el.value);
+    request.open("GET", "/wp-admin/admin.php?page=scsc&" + activePageOrPost + "=" + postID);
     request.send();
 }
 
-function showPostSchema(id) {
+function showPostSchema(id, type) {
+    document.querySelector('#' + type + '_schema legend').innerText = 'Current: ' + document.querySelector('li[data-value="' + id + '"]').dataset.title;
     var CURRENT_SCHEMA_BY_POST_ID = [document.getElementById('current_pages_schema').children, document.getElementById('current_posts_schema').children];
     CURRENT_SCHEMA_BY_POST_ID.forEach(post_type => {
         for (i in post_type) {

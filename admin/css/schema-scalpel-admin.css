@@ -1,10 +1,16 @@
 .noselect {
-    -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtms-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Old versions of Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+    /* iOS Safari */
+    -webkit-touch-callout: none;
+    /* Safari */
+    -webkit-user-select: none;
+    /* Konqueror HTML */
+    -khtms-user-select: none;
+    /* Old versions of Firefox */
+    -moz-user-select: none;
+    /* Internet Explorer/Edge */
+    -ms-user-select: none;
+    /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+    user-select: none;
 }
 
 pre::before {
@@ -23,7 +29,7 @@ pre code::before {
     color: #555;
     margin: 0 10px 0 4px;
     -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 button:disabled,
@@ -63,14 +69,14 @@ div:disabled {
 }
 
 #add_line button:hover::after {
-    content: "Add schema to line "attr(data-btn-num);
+    content: "Add schema to line " attr(data-btn-num);
     line-height: normal;
     position: absolute;
     padding: 2px 5px;
     margin: 0 0 0 10px;
     background-color: white;
     -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, .3);
-            box-shadow: 0 3px 3px rgba(0, 0, 0, .3);
+    box-shadow: 0 3px 3px rgba(0, 0, 0, .3);
 }
 
 #current_homepage_schema pre:hover,
@@ -84,7 +90,7 @@ div:disabled {
 #current_homepage_schema pre:hover::before,
 #current_global_schema pre:hover::before,
 #current_pages_schema pre:hover::before,
-#current_posts_schema pre:hover::before{
+#current_posts_schema pre:hover::before {
     content: "Edit";
     position: absolute;
     color: white;
@@ -92,8 +98,8 @@ div:disabled {
     text-shadow: 0 2px 3px black;
     left: calc((100vw - 100px) / 2.5);
     -webkit-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-            transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
 }
 
 #current_homepage_schema pre.line-editable,
@@ -114,4 +120,14 @@ div:disabled {
 
 .example-items {
     cursor: pointer;
+}
+
+.dropdown-menu {
+    max-height: 25vh;
+    overflow-y: auto
+}
+
+#pages_list_new li,
+#posts_list_new li {
+    cursor: pointer
 }

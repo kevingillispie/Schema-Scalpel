@@ -1,4 +1,11 @@
 <?php
+/**
+ * Plugin admin page class.
+ *
+ * @package    Schema_Scalpel
+ * @subpackage Schema_Scalpel/admin
+ * @author     Kevin Gillispie
+ */
 
 namespace SchemaScalpel;
 
@@ -7,11 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Plugin admin page class.
+ * Core plugin class.
  *
- * @package    Schema_Scalpel
- * @subpackage Schema_Scalpel/admin
- * @author     Kevin Gillispie
+ * @since 1.0
  */
 class Schema_Scalpel_Admin {
 

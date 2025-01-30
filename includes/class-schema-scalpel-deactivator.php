@@ -1,11 +1,4 @@
 <?php
-
-namespace SchemaScalpel;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit();
-}
-
 /**
  * Future deactivation actions.
  *
@@ -14,6 +7,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package    Schema_Scalpel
  * @subpackage Schema_Scalpel/includes
  * @author     Kevin Gillispie
+ */
+
+namespace SchemaScalpel;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
+
+/**
+ * Core deactivation class.
+ *
+ * @since 1.0
  */
 class Schema_Scalpel_Deactivator {
 

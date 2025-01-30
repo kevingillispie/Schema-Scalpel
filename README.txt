@@ -57,6 +57,10 @@ Most importantly, **[Google recommends that you use JSON-LD!](https://developers
 
 == Changelog ==
 
+= 1.4.4 =
+[ADD] For sites with large page/post counts, users can now filter by page/post title for quick searches.
+[UPDATE] Numerous maintenance updates to the codebase. 
+
 = 1.4.3 =
 [UPDATE] A few housekeeping updates.
 [UPDATE] Compatibility with WordPress 6.7
@@ -64,7 +68,7 @@ Most importantly, **[Google recommends that you use JSON-LD!](https://developers
 = 1.4.2 =
 
 [UPDATE] Compatibility with WordPress 6.6
-[FIX] Schema Scalpel user [dantefff](https://github.com/dantefff "dantefff's GitHub Profile") went above and beyond and submitted a pull request to fix a longstanding bug! _Thank you!_
+[FIX] Schema Scalpel user [dantefff](https://github.com/dantefff "dantefff's GitHub Profile") went above and beyond and sumbitted a pull request to fix a longstanding bug! _Thank you!_
 
 = 1.4.1 =
 [FIX] Exterminated bug that prevented admin pages from loading.
@@ -128,7 +132,7 @@ THIS IS A NECESSARY UPDATE.
 
 [UPDATE] Updated `NewsArticle` schema example to include `author` schema.
 
-[UPDATE] Example schema are now called directly from an array rather than the database.
+[UPDATE] Exmample schema are now called directly from an array rather than the database.
 
 [FIXED] Spaces after commas are now limited to one to maintain traditional punctuation practices. 
 

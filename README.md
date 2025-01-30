@@ -49,7 +49,13 @@ Most importantly, **[Google recommends that you use JSON-LD!](https://developers
 
 ## Changelog
 
+#### 1.4.4
+
+[ADD] For sites with large page/post counts, users can now filter by page/post title for quick searches.
+[UPDATE] Numerous maintenance updates to the codebase.
+
 #### 1.4.3
+
 [UPDATE] A few housekeeping updates.
 [UPDATE] Compatibility with WordPress 6.7
 
