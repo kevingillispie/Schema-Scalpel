@@ -404,15 +404,7 @@ echo new HTML_Refactory(
 			'',
 			'',
 			true
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Enable '
-		) . new HTML_Refactory(
-			'code',
-			array( 'style' => 'color:black' ),
-			'WebSite'
-		) . wp_kses_post( wp_slash( $default_setting_label_html ) )
+		) . new HTML_Refactory( 'strong', array(), 'Enable ' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebSite' ) . wp_kses_post( wp_slash( $default_setting_label_html ) )
 	) . new HTML_Refactory(
 		'label',
 		array( 'for' => 'disable_website' ),
@@ -426,16 +418,10 @@ echo new HTML_Refactory(
 				'value' => '0',
 				( ( 0 === $is_website_enabled ) ? 'checked' : '' ) => '',
 			),
-			new HTML_Refactory(
-				'strong',
-				array(),
-				'Disable',
-			) . new HTML_Refactory(
-				'code',
-				array( 'style' => 'color:black' ),
-				'WebSite'
-			)
-		)
+			'',
+			'',
+			true
+		) . new HTML_Refactory( 'strong', array(), 'Disable ' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebSite' )
 	)
 );
 
@@ -565,7 +551,7 @@ echo new HTML_Refactory(
 			true
 		) . new HTML_Refactory( 'strong', array(), 'Enable' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' ) . wp_kses_post( wp_slash( $default_setting_label_html ) )
 	) . new HTML_Refactory(
-		'lable',
+		'label',
 		array( 'for' => 'disable_webpage' ),
 		'',
 		new HTML_Refactory(
@@ -677,7 +663,10 @@ echo new HTML_Refactory(
 				'name'  => 'enable_breadcrumbs',
 				'value' => '1',
 				( ( 1 === $are_breadcrumbs_enabled ) ? 'checked' : '' ) => '',
-			)
+			),
+			'',
+			'',
+			true
 		) . new HTML_Refactory(
 			'strong',
 			array(),
@@ -697,9 +686,12 @@ echo new HTML_Refactory(
 				'id'    => 'disable_breadcrumbs',
 				'type'  => 'radio',
 				'name'  => 'enable_breadcrumbs',
-				'value' => '1',
+				'value' => '0',
 				( ( 0 === $are_breadcrumbs_enabled ) ? 'checked' : '' ) => '',
-			)
+			),
+			'',
+			'',
+			true
 		) . new HTML_Refactory(
 			'strong',
 			array(),
