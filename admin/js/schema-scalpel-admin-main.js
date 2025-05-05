@@ -104,10 +104,20 @@ TYPES.forEach(type => {
 }();
 
 function displaySchemaLoop(container, jsonified, tabCount, syntax, lineBreak) {
-    for (const [key, value] of Object.entries(jsonified)) {
+    // If jsonified is an array, wrap it in square brackets
+    if (Array.isArray(jsonified)) {
+        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["array"][0]}</code>${lineBreak}`);
+        jsonified.forEach((item, index) => {
+            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tabCount)}${syntax["object"][0]}</code>${lineBreak}`);
+            printJSONLoop(container, item, tabCount + 1);
+            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tabCount)}${syntax["object"][1]}${index < jsonified.length - 1 ? "," : ""}</code>${lineBreak}`);
+        });
+        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["array"][1]}</code>${lineBreak}`);
+    } else {
+        // Handle non-array (object) case, if needed
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["object"][0]}</code>${lineBreak}`);
-        printJSONLoop(container, value, tabCount);
-        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["object"][1]},</code>${lineBreak}`);
+        printJSONLoop(container, jsonified, tabCount);
+        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["object"][1]}</code>${lineBreak}`);
     }
 }
 /////////////////////
@@ -116,7 +126,7 @@ function displaySchemaLoop(container, jsonified, tabCount, syntax, lineBreak) {
  * Schema formatting functions.
  */
 function jsonify(j) {
-    return JSON.parse('{"schema":' + j + '}');
+    return JSON.parse(j);
 }
 
 function correctBracketCount(w) {
