@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Export schema as SQL tool.
  *

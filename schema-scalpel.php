@@ -34,11 +34,9 @@ require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-activato
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-deactivator.php';
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-uninstaller.php';
 
-
 register_activation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Activator', 'activate' ) );
 register_deactivation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Deactivator', 'deactivate' ) );
 register_uninstall_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Uninstaller', 'uninstall' ) );
-
 
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel.php';
 
@@ -48,6 +46,7 @@ require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel.php';
 function run_schema_scalpel() {
 	$plugin = new Schema_Scalpel();
 	$plugin->run();
+	$plugin->init_schema_filters();
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\run_schema_scalpel' );
 
@@ -73,7 +72,7 @@ if ( isset( $table_checked ) && $table_checked === $settings_table ) :
 			function ( $graphs ) {
 				foreach ( $graphs as $index => $graph ) :
 					unset( $graphs[ $index ] );
-			endforeach;
+				endforeach;
 				return $graphs;
 			}
 		);

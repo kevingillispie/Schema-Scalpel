@@ -230,4 +230,52 @@ class Schema_Scalpel {
 			2
 		);
 	}
+
+	/**
+	 * Initialize schema filters for Yoast and AIOSEO.
+	 */
+	public function init_schema_filters() {
+		global $wpdb;
+		$settings_table = $wpdb->prefix . 'scsc_settings';
+
+		// Check if settings table exists
+		$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) );
+		if ( ! $table_exists || $table_exists !== $settings_table ) {
+			return;
+		}
+
+		// Handle Yoast schema
+		$yoast_setting = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';",
+				$settings_table
+			),
+			ARRAY_A
+		);
+
+		if ( ! empty( $yoast_setting[0]['setting_value'] ) && '1' === $yoast_setting[0]['setting_value'] ) {
+			add_filter( 'wpseo_json_ld_output', '__return_false' );
+		}
+
+		// Handle AIOSEO schema
+		$aio_setting = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT setting_value FROM %1s WHERE setting_key='aio_schema';",
+				$settings_table
+			),
+			ARRAY_A
+		);
+
+		if ( ! empty( $aio_setting[0]['setting_value'] ) && '1' === $aio_setting[0]['setting_value'] ) {
+			add_filter(
+				'aioseo_schema_output',
+				function ( $graphs ) {
+					foreach ( $graphs as $index => $graph ) {
+						unset( $graphs[ $index ] );
+					}
+					return $graphs;
+				}
+			);
+		}
+	}
 }

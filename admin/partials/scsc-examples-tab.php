@@ -161,34 +161,34 @@ add_action(
         });
     </script>
     
-<script>
-	var exampleTabs = document.querySelectorAll(".example-items");
-	exampleTabs.forEach(tab => {
-		tab.addEventListener("click", function() {
-			tabToggler(this);
-			fieldsetToggler(this);
-		})
-	})
+    <script>
+        var exampleTabs = document.querySelectorAll(".example-items");
+        exampleTabs.forEach(tab => {
+            tab.addEventListener("click", function() {
+                tabToggler(this);
+                fieldsetToggler(this);
+            })
+        })
 
-	function tabToggler(el) {
-		let exTabs = document.querySelectorAll(".example-items");
-		exTabs.forEach(et => {
-			et.children[0].classList.remove("active");
-		})
-		el.children[0].classList.add("active");
-	}
+        function tabToggler(el) {
+            let exTabs = document.querySelectorAll(".example-items");
+            exTabs.forEach(et => {
+                et.children[0].classList.remove("active");
+            })
+            el.children[0].classList.add("active");
+        }
 
-	function fieldsetToggler(el) {
-		let fieldsetSchemaTypes = document.querySelectorAll("fieldset[data-schema-type]");
-		let exTabs = document.querySelectorAll(".example-items");
-		fieldsetSchemaTypes.forEach(fst => {
-			fst.setAttribute("style", "display:none!important");
-			if (fst.dataset.schemaType == el.dataset.schemaType) {
-				fst.removeAttribute("style");
-			}
-		})
-	}
-</script>
+        function fieldsetToggler(el) {
+            let fieldsetSchemaTypes = document.querySelectorAll("fieldset[data-schema-type]");
+            let exTabs = document.querySelectorAll(".example-items");
+            fieldsetSchemaTypes.forEach(fst => {
+                fst.setAttribute("style", "display:none!important");
+                if (fst.dataset.schemaType == el.dataset.schemaType) {
+                    fst.removeAttribute("style");
+                }
+            })
+        }
+    </script>
 SCRIPTS;
 	}
 );

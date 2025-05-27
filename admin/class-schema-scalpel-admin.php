@@ -49,10 +49,10 @@ class Schema_Scalpel_Admin {
 	 * Register stylesheets.
 	 */
 	public function enqueue_styles() {
-		if ( stripos( get_current_screen()->id, 'page_scsc' ) > -1 ) :
-			wp_enqueue_style( $this->schema_scalpel . '-bootstrap', plugins_url( '/admin/css/bootstrap.min.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
-			wp_enqueue_style( $this->schema_scalpel . '-prism', plugins_url( '/admin/css/prism.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
-			wp_enqueue_style( $this->schema_scalpel . '-admin', plugins_url( '/admin/css/schema-scalpel-admin.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
+		if ( stripos( \get_current_screen()->id, 'page_scsc' ) > -1 ) :
+			\wp_enqueue_style( $this->schema_scalpel . '-bootstrap', \plugins_url( '/admin/css/bootstrap.min.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
+			\wp_enqueue_style( $this->schema_scalpel . '-prism', \plugins_url( '/admin/css/prism.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
+			\wp_enqueue_style( $this->schema_scalpel . '-admin', \plugins_url( '/admin/css/schema-scalpel-admin.css', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, 'all' );
 		endif;
 	}
 
@@ -60,7 +60,10 @@ class Schema_Scalpel_Admin {
 	 * For possible future scripts.
 	 */
 	public function enqueue_scripts() {
-		// placeholder.
+		if ( stripos( \get_current_screen()->id, 'page_scsc' ) > -1 ) :
+			\wp_enqueue_script( $this->schema_scalpel . '-bootstrap', \plugins_url( '/admin/js/bootstrap.min.js', SCHEMA_SCALPEL_PLUGIN ), array( 'jquery' ), $this->version, true );
+			\wp_enqueue_script( $this->schema_scalpel . '-prism', \plugins_url( '/admin/js/prism.js', SCHEMA_SCALPEL_PLUGIN ), array(), $this->version, true );
+		endif;
 	}
 
 	/**
