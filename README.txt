@@ -3,8 +3,8 @@ Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json, microdata, search engine
 Requires at least: 3.0
-Tested up to: 6.7
-Stable tag: 1.4.4
+Tested up to: 6.8
+Stable tag: 1.4.7
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -56,6 +56,16 @@ The primary difference is that microdata is written into and dispersed throughou
 Most importantly, **[Google recommends that you use JSON-LD!](https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data#format-placement "Introduction to Structured Data")** Give the search engines what they ask for in the format that they prefer, and they'll rank your site higher.
 
 == Changelog ==
+
+= 1.4.7 =
+[FIX] Schema wrapped in square braces were not displaying correctly in the admin page.
+
+= 1.4.6 =
+[UPDATE] Misapplied updates from 1.4.5.
+
+= 1.4.5 =
+[FIX] BreadcrumbList now saves correctly.
+[FIX] Typo correction. 
 
 = 1.4.4 =
 [ADD] For sites with large page/post counts, users can now filter by page/post title for quick searches.
@@ -173,5 +183,3 @@ THIS IS A NECESSARY UPDATE.
 
 = 1.0 =
 The unleashing of the Schema Scalpel upon the world. You might say that the plugin is now “off the chain”.
-
-== Upgrade Notice ==
