@@ -1,4 +1,11 @@
 <?php
+/**
+ * Fired during plugin uninstallation.
+ *
+ * @package    Schema_Scalpel
+ * @subpackage Schema_Scalpel/includes
+ * @author     Kevin Gillispie
+ */
 
 namespace SchemaScalpel;
 
@@ -20,7 +27,7 @@ class Schema_Scalpel_Uninstaller {
 	 */
 	public static function uninstall() {
 		global $wpdb;
-		$is_delete = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'delete_on_uninstall';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A )[0]['setting_value'];
+		$is_delete = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'delete_on_uninstall';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A )[0]['setting_value'];
 
 		if ( '1' === $is_delete ) {
 			$schemas = $wpdb->prefix . 'scsc_custom_schemas';

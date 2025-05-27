@@ -58,7 +58,7 @@ if ( isset( $table_checked ) && $table_checked === $settings_table ) :
 	/**
 	 * TURN OFF YOAST SCHEMA GENERATOR
 	 */
-	$yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';", $settings_table ), ARRAY_A );
+	$yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';", $settings_table ), \ARRAY_A );
 	if ( isset( $yoast_setting[0] ) && '1' === $yoast_setting[0]['setting_value'] ) :
 		\add_filter( 'wpseo_json_ld_output', '__return_false' );
 	endif;
@@ -66,7 +66,7 @@ if ( isset( $table_checked ) && $table_checked === $settings_table ) :
 	/**
 	 * TURN OFF AIO SEO SCHEMA
 	 */
-	$aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='aio_schema';", $settings_table ), ARRAY_A );
+	$aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='aio_schema';", $settings_table ), \ARRAY_A );
 	if ( isset( $aio_setting[0] ) && '1' === $aio_setting[0]['setting_value'] ) :
 		\add_filter(
 			'aioseo_schema_output',

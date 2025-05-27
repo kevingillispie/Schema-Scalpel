@@ -24,7 +24,7 @@ echo '<div class="d-flex flex-column">';
 echo new HTML_Refactory(
 	'h2',
 	array(),
-	esc_html( ucfirst( $tab_name ) . ' Schema' )
+	\esc_html( ucfirst( $tab_name ) . ' Schema' )
 );
 
 echo new HTML_Refactory(
@@ -33,7 +33,7 @@ echo new HTML_Refactory(
 		'class' => array( 'alert', 'alert-info', 'mb-0' ),
 		'role'  => 'alert',
 	),
-	esc_html( 'Create schema to appear on every page of your site.' )
+	\esc_html( 'Create schema to appear on every page of your site.' )
 );
 
 echo '<div id="' . $tab_name . '_schema">';
@@ -45,11 +45,11 @@ $legend = new HTML_Refactory(
 		'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
 		'style' => 'wdith:auto',
 	),
-	esc_html( 'Current:' )
+	\esc_html( 'Current:' )
 );
 
 global $wpdb;
-$results       = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s WHERE schema_type = %s;', $wpdb->prefix . 'scsc_custom_schemas', $tab_name ), ARRAY_A );
+$results       = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s WHERE schema_type = %s;', $wpdb->prefix . 'scsc_custom_schemas', $tab_name ), \ARRAY_A );
 $rendered_pres = '';
 
 if ( $results ) {

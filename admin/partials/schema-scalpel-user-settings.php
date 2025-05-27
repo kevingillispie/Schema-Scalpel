@@ -29,7 +29,7 @@ function starts_with( $haystack, $needle ) {
  * Get database exclusions.
  */
 global $wpdb;
-$current_excluded_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'exclude';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$current_excluded_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'exclude';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 $database_exclusions      = array();
 foreach ( $current_excluded_results as $key => $value ) {
 	array_push( $database_exclusions, $current_excluded_results[ $key ]['setting_value'] );
@@ -41,7 +41,7 @@ foreach ( $current_excluded_results as $key => $value ) {
 
 $all_params;
 if ( isset( $_GET['save'] ) ) {
-	$params = parse_url( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_QUERY );
+	$params = parse_url( \sanitize_url( \wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_QUERY );
 	$params = explode( '&', $params );
 
 	foreach ( $params as $key => $value ) {
@@ -75,7 +75,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'enable_webpage' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_wp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'webpage_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_wp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'webpage_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 			if ( ! $has_wp_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -96,7 +96,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'enable_breadcrumbs' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 			if ( ! $has_bc_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -117,7 +117,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'disable_yoast' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'yoast_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'yoast_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 			if ( ! $has_yoast_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -135,7 +135,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'disable_aio' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'aio_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'aio_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 			if ( ! $has_aio_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -196,7 +196,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'search_param' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_sp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'search_param';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_sp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'search_param';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 			if ( ! $has_sp_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -219,30 +219,30 @@ global $wpdb;
 /**
 * Get pages.
 */
-$all_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='page' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), ARRAY_A );
+$all_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='page' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), \ARRAY_A );
 
 /**
 * Get posts.
 */
-$all_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='post' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), ARRAY_A );
+$all_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='post' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), \ARRAY_A );
 
 /**
 * Get website setting.
 */
 $is_website_enabled = 1;
-$ws_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='website_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$ws_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='website_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 if ( '0' === $ws_setting[0]['setting_value'] ) {
 	$is_website_enabled = 0;
 }
 
-$search_query_param = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='search_param';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$search_query_param = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='search_param';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 $search_key         = $search_query_param[0]['setting_value'];
 
 /**
 * Get webpage setting.
 */
 $is_webpage_enabled = 1;
-$wp_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='webpage_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$wp_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='webpage_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 if ( '0' === $wp_setting[0]['setting_value'] ) {
 	$is_webpage_enabled = 0;
 }
@@ -251,7 +251,7 @@ if ( '0' === $wp_setting[0]['setting_value'] ) {
 * Get breadcrumb setting.
 */
 $are_breadcrumbs_enabled = 1;
-$bc_setting              = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$bc_setting              = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 if ( '0' === $bc_setting[0]['setting_value'] ) {
 	$are_breadcrumbs_enabled = 0;
 }
@@ -260,7 +260,7 @@ if ( '0' === $bc_setting[0]['setting_value'] ) {
 * Get Yoast setting.
 */
 $is_yoast_disabled = 1;
-$yoast_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$yoast_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 if ( '0' === $yoast_setting[0]['setting_value'] ) {
 	$is_yoast_disabled = 0;
 }
@@ -269,7 +269,7 @@ if ( '0' === $yoast_setting[0]['setting_value'] ) {
 * Get AIOSEO setting.
 */
 $is_aio_disabled = 1;
-$aio_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='aio_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$aio_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='aio_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 if ( '0' === $aio_setting[0]['setting_value'] ) {
 	$is_aio_disabled = 0;
 }
@@ -277,7 +277,7 @@ if ( '0' === $aio_setting[0]['setting_value'] ) {
 $example_clarification = "<p><em>Your site's information will be substituted in the appropriate</em> <code style='color:black'>{&quot;key&quot;: &quot;value&quot;}</code> <em>pairs below.</em></p>";
 
 $if_yoast = 'disabled';
-foreach ( get_plugins() as $key => $value ) {
+foreach ( \get_plugins() as $key => $value ) {
 	if ( stripos( $value['TextDomain'], 'wordpress-seo' ) > -1 ) {
 		$if_yoast = '';
 		break;
@@ -285,7 +285,7 @@ foreach ( get_plugins() as $key => $value ) {
 }
 
 $if_aio = 'disabled';
-foreach ( get_plugins() as $key => $value ) {
+foreach ( \get_plugins() as $key => $value ) {
 	if ( stripos( $value['TextDomain'], 'all-in-one-seo-pack' ) > -1 ) {
 		$if_aio = '';
 		break;
@@ -309,7 +309,7 @@ $scalpel_icon = new HTML_Refactory(
 	'img',
 	array(
 		'class' => array( 'mt-n4' ),
-		'src'   => esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ),
+		'src'   => \esc_url( \plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ),
 	)
 );
 
@@ -326,7 +326,7 @@ $alert1 = new HTML_Refactory(
 		'class' => array( 'alert', 'alert-primary' ),
 		'role'  => 'alert',
 	),
-	esc_html( 'The default settings for this plugin allow it to perform at its best. However, you may encounter an edge case that requires modification of the default settings.' )
+	\esc_html( 'The default settings for this plugin allow it to perform at its best. However, you may encounter an edge case that requires modification of the default settings.' )
 );
 
 $alert2 = new HTML_Refactory(
@@ -340,8 +340,8 @@ $alert2 = new HTML_Refactory(
 		array(),
 		'This plugin ' . new HTML_Refactory(
 			'a',
-			array( 'href' => esc_url( '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' ) ),
-			esc_html( "automatically overrides Yoast's and AIOSEO's schema" )
+			array( 'href' => \esc_url( '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' ) ),
+			\esc_html( "automatically overrides Yoast's and AIOSEO's schema" )
 		),
 		' and injects your customized schema to better fit your SEO objectives.'
 	)
@@ -580,7 +580,7 @@ echo new HTML_Refactory(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
 			'style' => 'wdith:auto',
 		),
-		esc_html( 'WebPage Format Example:' )
+		\esc_html( 'WebPage Format Example:' )
 	) . wp_kses_post( $example_clarification ) . new HTML_Refactory(
 		'pre',
 		array(
@@ -675,7 +675,7 @@ echo new HTML_Refactory(
 			'code',
 			array( 'style' => 'color:black' ),
 			'BreadcrumbList'
-		) . wp_kses_post( wp_slash( $default_setting_label_html ) )
+		) . \wp_kses_post( \wp_slash( $default_setting_label_html ) )
 	) . new HTML_Refactory(
 		'label',
 		array( 'for' => 'disable_breadcrumbs' ),
@@ -714,8 +714,8 @@ echo new HTML_Refactory(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
 			'style' => 'wdith:auto',
 		),
-		esc_html( 'BreadcrumbList Format Example:' )
-	) . wp_kses_post( $example_clarification ) . new HTML_Refactory(
+		\esc_html( 'BreadcrumbList Format Example:' )
+	) . \wp_kses_post( $example_clarification ) . new HTML_Refactory(
 		'pre',
 		array(
 			'id'          => 'breadcrumb_example',
@@ -739,7 +739,7 @@ echo new HTML_Refactory(
 		'id'    => 'disable_yoast_schema',
 		'class' => array( 'mt-3' ),
 	),
-	esc_html( 'Disable Yoast SEO schema?' )
+	\esc_html( 'Disable Yoast SEO schema?' )
 );
 
 if ( 'disabled' === $if_yoast ) {
@@ -861,7 +861,7 @@ echo new HTML_Refactory(
 		'id'    => 'disable_aio_schema',
 		'class' => array( 'mt-3' ),
 	),
-	esc_html( 'Disable All in One SEO schema?' )
+	\esc_html( 'Disable All in One SEO schema?' )
 );
 
 if ( 'disabled' === $if_aio ) {
@@ -991,19 +991,19 @@ echo new HTML_Refactory(
 echo new HTML_Refactory(
 	'h3',
 	array(),
-	'Pages to Exclude from Displaying Any Schema'
+	\esc_html( 'Pages to Exclude from Displaying Any Schema' )
 );
 
 echo new HTML_Refactory(
 	'p',
 	array(),
-	'Pages to Exclude from Displaying Any Schema'
+	\esc_html( 'Pages to Exclude from Displaying Any Schema' )
 );
 
 echo new HTML_Refactory(
 	'p',
 	array( 'class' => array( 'font-italic' ) ),
-	'In most cases, it will not be necessary to exclude a page.'
+	\esc_html( 'In most cases, it will not be necessary to exclude a page.' )
 );
 
 echo '<div style="max-height:500px;overflow-y:scroll;"><table id="excluded_schema" class="table table-dark">';
@@ -1032,7 +1032,7 @@ echo new HTML_Refactory(
 
 if ( $all_pages ) {
 
-	$url     = get_site_url();
+	$url     = \get_site_url();
 	$tr_tags = '';
 
 	foreach ( $all_pages as $key => $value ) {
@@ -1115,7 +1115,7 @@ echo new HTML_Refactory(
 			'class' => array( 'btn', 'btn-primary', 'px-5', 'py-2' ),
 			'type'  => 'submit',
 		),
-		esc_html( 'Save Settings' )
+		\esc_html( 'Save Settings' )
 	)
 );
 

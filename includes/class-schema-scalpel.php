@@ -59,6 +59,7 @@ class Schema_Scalpel {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 		$this->register();
+		$this->add_plugin_action_links();
 	}
 
 	/**
@@ -232,5 +233,25 @@ class Schema_Scalpel {
 			array( $this, 'user_export_page' ),
 			2
 		);
+	}
+
+	/**
+	 * Add action links to the plugins page.
+	 */
+	private function add_plugin_action_links() {
+		\add_filter( 'plugin_action_links_' . \plugin_basename( SCHEMA_SCALPEL_PLUGIN ), array( $this, 'plugin_action_links' ) );
+	}
+
+	/**
+	 * Add links to the plugins page.
+	 *
+	 * @param array $links Array of plugin action links.
+	 * @return array Modified array of plugin action links.
+	 */
+	public function plugin_action_links( $links ) {
+		$add_new_link  = '<a href="admin.php?page=scsc">' . \__( 'Add New/Edit', 'schema-scalpel' ) . '</a>';
+		$settings_link = '<a href="' . \admin_url( 'admin.php?page=scsc_settings' ) . '">' . \__( 'Settings', 'schema-scalpel' ) . '</a>';
+		array_unshift( $links, $add_new_link, $settings_link );
+		return $links;
 	}
 }

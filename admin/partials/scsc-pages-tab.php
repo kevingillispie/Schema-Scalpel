@@ -18,9 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $tab_name = 'pages';
 
-$all_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='page' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), ARRAY_A );
+$all_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='page' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), \ARRAY_A );
 
-$schema_results_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE schema_type='pages';", $wpdb->prefix . 'scsc_custom_schemas' ), ARRAY_A );
+$schema_results_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE schema_type='pages';", $wpdb->prefix . 'scsc_custom_schemas' ), \ARRAY_A );
 $existing_schema_ids  = array();
 
 foreach ( $schema_results_pages as $key => $value ) :
@@ -31,7 +31,7 @@ echo '<div class="mb-5">';
 echo new HTML_Refactory(
 	'h2',
 	array(),
-	esc_html( 'Page Schema' )
+	\esc_html( 'Page Schema' )
 );
 
 $list_of_pages = '';
@@ -124,7 +124,7 @@ echo new HTML_Refactory(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
 			'style' => 'width:auto',
 		),
-		esc_html( 'Current:' )
+		\esc_html( 'Current:' )
 	) . new HTML_Refactory(
 		'div',
 		array( 'id' => 'current_pages_schema' ),

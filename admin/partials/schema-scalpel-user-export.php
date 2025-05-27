@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $wpdb, $prefix;
 $prefix  = $wpdb->prefix;
-$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s;', $prefix . 'scsc_custom_schemas' ), ARRAY_A );
+$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s;', $prefix . 'scsc_custom_schemas' ), \ARRAY_A );
 
 echo '<main class="container mt-5 ms-0">';
 
 $scalpel = new HTML_Refactory(
 	'img',
 	array(
-		'src'   => plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg',
+		'src'   => \plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg',
 		'class' => array( 'mt-n4' ),
 	),
 );
@@ -220,13 +220,13 @@ if ( $results ) {
 			$span    = new HTML_Refactory(
 				'span',
 				array( 'class' => array( 'wpdb-prefix' ) ),
-				esc_html( $prefix )
+				\esc_html( $prefix )
 			);
 
 			$code_tags .= new HTML_Refactory(
 				'code',
 				array( 'class' => array( 'd-inline-block', 'py-2', 'px-1', 'w-100' ) ),
-				'INSERT INTO ' . $span . 'scsc_custom_schemas (`schema_type`, `post_id`, `custom_schema`) VALUES (' . esc_html( $results[ $key ]['schema_type'] ) . ', ' . esc_html( $results[ $key ]['post_id'] ) . ', ' . esc_html( $escaped ),
+				'INSERT INTO ' . $span . 'scsc_custom_schemas (`schema_type`, `post_id`, `custom_schema`) VALUES (' . \esc_html( $results[ $key ]['schema_type'] ) . ', ' . \esc_html( $results[ $key ]['post_id'] ) . ', ' . \esc_html( $escaped ),
 			) . new HTML_Refactory(
 				'br',
 				array(),

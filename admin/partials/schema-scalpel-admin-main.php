@@ -20,31 +20,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $wpdb;
 $custom_schemas_table = $wpdb->prefix . 'scsc_custom_schemas';
 if ( isset( $_GET['create'] ) ) {
-	$custom_schema = sanitize_text_field( wp_unslash( $_GET['create'] ) );
+	$custom_schema = \sanitize_text_field( \wp_unslash( $_GET['create'] ) );
 	$wpdb->insert(
 		$custom_schemas_table,
 		array(
 			'custom_schema' => serialize( $custom_schema ),
-			'schema_type'   => sanitize_text_field( wp_unslash( $_GET['schemaType'] ) ),
-			'post_id'       => sanitize_text_field( wp_unslash( $_GET['postID'] ) ),
+			'schema_type'   => \sanitize_text_field( \wp_unslash( $_GET['schemaType'] ) ),
+			'post_id'       => \sanitize_text_field( \wp_unslash( $_GET['postID'] ) ),
 		)
 	);
 }
 
 if ( isset( $_GET['generate'] ) ) {
-	$schema_post_type = sanitize_text_field( wp_unslash( $_GET['schemaPostType'] ) );
-	$author_type      = sanitize_text_field( wp_unslash( $_GET['schemaAuthorType'] ) );
+	$schema_post_type = \sanitize_text_field( \wp_unslash( $_GET['schemaPostType'] ) );
+	$author_type      = \sanitize_text_field( \wp_unslash( $_GET['schemaAuthorType'] ) );
 	Schema_Scalpel_Admin::generate_blogposting_schema( $schema_post_type, $author_type );
 	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=posts">';
 }
 
 if ( isset( $_GET['update'] ) ) {
-	$custom_schema = sanitize_text_field( wp_unslash( $_GET['schema'] ) );
-	$wpdb->update( $custom_schemas_table, array( 'custom_schema' => serialize( $custom_schema ) ), array( 'id' => sanitize_text_field( $_GET['update'] ) ) );
+	$custom_schema = \sanitize_text_field( \wp_unslash( $_GET['schema'] ) );
+	$wpdb->update( $custom_schemas_table, array( 'custom_schema' => serialize( $custom_schema ) ), array( 'id' => \sanitize_text_field( $_GET['update'] ) ) );
 }
 
 if ( isset( $_GET['delete'] ) ) {
-	$wpdb->delete( $custom_schemas_table, array( 'id' => sanitize_text_field( wp_unslash( $_GET['delete'] ) ) ) );
+	$wpdb->delete( $custom_schemas_table, array( 'id' => \sanitize_text_field( \wp_unslash( $_GET['delete'] ) ) ) );
 }
 
 /**
@@ -52,27 +52,27 @@ if ( isset( $_GET['delete'] ) ) {
  */
 $settings_table = $wpdb->prefix . 'scsc_settings';
 if ( isset( $_GET['active_page'] ) ) {
-	$active_page = sanitize_text_field( wp_unslash( $_GET['active_page'] ) );
+	$active_page = \sanitize_text_field( \wp_unslash( $_GET['active_page'] ) );
 	$wpdb->update( $settings_table, array( 'setting_value' => "$active_page" ), array( 'setting_key' => 'active_page' ) );
 	exit();
 }
 
 if ( isset( $_GET['active_post'] ) ) {
-	$post = sanitize_text_field( wp_unslash( $_GET['active_post'] ) );
+	$post = \sanitize_text_field( \wp_unslash( $_GET['active_post'] ) );
 	$wpdb->update( $settings_table, array( 'setting_value' => "$post" ), array( 'setting_key' => 'active_post' ) );
 	exit();
 }
 
-if ( 'scsc' === sanitize_text_field( wp_unslash( $_GET['page'] ) ) && ! isset( $_GET['set_tab'] ) ) {
-	$result    = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key = 'active_tab';", $settings_table ), ARRAY_A );
+if ( 'scsc' === \sanitize_text_field( \wp_unslash( $_GET['page'] ) ) && ! isset( $_GET['set_tab'] ) ) {
+	$result    = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key = 'active_tab';", $settings_table ), \ARRAY_A );
 	$tab_param = $result[0]['setting_value'];
-	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . sanitize_text_field( $tab_param ) . '">';
+	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . \sanitize_text_field( $tab_param ) . '">';
 }
 
 if ( isset( $_GET['update_tab'] ) ) {
-	$tab_param = sanitize_text_field( wp_unslash( $_GET['update_tab'] ) );
+	$tab_param = \sanitize_text_field( \wp_unslash( $_GET['update_tab'] ) );
 	$wpdb->update( $settings_table, array( 'setting_value' => "$tab_param" ), array( 'setting_key' => 'active_tab' ) );
-	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . sanitize_text_field( $tab_param ) . '">';
+	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . \sanitize_text_field( $tab_param ) . '">';
 }
 
 ?>
@@ -773,10 +773,10 @@ if ( isset( $_GET['update_tab'] ) ) {
 				 * GET LAST ACTIVE PAGE / POST SELECTIONS
 				 */
 				global $wpdb;
-				$result_page = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='active_page';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+				$result_page = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='active_page';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 				$_page       = $result_page[0]['setting_value'];
 
-				$result_post = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='active_post';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+				$result_post = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='active_post';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 				$_post       = $result_post[0]['setting_value'];
 
 				/**

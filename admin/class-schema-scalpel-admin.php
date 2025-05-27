@@ -85,7 +85,7 @@ class Schema_Scalpel_Admin {
 			if ( in_array( $p_id, $existing_post_schema_ids ) ) {
 				continue;
 			}
-			$post                  = \get_post( $p_id, ARRAY_A );
+			$post                  = \get_post( $p_id, \ARRAY_A );
 			$post_title            = $post['post_title'];
 			$post_thumbnail_url    = \get_the_post_thumbnail_url( $p_id );
 			$post_thumbnail_schema = ( ! empty( $post_thumbnail_url ) ) ? "&quot;image&quot;:[&quot;{$post_thumbnail_url}&quot;]," : '';
@@ -99,7 +99,7 @@ class Schema_Scalpel_Admin {
 			$wpdb->insert(
 				$wpdb->prefix . 'scsc_custom_schemas',
 				array(
-					'custom_schema' => \serialize( $blog_posting ),
+					'custom_schema' => serialize( $blog_posting ),
 					'schema_type'   => 'posts',
 					'post_id'       => $p_id,
 				)

@@ -133,7 +133,7 @@ CRUMBS;
 		/**
 		 * CHECK DATABASE EXCLUSIONS
 		 */
-		$current_excluded_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'exclude';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+		$current_excluded_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'exclude';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 		foreach ( $current_excluded_results as $key => $value ) :
 			if ( in_array( $page_id, $current_excluded_results[ $key ] ) ) :
 				return;
@@ -211,9 +211,9 @@ BREAD;
 		/**
 		 * INJECT GLOBAL SCHEMA
 		 */
-		$global_schema = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE schema_type = 'global';", $wpdb->prefix . 'scsc_custom_schemas' ), ARRAY_A );
+		$global_schema = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE schema_type = 'global';", $wpdb->prefix . 'scsc_custom_schemas' ), \ARRAY_A );
 		foreach ( $global_schema as $key => $value ) :
-			$schema = \str_replace( '&apos;', "'", \html_entity_decode( \unserialize( $value['custom_schema'] ) ) );
+			$schema = str_replace( '&apos;', "'", html_entity_decode( unserialize( $value['custom_schema'] ) ) );
 			self::format_schema_html( $schema_script_html, $schema );
 		endforeach;
 
@@ -221,7 +221,7 @@ BREAD;
 		 * INJECT POST SCHEMA
 		 */
 		if ( \is_single() ) :
-			$current_page_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_id = '$page_id' AND schema_type = 'posts';", $wpdb->prefix . 'scsc_custom_schemas' ), ARRAY_A );
+			$current_page_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_id = '$page_id' AND schema_type = 'posts';", $wpdb->prefix . 'scsc_custom_schemas' ), \ARRAY_A );
 			foreach ( $current_page_results as $key => $value ) :
 				$schema = str_replace( '&apos;', "'", html_entity_decode( unserialize( $value['custom_schema'] ) ) );
 				self::format_schema_html( $schema_script_html, $schema );
@@ -233,9 +233,9 @@ BREAD;
 		 */
 		if ( ! \is_front_page() && \is_home() ) :
 			$blog_page_id         = \get_option( 'page_for_posts' );
-			$current_page_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_id = %s AND schema_type = 'pages';", $wpdb->prefix . 'scsc_custom_schemas', $blog_page_id ), ARRAY_A );
+			$current_page_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_id = %s AND schema_type = 'pages';", $wpdb->prefix . 'scsc_custom_schemas', $blog_page_id ), \ARRAY_A );
 		else :
-			$current_page_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_id = %s AND schema_type = 'pages';", $wpdb->prefix . 'scsc_custom_schemas', $page_id ), ARRAY_A );
+			$current_page_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_id = %s AND schema_type = 'pages';", $wpdb->prefix . 'scsc_custom_schemas', $page_id ), \ARRAY_A );
 		endif;
 
 		foreach ( $current_page_results as $key => $value ) :
@@ -247,7 +247,7 @@ BREAD;
 		 * INJECT HOMEPAGE SCHEMA
 		 */
 		if ( '/' === $path ) :
-			$home_schema = $wpdb->get_results( $wpdb->prepare( "SELECT custom_schema FROM %1s WHERE schema_type = 'homepage';", $wpdb->prefix . 'scsc_custom_schemas' ), ARRAY_A );
+			$home_schema = $wpdb->get_results( $wpdb->prepare( "SELECT custom_schema FROM %1s WHERE schema_type = 'homepage';", $wpdb->prefix . 'scsc_custom_schemas' ), \ARRAY_A );
 			foreach ( $home_schema as $key => $value ) :
 				$schema = str_replace( '&apos;', "'", html_entity_decode( unserialize( $value['custom_schema'] ) ) );
 				self::format_schema_html( $schema_script_html, $schema );
@@ -257,17 +257,17 @@ BREAD;
 		/**
 		 * INJECT DEFAULT SCHEMA
 		 */
-		$check_website_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'website_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+		$check_website_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'website_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 		if ( '1' === $check_website_setting[0]['setting_value'] ) :
 			self::format_schema_html( $schema_script_html, $website_schema );
 		endif;
 
-		$check_webpage_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'webpage_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+		$check_webpage_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'webpage_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 		if ( '1' === $check_webpage_setting[0]['setting_value'] ) :
 			self::format_schema_html( $schema_script_html, $webpage_schema );
 		endif;
 
-		$check_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+		$check_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 		if ( '/' !== $path && '1' === $check_bc_setting[0]['setting_value'] ) :
 			self::format_schema_html( $schema_script_html, $breadcrumb_schema );
 		endif;
