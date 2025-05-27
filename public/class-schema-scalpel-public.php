@@ -143,7 +143,7 @@ CRUMBS;
 		$root_domain        = \get_site_url();
 		$path               = \sanitize_url( $_SERVER['REQUEST_URI'] );
 		$wp_title           = \wp_title( '|', false, 'right' );
-		$page_title         = ( $wp_title ) ? \html_entity_decode( $wp_title ) : ( ( \get_the_title() ) ? \html_entity_decode( \get_the_title() ) : ( ( \the_title_attribute() ) ? \html_entity_decode( \the_title_attribute() ) : $site_title ) );
+		$page_title         = ( $wp_title ) ? html_entity_decode( $wp_title ) : ( ( \get_the_title() ) ? html_entity_decode( \get_the_title() ) : ( ( \the_title_attribute() ) ? html_entity_decode( \the_title_attribute() ) : $site_title ) );
 		$schema_script_html = '<script class="schema-scalpel-seo" type="application/ld+json">';
 		$search_query_param = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='search_param';", $wpdb->prefix . 'scsc_settings' ) );
 		$search_key         = $search_query_param[0]->setting_value;
