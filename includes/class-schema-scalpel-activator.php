@@ -41,7 +41,7 @@ class Schema_Scalpel_Activator {
         ) $charset_collate;";
 
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $custom_schema_table ) ) !== $custom_schema_table ) :
-			dbDelta( $custom_schema_sql );
+			\dbDelta( $custom_schema_sql );
 		else :
 			/**
 			 * Update schema_type column.
@@ -56,7 +56,7 @@ class Schema_Scalpel_Activator {
             setting_value varchar(100) DEFAULT '' NOT NULL
         ) $charset_collate;";
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $schema_settings_table ) ) !== $custom_schema_table ) :
-			dbDelta( $settings_sql );
+			\dbDelta( $settings_sql );
 		endif;
 
 		$default_settings = array(
@@ -96,14 +96,14 @@ class Schema_Scalpel_Activator {
 	 */
 	public static function activate() {
 		global $wpdb;
-		if ( is_multisite() ) :
+		if ( \is_multisite() ) :
 
 			$blogids = $wpdb->get_col( 'SELECT blog_id FROM ' . $wpdb->blogs );
 			foreach ( $blogids as $blog_id ) :
 
-				switch_to_blog( $blog_id );
+				\switch_to_blog( $blog_id );
 				self::db_tables_initializer();
-				restore_current_blog();
+				\restore_current_blog();
 
 			endforeach;
 

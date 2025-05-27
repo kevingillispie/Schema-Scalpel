@@ -29,6 +29,6 @@ class Schema_Scalpel_Uninstaller {
 			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %1s;', $settings ) );
 		}
 
-		flush_rewrite_rules();
+		\flush_rewrite_rules();
 	}
 }

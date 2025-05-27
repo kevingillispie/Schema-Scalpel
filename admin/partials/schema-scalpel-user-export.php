@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Export schema as SQL tool.
  *
@@ -247,7 +248,7 @@ if ( $results ) {
 
 echo '</fieldset></main>';
 
-add_action(
+\add_action(
 	'admin_footer',
 	function () {
 		global $prefix;

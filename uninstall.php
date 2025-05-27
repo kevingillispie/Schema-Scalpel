@@ -19,7 +19,7 @@ $table = array(
 );
 
 foreach ( $table as $key => $value ) {
-	$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %1s', $value ) );
+	$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %1s;', $value ) );
 }
 
-flush_rewrite_rules();
+\flush_rewrite_rules();

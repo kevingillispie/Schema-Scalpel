@@ -231,56 +231,47 @@ $all_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_t
 */
 $is_website_enabled = 1;
 $ws_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='website_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
-if ( ! empty( $ws_setting ) && isset( $ws_setting[0]['setting_value'] ) && '0' === $ws_setting[0]['setting_value'] ) {
+if ( '0' === $ws_setting[0]['setting_value'] ) {
 	$is_website_enabled = 0;
 }
 
 $search_query_param = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='search_param';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
-$search_key         = ! empty( $search_query_param ) && isset( $search_query_param[0]['setting_value'] ) ? $search_query_param[0]['setting_value'] : 's';
+$search_key         = $search_query_param[0]['setting_value'];
 
 /**
 * Get webpage setting.
 */
 $is_webpage_enabled = 1;
 $wp_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='webpage_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
-if ( ! empty( $wp_setting ) && isset( $wp_setting[0]['setting_value'] ) && '0' === $wp_setting[0]['setting_value'] ) {
+if ( '0' === $wp_setting[0]['setting_value'] ) {
 	$is_webpage_enabled = 0;
 }
 
 /**
 * Get breadcrumb setting.
 */
-$is_breadcrumb_enabled = 1;
-$bc_setting            = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
-if ( ! empty( $bc_setting ) && isset( $bc_setting[0]['setting_value'] ) && '0' === $bc_setting[0]['setting_value'] ) {
-	$is_breadcrumb_enabled = 0;
+$are_breadcrumbs_enabled = 1;
+$bc_setting              = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+if ( '0' === $bc_setting[0]['setting_value'] ) {
+	$are_breadcrumbs_enabled = 0;
 }
 
 /**
 * Get Yoast setting.
 */
-$is_yoast_disabled = 0;
+$is_yoast_disabled = 1;
 $yoast_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
-if ( ! empty( $yoast_setting ) && isset( $yoast_setting[0]['setting_value'] ) && '1' === $yoast_setting[0]['setting_value'] ) {
-	$is_yoast_disabled = 1;
+if ( '0' === $yoast_setting[0]['setting_value'] ) {
+	$is_yoast_disabled = 0;
 }
 
 /**
 * Get AIOSEO setting.
 */
-$is_aio_disabled = 0;
+$is_aio_disabled = 1;
 $aio_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='aio_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
-if ( ! empty( $aio_setting ) && isset( $aio_setting[0]['setting_value'] ) && '1' === $aio_setting[0]['setting_value'] ) {
-	$is_aio_disabled = 1;
-}
-
-/**
-* Get delete on uninstall setting.
-*/
-$delete_on_uninstall = 0;
-$delete_setting      = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='delete_on_unistall';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
-if ( ! empty( $delete_setting ) && isset( $delete_setting[0]['setting_value'] ) && '1' === $delete_setting[0]['setting_value'] ) {
-	$delete_on_uninstall = 1;
+if ( '0' === $aio_setting[0]['setting_value'] ) {
+	$is_aio_disabled = 0;
 }
 
 $example_clarification = "<p><em>Your site's information will be substituted in the appropriate</em> <code style='color:black'>{&quot;key&quot;: &quot;value&quot;}</code> <em>pairs below.</em></p>";
@@ -671,7 +662,7 @@ echo new HTML_Refactory(
 				'type'  => 'radio',
 				'name'  => 'enable_breadcrumbs',
 				'value' => '1',
-				( ( 1 === $is_breadcrumb_enabled ) ? 'checked' : '' ) => '',
+				( ( 1 === $are_breadcrumbs_enabled ) ? 'checked' : '' ) => '',
 			),
 			'',
 			'',
@@ -696,7 +687,7 @@ echo new HTML_Refactory(
 				'type'  => 'radio',
 				'name'  => 'enable_breadcrumbs',
 				'value' => '0',
-				( ( 0 === $is_breadcrumb_enabled ) ? 'checked' : '' ) => '',
+				( ( 0 === $are_breadcrumbs_enabled ) ? 'checked' : '' ) => '',
 			),
 			'',
 			'',
@@ -1130,7 +1121,7 @@ echo new HTML_Refactory(
 
 echo '</form></div></main>';
 
-add_action(
+\add_action(
 	'admin_footer',
 	function () {
 		echo '<script>';

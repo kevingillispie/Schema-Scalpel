@@ -132,7 +132,7 @@ require 'scsc-create-new-schema.php';
 
 echo '</div></div>';
 
-add_action(
+\add_action(
 	'admin_footer',
 	function () {
 		echo <<<SCRIPT

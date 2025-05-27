@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Schema_Scalpel {
 
+
 	/**
 	 * Variable initialized as Schema_Scalpel_Loader class.
 	 *
@@ -46,6 +47,7 @@ class Schema_Scalpel {
 	 */
 	protected $version;
 
+
 	/**
 	 * Initialize the plugin and set its properties.
 	 */
@@ -57,7 +59,6 @@ class Schema_Scalpel {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 		$this->register();
-		$this->add_plugin_action_links();
 	}
 
 	/**
@@ -149,8 +150,8 @@ class Schema_Scalpel {
 	 * Register any admin page styles/scripts.
 	 */
 	private function register() {
-		add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
-		add_action(
+		\add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
+		\add_action(
 			'admin_head',
 			function () {
 				echo <<<STYLE
@@ -185,119 +186,51 @@ class Schema_Scalpel {
 	 * Load plugin's admin menu.
 	 */
 	public function add_admin_pages() {
-		$default_page_title = __( SCHEMA_SCALPEL_TEXT_DOMAIN, SCHEMA_SCALPEL_TEXT_DOMAIN );
-		add_action(
+		$default_page_title = \__( SCHEMA_SCALPEL_TEXT_DOMAIN, SCHEMA_SCALPEL_TEXT_DOMAIN );
+		\add_action(
 			'admin_head',
 			function () {
 				echo '<style class="scsc-admin">.toplevel_page_scsc img[src*="menu_icon.svg"] {margin-top:6px}</style>';
 			}
 		);
 
-		add_menu_page(
-			__( 'Schema Scalpel Plugin', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+		\add_menu_page(
+			\__( 'Schema Scalpel Plugin', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 			'Schema Scalpel',
 			'manage_options',
 			SCHEMA_SCALPEL_TEXT_DOMAIN,
 			array( $this, 'admin_index_page' ),
-			plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/menu_icon.svg',
+			\plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/menu_icon.svg',
 			100
 		);
 
-		add_submenu_page(
+		\add_submenu_page(
 			$default_page_title,
-			__( 'Schema Scalpel | Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN ),
-			__( 'Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			\__( 'Schema Scalpel | Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			\__( 'Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 			'manage_options',
 			SCHEMA_SCALPEL_TEXT_DOMAIN,
 			array( $this, 'admin_index_page' ),
 		);
 
-		add_submenu_page(
+		\add_submenu_page(
 			$default_page_title,
-			__( 'Schema Scalpel | Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ),
-			__( 'Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			\__( 'Schema Scalpel | Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			\__( 'Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 			'manage_options',
 			SCHEMA_SCALPEL_SLUG . 'settings',
 			array( $this, 'user_settings_page' ),
 			1
 		);
 
-		add_submenu_page(
+		\add_submenu_page(
 			$default_page_title,
-			__( 'Schema Scalpel | Export', SCHEMA_SCALPEL_TEXT_DOMAIN ),
-			__( 'Export', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			\__( 'Schema Scalpel | Export', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			\__( 'Export', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 			'manage_options',
 			SCHEMA_SCALPEL_SLUG . 'export',
 			array( $this, 'user_export_page' ),
 			2
 		);
-	}
-
-	/**
-	 * Initialize schema filters for Yoast and AIOSEO.
-	 */
-	public function init_schema_filters() {
-		global $wpdb;
-		$settings_table = $wpdb->prefix . 'scsc_settings';
-
-		// Check if settings table exists
-		$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) );
-		if ( ! $table_exists || $table_exists !== $settings_table ) {
-			return;
-		}
-
-		// Handle Yoast schema
-		$yoast_setting = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';",
-				$settings_table
-			),
-			ARRAY_A
-		);
-
-		if ( ! empty( $yoast_setting[0]['setting_value'] ) && '1' === $yoast_setting[0]['setting_value'] ) {
-			add_filter( 'wpseo_json_ld_output', '__return_false' );
-		}
-
-		// Handle AIOSEO schema
-		$aio_setting = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT setting_value FROM %1s WHERE setting_key='aio_schema';",
-				$settings_table
-			),
-			ARRAY_A
-		);
-
-		if ( ! empty( $aio_setting[0]['setting_value'] ) && '1' === $aio_setting[0]['setting_value'] ) {
-			add_filter(
-				'aioseo_schema_output',
-				function ( $graphs ) {
-					foreach ( $graphs as $index => $graph ) {
-						unset( $graphs[ $index ] );
-					}
-					return $graphs;
-				}
-			);
-		}
-	}
-
-	/**
-	 * Add action links to the plugins page.
-	 */
-	private function add_plugin_action_links() {
-		add_filter( 'plugin_action_links_' . plugin_basename( SCHEMA_SCALPEL_PLUGIN ), array( $this, 'plugin_action_links' ) );
-	}
-
-	/**
-	 * Add links to the plugins page.
-	 *
-	 * @param array $links Array of plugin action links.
-	 * @return array Modified array of plugin action links.
-	 */
-	public function plugin_action_links( $links ) {
-		$add_new_link  = '<a href="admin.php?page=scsc" target="_blank">' . __( 'Add New/Edit', 'schema-scalpel' ) . '</a>';
-		$settings_link = '<a href="' . admin_url( 'admin.php?page=scsc_settings' ) . '">' . __( 'Settings', 'schema-scalpel' ) . '</a>';
-		array_unshift( $links, $add_new_link, $settings_link );
-		return $links;
 	}
 }

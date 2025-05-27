@@ -100,54 +100,57 @@ if ( isset( $_GET['update_tab'] ) ) {
 
 		echo '<main class="container col-8 ms-0"><nav>';
 
-		$scsc_loc_tabs             = array( 'Home Page', 'Global', 'Pages', 'Posts', 'Examples' );
-		$attr_value_formatted_name = array();
-		$classes                   = array( 'nav-link' );
-		$tab_links                 = '';
+
+			$scsc_loc_tabs             = array( 'Home Page', 'Global', 'Pages', 'Posts', 'Examples' );
+			$attr_value_formatted_name = array();
+			$classes                   = array( 'nav-link' );
+			$tab_links                 = '';
 
 		foreach ( $scsc_loc_tabs as $key => $name ) {
+
 			$attr_value_formatted_name[] = str_replace( ' ', '', strtolower( $name ) );
 		}
 
 		foreach ( $scsc_loc_tabs as $key => $name ) {
+
 			if ( count( $scsc_loc_tabs ) - 1 === $key ) {
 				$classes[] = 'ms-auto';
 			}
 			$tab_links .= new HTML_Refactory(
 				'a',
 				array(
-					'class'          => $classes,
-					'id'             => 'nav-' . $attr_value_formatted_name[ $key ] . '-tab',
-					'href'           => esc_url( '#nav-' . $attr_value_formatted_name[ $key ] ),
-					'data-bs-toggle' => 'tab',
-					'role'           => 'tab',
-					'aria-controls'  => 'nav-' . $attr_value_formatted_name[ $key ],
-					'aria-selected'  => ( $key === 0 ) ? 'true' : 'false',
+					'class'         => $classes,
+					'id'            => 'nav-' . $attr_value_formatted_name[ $key ] . '-tab',
+					'href'          => esc_url( '#nav-' . $attr_value_formatted_name[ $key ] ),
+					'data-toggle'   => 'tab',
+					'role'          => 'tab',
+					'aria-controls' => 'nav-' . $attr_value_formatted_name[ $key ],
+					'aria-selected' => 'true',
 				),
 				esc_html( $name )
 			);
 		}
 
-		echo new HTML_Refactory(
-			'div',
-			array(
-				'class' => array( 'nav', 'nav-tabs' ),
-				'id'    => 'nav-tab',
-				'role'  => 'tablist',
-			),
-			'',
-			$tab_links
-		);
+			echo new HTML_Refactory(
+				'div',
+				array(
+					'class' => array( 'nav', 'nav-tabs' ),
+					'id'    => 'nav-tab',
+					'role'  => 'tablist',
+				),
+				'',
+				$tab_links
+			);
 
-		?>
+			?>
 		</nav>
 		<div class="tab-content border border-top-0 p-5" id="nav-tabContent">
-			<div class="tab-pane fade show active" id="nav-homepage" role="tabpanel" aria-labelledby="nav-homepage-tab">
+			<div class="tab-pane fade show" id="nav-homepage" role="tabpanel" aria-labelledby="nav-homepage-tab">
 				<?php
 				require_once 'scsc-homepage-tab.php';
 				?>
 			</div>
-			<div class="tab-pane fade" id="nav-global" role="tabpanel" aria-labelledby="nav-global-tab">
+			<div class="tab-pane fade show" id="nav-global" role="tabpanel" aria-labelledby="nav-global-tab">
 				<?php
 				require_once 'scsc-global-tab.php';
 				?>
@@ -762,7 +765,7 @@ if ( isset( $_GET['update_tab'] ) ) {
 
 		echo '</div>';
 
-		add_action(
+		\add_action(
 			'admin_footer',
 			function () {
 				echo '<script>';
@@ -795,19 +798,3 @@ if ( isset( $_GET['update_tab'] ) ) {
 SCRIPTS;
 			}
 		);
-
-		echo <<<SCRIPTS
-        <script>
-        jQuery(document).ready(function($) {
-            // Initialize Bootstrap tabs
-            var triggerTabList = [].slice.call(document.querySelectorAll('#nav-tab a'))
-            triggerTabList.forEach(function (triggerEl) {
-                var tabTrigger = new bootstrap.Tab(triggerEl)
-                triggerEl.addEventListener('click', function (event) {
-                    event.preventDefault()
-                    tabTrigger.show()
-                })
-            })
-        });
-        </script>
-SCRIPTS;

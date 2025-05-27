@@ -27,16 +27,18 @@ define( 'SCHEMA_SCALPEL_VERSION', '1.4.7' );
 define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'scsc' );
 define( 'SCHEMA_SCALPEL_SLUG', 'scsc_' );
 define( 'SCHEMA_SCALPEL_PLUGIN', __FILE__ );
-define( 'SCHEMA_SCALPEL_DIRECTORY', untrailingslashit( dirname( SCHEMA_SCALPEL_PLUGIN ) ) );
+define( 'SCHEMA_SCALPEL_DIRECTORY', \untrailingslashit( \dirname( SCHEMA_SCALPEL_PLUGIN ) ) );
 
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-html-refactory.php';
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-activator.php';
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-deactivator.php';
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-uninstaller.php';
 
-register_activation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Activator', 'activate' ) );
-register_deactivation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Deactivator', 'deactivate' ) );
-register_uninstall_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Uninstaller', 'uninstall' ) );
+
+\register_activation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Activator', 'activate' ) );
+\register_deactivation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Deactivator', 'deactivate' ) );
+\register_uninstall_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Uninstaller', 'uninstall' ) );
+
 
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel.php';
 
@@ -46,9 +48,8 @@ require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel.php';
 function run_schema_scalpel() {
 	$plugin = new Schema_Scalpel();
 	$plugin->run();
-	$plugin->init_schema_filters();
 }
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\run_schema_scalpel' );
+\add_action( 'plugins_loaded', __NAMESPACE__ . '\\run_schema_scalpel' );
 
 global $wpdb;
 $settings_table = $wpdb->prefix . 'scsc_settings';
@@ -59,7 +60,7 @@ if ( isset( $table_checked ) && $table_checked === $settings_table ) :
 	 */
 	$yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';", $settings_table ), ARRAY_A );
 	if ( isset( $yoast_setting[0] ) && '1' === $yoast_setting[0]['setting_value'] ) :
-		add_filter( 'wpseo_json_ld_output', '__return_false' );
+		\add_filter( 'wpseo_json_ld_output', '__return_false' );
 	endif;
 
 	/**
@@ -67,12 +68,12 @@ if ( isset( $table_checked ) && $table_checked === $settings_table ) :
 	 */
 	$aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='aio_schema';", $settings_table ), ARRAY_A );
 	if ( isset( $aio_setting[0] ) && '1' === $aio_setting[0]['setting_value'] ) :
-		add_filter(
+		\add_filter(
 			'aioseo_schema_output',
 			function ( $graphs ) {
 				foreach ( $graphs as $index => $graph ) :
 					unset( $graphs[ $index ] );
-				endforeach;
+			endforeach;
 				return $graphs;
 			}
 		);
