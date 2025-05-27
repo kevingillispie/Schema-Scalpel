@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Primary UI for plugin admins.
  *

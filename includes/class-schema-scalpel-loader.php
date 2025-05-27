@@ -1,4 +1,11 @@
 <?php
+/**
+ * Fired during plugin initialization.
+ *
+ * @package    Schema_Scalpel
+ * @subpackage Schema_Scalpel/includes
+ * @author     Kevin Gillispie
+ */
 
 namespace SchemaScalpel;
 

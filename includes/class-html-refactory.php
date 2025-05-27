@@ -1,5 +1,14 @@
 <?php
 /**
+ * Fired during HTML generation.
+ *
+ * @package    Schema_Scalpel
+ * @subpackage Schema_Scalpel/includes
+ * @author     Kevin Gillispie
+ * @since      1.4
+ */
+
+/**
  * Class for properly generating HTML output.
  *
  * @package    Schema_Scalpel

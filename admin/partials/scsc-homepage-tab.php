@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Homepage schema tab.
  *
