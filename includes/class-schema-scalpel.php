@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Schema_Scalpel {
 
-
 	/**
 	 * Variable initialized as Schema_Scalpel_Loader class.
 	 *
@@ -47,7 +46,9 @@ class Schema_Scalpel {
 	 */
 	protected $version;
 
-
+	/**
+	 * Initialize the plugin and set its properties.
+	 */
 	public function __construct() {
 		$this->version        = SCHEMA_SCALPEL_VERSION;
 		$this->schema_scalpel = 'schema-scalpel';
@@ -56,6 +57,7 @@ class Schema_Scalpel {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 		$this->register();
+		$this->add_plugin_action_links();
 	}
 
 	/**
@@ -277,5 +279,25 @@ class Schema_Scalpel {
 				}
 			);
 		}
+	}
+
+	/**
+	 * Add action links to the plugins page.
+	 */
+	private function add_plugin_action_links() {
+		add_filter( 'plugin_action_links_' . plugin_basename( SCHEMA_SCALPEL_PLUGIN ), array( $this, 'plugin_action_links' ) );
+	}
+
+	/**
+	 * Add links to the plugins page.
+	 *
+	 * @param array $links Array of plugin action links.
+	 * @return array Modified array of plugin action links.
+	 */
+	public function plugin_action_links( $links ) {
+		$add_new_link  = '<a href="admin.php?page=scsc" target="_blank">' . __( 'Add New/Edit', 'schema-scalpel' ) . '</a>';
+		$settings_link = '<a href="' . admin_url( 'admin.php?page=scsc_settings' ) . '">' . __( 'Settings', 'schema-scalpel' ) . '</a>';
+		array_unshift( $links, $add_new_link, $settings_link );
+		return $links;
 	}
 }
