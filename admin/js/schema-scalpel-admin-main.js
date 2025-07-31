@@ -244,10 +244,22 @@ function disableCreateSchemaButtons(button) {
     button.setAttribute("disabled", "true");
 }
 
+function updateBlogPostingForm(postID) {
+    if (postID) {
+        document.getElementById("selectedPost").innerText = "(ID# " + postID + ")";
+        document.getElementById("updateType2").setAttribute("value", postID);
+        document.getElementById("updateType2").removeAttribute("disabled");
+    } else {
+        document.getElementById("selectedPost").innerText = "";
+        document.getElementById("updateType2").setAttribute("disabled", "true");
+    }
+}
+
 function onPostSelectChange(el) {
     let type = el.id.substring(0, 5) || el.parentElement.id.substring(0, 5);
     let postID = el.value || el.dataset.value;
     let indexInList = el.selectedIndex || el.dataset.index;
+    updateBlogPostingForm(postID);
     document.querySelectorAll(".edit-block-button").forEach(btn => {
         btn.dataset.id = postID;
     });
