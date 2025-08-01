@@ -49,6 +49,23 @@ Most importantly, **[Google recommends that you use JSON-LD!](https://developers
 
 ## Changelog
 
+#### 1.5
+
+[UPDATE] The BlogPosting schema generator has been greatly improved. It now gives you the option to update existing schema with more-robust options.
+
+#### 1.4.7
+
+[FIX] Schema wrapped in square braces were not displaying correctly in the admin page.
+
+#### 1.4.6
+
+[UPDATE] Misapplied updates from 1.4.5.
+
+#### 1.4.5
+
+[FIX] BreadcrumbList now saves correctly.
+[FIX] Typo correction.
+
 #### 1.4.4
 
 [ADD] For sites with large page/post counts, users can now filter by page/post title for quick searches.
