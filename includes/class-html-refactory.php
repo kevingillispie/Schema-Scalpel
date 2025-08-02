@@ -1,14 +1,5 @@
 <?php
 /**
- * Fired during HTML generation.
- *
- * @package    Schema_Scalpel
- * @subpackage Schema_Scalpel/includes
- * @author     Kevin Gillispie
- * @since      1.4
- */
-
-/**
  * Class for properly generating HTML output.
  *
  * @package    Schema_Scalpel
@@ -91,7 +82,7 @@ class HTML_Refactory {
 	public function assemble_html() {
 		$tag = '<' . $this->tagname . $this->format_attributes() . ( ( ! $this->is_void_element() ) ? '>' . $this->inner_text . $this->child_elements . '</' . $this->tagname . '>' : ' />' );
 		preg_match( '/<([^ ]+)/', $tag, $is_match );
-		return ( 0 <= array_search( $is_match[1], $this->allowed_tags ) ? $tag : \wp_kses_post( $tag ) );
+		return ( 0 <= array_search( $is_match[1], $this->allowed_tags ) ? $tag : wp_kses_post( $tag ) );
 	}
 
 	/**
@@ -105,7 +96,7 @@ class HTML_Refactory {
 			} elseif ( 1 === preg_match( '/^(?:https?:\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?)|(?:\/[^\s]*)$/', $value ) && false === strstr( $attr, 'schema' ) ) {
 				$attrs[] = $attr . '="' . $this->format_url_attribute( $value ) . '"';
 			} else {
-				$attrs[] = $attr . '="' . \esc_attr( $value ) . '"';
+				$attrs[] = $attr . '="' . esc_attr( $value ) . '"';
 			}
 		}
 		return ' ' . implode( ' ', $attrs );
@@ -117,7 +108,7 @@ class HTML_Refactory {
 	 * @param array $value Array of classes.
 	 */
 	private function format_class_attribute( $value ): string {
-		return \esc_attr( implode( ' ', $value ) );
+		return esc_attr( implode( ' ', $value ) );
 	}
 
 	/**
@@ -126,7 +117,7 @@ class HTML_Refactory {
 	 * @param string $value URL as string.
 	 */
 	private function format_url_attribute( $value ): string {
-		return \esc_url( $value );
+		return esc_url( $value );
 	}
 
 	/**

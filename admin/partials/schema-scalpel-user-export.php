@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $wpdb, $prefix;
 $prefix  = $wpdb->prefix;
-$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s;', $prefix . 'scsc_custom_schemas' ), \ARRAY_A );
+$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s;', $prefix . 'scsc_custom_schemas' ), ARRAY_A );
 
 echo '<main class="container mt-5 ms-0">';
 
 $scalpel = new HTML_Refactory(
 	'img',
 	array(
-		'src'   => \plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg',
+		'src'   => plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg',
 		'class' => array( 'mt-n4' ),
 	),
 );
@@ -158,7 +158,7 @@ $code = new HTML_Refactory(
 	array(
 		'class' => array( 'rounded' ),
 	),
-	esc_html( $prefix )
+	\esc_html( $prefix )
 );
 
 echo new HTML_Refactory(
@@ -197,7 +197,7 @@ echo new HTML_Refactory(
 	array(
 		'id'          => 'wpdb_prefix',
 		'type'        => 'text',
-		'placeholder' => esc_attr( $prefix ),
+		'placeholder' => \esc_attr( $prefix ),
 	)
 );
 
@@ -214,8 +214,8 @@ if ( $results ) {
 
 	$code_tags = '';
 	foreach ( $results as $key => $value ) {
-		if ( $results[ $key ]['schema_type'] != 'example' ) {
-			$escaped = htmlentities( $results[ $key ]['custom_schema'] );
+		if ( 'example' !== $results[ $key ]['schema_type'] ) {
+			$escaped = str_replace( array( "\r\n", "\n", "\r" ), '', htmlentities( $results[ $key ]['custom_schema'] ) );
 			$span    = new HTML_Refactory(
 				'span',
 				array( 'class' => array( 'wpdb-prefix' ) ),
@@ -225,13 +225,12 @@ if ( $results ) {
 			$code_tags .= new HTML_Refactory(
 				'code',
 				array( 'class' => array( 'd-inline-block', 'py-2', 'px-1', 'w-100' ) ),
-				'INSERT INTO ' . $span . 'scsc_custom_schemas (`schema_type`, `post_id`, `custom_schema`) VALUES (' . \esc_html( $results[ $key ]['schema_type'] ) . ', ' . \esc_html( $results[ $key ]['post_id'] ) . ', ' . \esc_html( $escaped ),
+				'INSERT INTO ' . $span . "scsc_custom_schemas (`schema_type`, `post_id`, `custom_schema`) VALUES ('" . \esc_html( $results[ $key ]['schema_type'] ) . "', '" . \esc_html( $results[ $key ]['post_id'] ) . "', '" . \esc_html( $escaped ) . "';",
 			) . new HTML_Refactory(
 				'br',
 				array(),
 				'',
-				'',
-				true
+				''
 			);
 		}
 	}

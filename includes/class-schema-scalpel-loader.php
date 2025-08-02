@@ -1,11 +1,4 @@
 <?php
-/**
- * Fired during plugin initialization.
- *
- * @package    Schema_Scalpel
- * @subpackage Schema_Scalpel/includes
- * @author     Kevin Gillispie
- */
 
 namespace SchemaScalpel;
 
@@ -103,11 +96,11 @@ class Schema_Scalpel_Loader {
 	 */
 	public function run() {
 		foreach ( $this->filters as $hook ) {
-			\add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
 		foreach ( $this->actions as $hook ) {
-			\add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 	}
 }

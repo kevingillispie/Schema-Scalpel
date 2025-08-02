@@ -135,21 +135,7 @@ class Schema_Scalpel_Admin {
 			}
 
 			$blog_posting = <<<BLOGPOSTING
-{
-    "@context":"https://schema.org",
-    "@type":"{$post_type}",
-    "@id":"{$post_permalink}#blogposting",
-    "headline":"{$post_title}",
-    "url":"{$post_permalink}",
-    {$post_thumbnail_schema}
-    "datePublished":"{$post_published_time}",
-    "dateModified":"{$post_modified_time}",
-    "author":[{"@type":"{$author_type}","name":"{$author_name}","url":"{$author_url}"}],
-    "publisher":[{"@type":"{$author_type}","name":"{$author_name}","url":"{$author_url}"}],
-    "description":"{$post_excerpt}",
-    {$post_keywords_schema}
-    "mainEntityOfPage":{"@id":"{$post_permalink}"}
-}
+{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;{$post_type}&quot;,&quot;@id&quot;:&quot;{$post_permalink}#blogposting&quot;,&quot;headline&quot;:&quot;{$post_title}&quot;,&quot;url&quot;:&quot;{$post_permalink}&quot;,{$post_thumbnail_schema}&quot;datePublished&quot;:&quot;{$post_published_time}&quot;,&quot;dateModified&quot;:&quot;{$post_modified_time}&quot;,&quot;author&quot;:[{&quot;@type&quot;:&quot;{$author_type}&quot;,&quot;name&quot;:&quot;{$author_name}&quot;,&quot;url&quot;:&quot;{$author_url}&quot;}],&quot;publisher&quot;:[{&quot;@type&quot;:&quot;{$author_type}&quot;,&quot;name&quot;:&quot;{$author_name}&quot;,&quot;url&quot;:&quot;{$author_url}&quot;}],&quot;description&quot;:&quot;{$post_excerpt}&quot;,{$post_keywords_schema}&quot;mainEntityOfPage&quot;:{&quot;@id&quot;:&quot;{$post_permalink}&quot;}}
 BLOGPOSTING;
 
 			// If replacing or updating existing schema, delete old schema first.

@@ -18,9 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $tab_name = 'posts';
 
-$all_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='post' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), \ARRAY_A );
+$all_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='post' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), ARRAY_A );
 
-$schema_results_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE schema_type='posts';", $wpdb->prefix . 'scsc_custom_schemas' ), \ARRAY_A );
+$schema_results_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE schema_type='posts';", $wpdb->prefix . 'scsc_custom_schemas' ), ARRAY_A );
 $existing_schema_ids  = array();
 
 foreach ( $schema_results_posts as $key => $value ) :
@@ -31,7 +31,7 @@ echo '<div class="mb-5">';
 echo new HTML_Refactory(
 	'h2',
 	array(),
-	\esc_attr( 'Post Schema' )
+	esc_attr( 'Post Schema' )
 );
 
 $list_of_posts = '';
@@ -118,7 +118,7 @@ echo new HTML_Refactory(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
 			'style' => 'width:auto',
 		),
-		\esc_html( 'Current:' )
+		esc_html( 'Current:' )
 	) . new HTML_Refactory(
 		'div',
 		array( 'id' => 'current_' . esc_attr( $tab_name ) . '_schema' ),
@@ -132,7 +132,7 @@ require 'scsc-create-new-schema.php';
 
 echo '</div></div>';
 
-\add_action(
+add_action(
 	'admin_footer',
 	function () {
 		echo <<<SCRIPT

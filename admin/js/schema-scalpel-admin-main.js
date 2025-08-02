@@ -353,8 +353,10 @@ function createNewSchema(type, id) {
     request.onreadystatechange = () => {
         if (request.readyState == 4) location.reload();
     }
-    request.open("GET", '/wp-admin/admin.php?page=scsc&schemaType=' + type + '&postID=' + id + '&create=' + encodeURIComponent(formatted));
-    request.send();
+    request.open("POST", "/wp-admin/admin.php?page=scsc");
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    let data = `schemaType=${encodeURIComponent(type)}&postID=${encodeURIComponent(id)}&create=${encodeURIComponent(formatted)}`;
+    request.send(data);
 }
 
 function updateCurrentSchema(id, event) {
@@ -368,8 +370,11 @@ function updateCurrentSchema(id, event) {
             location.reload();
         }
     }
-    request.open("GET", "/wp-admin/admin.php?page=scsc&update=" + id + "&schema=" + encodeURIComponent(formatted));
-    request.send();
+
+    request.open("POST", "/wp-admin/admin.php?page=scsc");
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    let data = `update=${encodeURIComponent(id)}&schema=${encodeURIComponent(formatted)}`;
+    request.send(data);
 }
 
 function getSchemaIDFromDataAttribute(element) {

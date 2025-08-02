@@ -2,80 +2,121 @@
 /**
  * Plugin Name:       Schema Scalpel
  * Plugin URI:        https://schemascalpel.com/
- * Description:       A simple plugin to customize your site's schema on a per-page basis.
- * Version:           1.5
+ * Description:       Boost your site’s SEO with Schema Scalpel, a user-friendly plugin for crafting custom schema markup on a per-page basis.
+ * Version:           1.6
+ * Requires at least: 5.0
+ * Requires PHP:      7.4
+ * Tested up to:      6.8
  * Author:            Kevin Gillispie
  * Author URI:        https://kevingillispie.com
- * License:           GPL-3.0
- * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
+ * License:           GPLv3 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       schema-scalpel
  *
- * Schema Scalpel lets you customize your site's schema on a per-page basis.
- * Copyright (C) 2021 - 2025 Kevin Gillispie
+ * Enhance your site’s structured data with per-page schema control.
+ * Copyright (C) 2021 Kevin Gillispie
  *
- * @link              https://schemascalpel.com
- * @package           Schema_Scalpel
+ * @link https://schemascalpel.com
+ * @package SchemaScalpel
  */
 
 namespace SchemaScalpel;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit();
+	exit;
 }
 
-define( 'SCHEMA_SCALPEL_VERSION', '1.5' );
+define( 'SCHEMA_SCALPEL_VERSION', '1.6' );
 define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'scsc' );
 define( 'SCHEMA_SCALPEL_SLUG', 'scsc_' );
 define( 'SCHEMA_SCALPEL_PLUGIN', __FILE__ );
-define( 'SCHEMA_SCALPEL_DIRECTORY', \untrailingslashit( \dirname( SCHEMA_SCALPEL_PLUGIN ) ) );
+define( 'SCHEMA_SCALPEL_DIRECTORY', \untrailingslashit( dirname( SCHEMA_SCALPEL_PLUGIN ) ) );
 
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-html-refactory.php';
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-activator.php';
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-deactivator.php';
-require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-uninstaller.php';
-
+require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-upgrade.php';
 
 \register_activation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Activator', 'activate' ) );
 \register_deactivation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Deactivator', 'deactivate' ) );
-\register_uninstall_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Uninstaller', 'uninstall' ) );
 
+/**
+ * Trigger database upgrade after plugin update or installation.
+ *
+ * @since 1.6
+ * @param \WP_Upgrader $upgrader WP_Upgrader instance.
+ * @param array        $data     Upgrade data.
+ * @return void
+ */
+function schema_scalpel_upgrader_process_complete( $upgrader, $data ) {
+	$plugin_basename = \plugin_basename( SCHEMA_SCALPEL_PLUGIN );
+
+	if ( 'update' === $data['action'] && 'plugin' === $data['type'] && ! empty( $data['plugins'] ) ) {
+		if ( \in_array( $plugin_basename, $data['plugins'], true ) ) {
+			Schema_Scalpel_Upgrade::upgrade();
+		}
+	} elseif ( 'install' === $data['action'] && 'plugin' === $data['type'] && ! empty( $data['plugin'] ) ) {
+		if ( $plugin_basename === $data['plugin'] ) {
+			Schema_Scalpel_Upgrade::upgrade();
+		}
+	}
+}
+\add_action( 'upgrader_process_complete', __NAMESPACE__ . '\\schema_scalpel_upgrader_process_complete', 10, 2 );
 
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel.php';
 
 /**
- * Run the plugin!
+ * Run the plugin.
+ *
+ * @since 1.0
+ * @return void
  */
 function run_schema_scalpel() {
 	$plugin = new Schema_Scalpel();
 	$plugin->run();
+
+	// Check plugin version against stored database version.
+	global $wpdb;
+	$settings_table = $wpdb->prefix . 'scsc_settings';
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) === $settings_table ) {
+		$stored_db_version = $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT setting_value FROM %i WHERE setting_key = %s',
+				$settings_table,
+				Schema_Scalpel_Upgrade::DB_VERSION_KEY
+			)
+		);
+		if ( null === $stored_db_version ) {
+			$stored_db_version = '0.0.0';
+		}
+		if ( \version_compare( $stored_db_version, Schema_Scalpel_Upgrade::DB_VERSION, '<' ) ) {
+			Schema_Scalpel_Upgrade::upgrade();
+		}
+	}
 }
 \add_action( 'plugins_loaded', __NAMESPACE__ . '\\run_schema_scalpel' );
 
 global $wpdb;
 $settings_table = $wpdb->prefix . 'scsc_settings';
 $table_checked  = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) );
-if ( isset( $table_checked ) && $table_checked === $settings_table ) :
-	/**
-	 * TURN OFF YOAST SCHEMA GENERATOR
-	 */
-	$yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';", $settings_table ), \ARRAY_A );
-	if ( isset( $yoast_setting[0] ) && '1' === $yoast_setting[0]['setting_value'] ) :
+if ( isset( $table_checked ) && $table_checked === $settings_table ) {
+	// Turn off Yoast schema generator.
+	$yoast_setting = $wpdb->get_results( $wpdb->prepare( 'SELECT setting_value FROM %i WHERE setting_key = %s', $settings_table, 'yoast_schema' ), ARRAY_A );
+	if ( isset( $yoast_setting[0] ) && '1' === $yoast_setting[0]['setting_value'] ) {
 		\add_filter( 'wpseo_json_ld_output', '__return_false' );
-	endif;
+	}
 
-	/**
-	 * TURN OFF AIO SEO SCHEMA
-	 */
-	$aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='aio_schema';", $settings_table ), \ARRAY_A );
-	if ( isset( $aio_setting[0] ) && '1' === $aio_setting[0]['setting_value'] ) :
+	// Turn off AIO SEO schema.
+	$aio_setting = $wpdb->get_results( $wpdb->prepare( 'SELECT setting_value FROM %i WHERE setting_key = %s', $settings_table, 'aio_schema' ), ARRAY_A );
+	if ( isset( $aio_setting[0] ) && '1' === $aio_setting[0]['setting_value'] ) {
 		\add_filter(
 			'aioseo_schema_output',
 			function ( $graphs ) {
-				foreach ( $graphs as $index => $graph ) :
+				foreach ( $graphs as $index => $graph ) {
 					unset( $graphs[ $index ] );
-			endforeach;
+				}
 				return $graphs;
 			}
 		);
-	endif;
-endif;
+	}
+}

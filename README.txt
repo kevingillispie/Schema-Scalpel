@@ -1,188 +1,182 @@
 === Schema Scalpel ===
-Contributors: kevingillispie
+Contributors: kevingillispie, dantefff
 Donate link: https://schemascalpel.com/donate/
-Tags: seo, schema, structured data, json, microdata, search engine
-Requires at least: 3.0
+Tags: seo, schema, structured data, json-ld, markup, per-page, yoast, all-in-one-seo, microdata, search engine
+Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 1.5
-Requires PHP: 7.0
-License: GPLv3 or later
-License URI: https://www.gnu.org/licenses/gpl-3.0.txt
+Stable tag: 1.6
+Requires PHP: 7.4
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Schema Scalpel helps you create rich text snippets for search engines in the format that they prefer.
+Boost your site’s SEO with Schema Scalpel, a user-friendly plugin for crafting custom schema markup on a per-page basis.
 
 == Description ==
 
-The **secret** to great schema is to _actually_ put it on your website! Many sites don't use schema, or use it incorrectly, thereby missing out on a powerful SEO and branding tool.
+Elevate your website’s SEO with **Schema Scalpel**, the ultimate tool for creating custom JSON-LD schema markup tailored to each page or post. Structured data helps search engines understand your content, improving visibility and click-through rates. Whether you’re a beginner or an SEO pro, Schema Scalpel makes it easy to enhance your site’s structured data with precision and ease.
 
-Schema Scalpel solves this problem by giving you complete control over your website’s structured data. It allows you to tell search engines exactly what you want them to know about who you are and what you do.
+### Key Features
+- Craft custom JSON-LD schema for any page, post, or site-wide.
+- Use built-in, Google-recommended schema templates for quick setup.
+- Seamlessly integrates with Yoast SEO and All in One SEO Pack.
+- User-friendly interface for all skill levels.
+- Control schema deletion with an uninstall setting for data safety.
 
-### Features
-- Create completely customized schema on any page… or _every_ page!
-- Copy and paste from a collection of built-in schema templates recommended by Google
-- Works with the SEO plugins Yoast and All-in-One
+Get started today and optimize your site’s search presence with Schema Scalpel!
 
 == Installation ==
 
 ### From your WordPress dashboard:
+1. Visit **Plugins > Add New**.
+2. Search for **Schema Scalpel**.
+3. Click **Install Now**.
+4. Click **Activate**.
+5. Access the **Schema Scalpel** menu in your WordPress admin to start customizing schema.
 
-- Visit `Plugins > Add New`
-- Search for `Schema Scalpel`
-- Click `Install`
-- Activate Schema Scalpel from your Plugins page.
-
-### From WordPress.org:
-
-- Download Schema Scalpel.
-- Upload the `schema-scalpel` directory to your `/wp-content/plugins/` directory (using one of the following: FTP, SFTP, SCP, et al.)
-- Activate Schema Scalpel from your Plugins page.
-
-You will then find a Schema Scalpel menu item in your WordPress admin dashboard.
+### Manual Installation:
+1. Download Schema Scalpel from WordPress.org.
+2. Upload the `schema-scalpel` directory to `/wp-content/plugins/` via FTP or similar.
+3. Go to **Plugins** in your WordPress admin and activate **Schema Scalpel**.
+4. Find the **Schema Scalpel** menu in your dashboard to configure schema settings.
 
 == Frequently Asked Questions ==
 
-### What is schema?
+### What is schema markup?
+Schema markup (structured data) is code that helps search engines understand your website’s content, such as articles, products, or FAQs. It enhances search results with rich snippets, improving visibility and clicks.
 
-Schema, also known as structured data, is a form of microdata. I know that clarifies nothing, but stay with me here. Schema allows a website to give search engines precise information about the nature and content of the website.
+### Does Schema Scalpel work with Yoast or All in One SEO?
+Yes! Schema Scalpel integrates seamlessly with Yoast SEO and All in One SEO Pack, allowing you to disable their schema output and use custom JSON-LD markup instead.
 
-Organizations, businesses, and individuals all have different types of information necessary for describing who and what they are and what they do. Schema is how that information is conveyed to search engines so that the websites associated with those entities show up in the most relevant search results.
+### What’s new in version 1.6?
+Version 1.6 introduces database schema improvements for better performance, a “Settings” link on the Plugins page for quick access, and a `delete_on_uninstall` setting to control data removal during uninstallation.
 
-### JSON-LD vs. Microdata: What's the Difference?
-
-Both of these forms of structured data will provide to search engines and their respective bots the information they need to understand your website.
-
-The primary difference is that microdata is written into and dispersed throughout the HTML of your page. This makes maintenance thereof very impractical. JavaScript Object Notation for Linked Data (JSON-LD), on the other hand, is contained wholly within a single set of `script` tags making it very easy to create, update, and improve. 
-
-Most importantly, **[Google recommends that you use JSON-LD!](https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data#format-placement "Introduction to Structured Data")** Give the search engines what they ask for in the format that they prefer, and they'll rank your site higher.
+### Why use JSON-LD instead of microdata?
+JSON-LD is Google’s preferred format for structured data because it’s easier to manage within a single `<script>` tag, unlike microdata, which is embedded throughout HTML. Schema Scalpel uses JSON-LD for simplicity and compliance. [Learn more](https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data#format-placement "Introduction to Structured Data" rel="nofollow").
 
 == Changelog ==
 
+= 1.6 =
+* [NEW] Added a "View All" and “Settings” link on the Plugins page for quick access to the admin panel.
+* [UPDATE] Improved database schema: `id` column now `BIGINT UNSIGNED` and `custom_schema` column now `MEDIUMBLOB` for better scalability.
+* [UPDATE] Added `delete_on_uninstall` setting to control whether tables are dropped during plugin deletion.
+* [UPDATE] Enhanced code to meet WordPress Coding Standards, removing short ternaries and ensuring inline comments end with periods.
+* [FIX] Resolved uninstallation bug to respect the `delete_on_uninstall` setting.
+
 = 1.5 =
-[UPDATE] The BlogPosting schema generator has been greatly improved. It now gives you the option to update existing schema with more-robust options.
+* [UPDATE] Improved BlogPosting schema generator with more robust options for updating existing schema.
 
 = 1.4.7 =
-[FIX] Schema wrapped in square braces were not displaying correctly in the admin page.
+* [FIX] Fixed display issue with schema wrapped in square brackets on the admin page.
 
 = 1.4.6 =
-[UPDATE] Misapplied updates from 1.4.5.
+* [UPDATE] Applied corrections from version 1.4.5.
 
 = 1.4.5 =
-[FIX] BreadcrumbList now saves correctly.
-[FIX] Typo correction. 
+* [FIX] Corrected saving of BreadcrumbList schema.
+* [FIX] Fixed typo in documentation.
 
 = 1.4.4 =
-[ADD] For sites with large page/post counts, users can now filter by page/post title for quick searches.
-[UPDATE] Numerous maintenance updates to the codebase. 
+* [NEW] Added title-based filtering for sites with large page/post counts.
+* [UPDATE] Performed maintenance updates to the codebase.
 
 = 1.4.3 =
-[UPDATE] A few housekeeping updates.
-[UPDATE] Compatibility with WordPress 6.7
+* [UPDATE] Minor housekeeping updates.
+* [UPDATE] Confirmed compatibility with WordPress 6.7.
 
 = 1.4.2 =
-
-[UPDATE] Compatibility with WordPress 6.6
-[FIX] Schema Scalpel user [dantefff](https://github.com/dantefff "dantefff's GitHub Profile") went above and beyond and sumbitted a pull request to fix a longstanding bug! _Thank you!_
+* [UPDATE] Confirmed compatibility with WordPress 6.6.
+* [FIX] Resolved a longstanding bug, thanks to contributor [dantefff](https://github.com/dantefff "dantefff's GitHub Profile" rel="nofollow").
 
 = 1.4.1 =
-[FIX] Exterminated bug that prevented admin pages from loading.
+* [FIX] Fixed a bug preventing admin pages from loading.
 
 = 1.4 =
-[NEW] The entire codebase has been rebuilt with the addition of a custom HTML generator! Simple, yet effective.
-
-[UPDATE] Extensive updates were made to bring new and existing code into conformity with the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards "WordPress Coding Standards for PHP_CodeSniffer").
-
-[UPDATE] Admin JavaScript has been tightened up, which leads to...
-
-[FIX] The schema-editing JS should be in tip-top shape!
+* [NEW] Rebuilt codebase with a custom HTML generator for improved performance.
+* [UPDATE] Ensured full compliance with WordPress Coding Standards.
+* [UPDATE] Optimized admin JavaScript for better schema editing.
+* [FIX] Improved schema-editing JavaScript functionality.
 
 = 1.3.2 =
-[UPDATE] Brought the codebase into greater conformity with the WordPress Coding Standards.
+* [UPDATE] Enhanced compliance with WordPress Coding Standards.
 
 = 1.3.1 =
-[UPDATE] Added clarification to the BlogPosting schema generator process.
+* [UPDATE] Clarified the BlogPosting schema generator process.
 
 = 1.3 =
-[NEW] You can now auto-generate schema for all your blog posts with one click! 
-
-[UPDATE] CSS framework updated to Bootstrap v5.3.2. 
-
-[UPDATE] Various UI improvements. 
-
-[UPDATE] Various PHP updates throughout the plugin.
-
-[FIX] Menu item logo sizing.
+* [NEW] Added one-click schema generation for all blog posts.
+* [UPDATE] Upgraded CSS framework to Bootstrap v5.3.2.
+* [UPDATE] Improved UI elements.
+* [UPDATE] Updated PHP code throughout the plugin.
+* [FIX] Fixed menu item logo sizing.
 
 = 1.2.7.1 =
-[FIX] Click-to-edit feature added to global, pages, and posts tabs.
+* [NEW] Added click-to-edit feature for global, pages, and posts tabs.
 
 = 1.2.7 =
-[UPDATE] Clicking on schema will immediately open the popup textbox for editing. 
-[FIX] Bug fixes.
+* [UPDATE] Enabled immediate schema editing via popup textbox.
+* [FIX] Addressed minor bugs.
 
 = 1.2.6.2 =
-[UPDATE] Replaced menu icon, and updated menu names.
-
-[UPDATE] Minor updates to the codebase in anticipation of an imminent overhaul(!).
+* [UPDATE] Replaced menu icon and updated menu names.
+* [UPDATE] Prepared codebase for a major overhaul.
 
 = 1.2.5.5 =
-[FIX] The `schema_type` for homepage schema as found in the custom schema table is now consistent across all PHP file partials.
-_Please deactivate and re-activate the plugin to initiate the update._
+* [FIX] Standardized `schema_type` for homepage schema across all files. Deactivate and reactivate to apply.
 
 = 1.2.5.4 =
-THIS IS A NECESSARY UPDATE.
-[FIX] The initial tab setting in the database has been updated to `homepage`. The schema-editing page will now load properly.
-
-[FIX] The initial search query parameter is now fully defaulted to `s`. 
+* [FIX] Set initial tab to `homepage` for proper schema-editing page loading.
+* [FIX] Defaulted search query parameter to `s`.
 
 = 1.2.5.3 =
-[FIX] If the absolute path to the plugin contained the word `home` in it, the `scsc-create-new-schema.php` file wouldn't properly switch between the schema-type tabs. Naming standard changed to `homepage`.
+* [FIX] Fixed tab-switching issue when the plugin path contained “home”.
 
 = 1.2.5.2 =
-[FIX] `admin/vars` directory didn't get pushed with last update. >:(
+* [FIX] Included missing `admin/vars` directory.
 
 = 1.2.5 =
-[NEW] Added new example schema as highlighted by the Google Developer documentation, including `COVID Announcement` schema.
-
-[UPDATE] Updated `NewsArticle` schema example to include `author` schema.
-
-[UPDATE] Exmample schema are now called directly from an array rather than the database.
-
-[FIXED] Spaces after commas are now limited to one to maintain traditional punctuation practices. 
+* [NEW] Added Google-recommended example schemas, including `COVID Announcement`.
+* [UPDATE] Enhanced `NewsArticle` schema with `author` field.
+* [UPDATE] Sourced example schemas from an array instead of the database.
+* [FIX] Standardized spacing after commas.
 
 = 1.2.4.1 =
-[FIXED] The create and edit schema buttons were being generated with the incorrect schema type. Each tab will now display the appropriate schema (i.e. home, global, pages, posts).
+* [FIX] Corrected schema type generation for create/edit buttons.
 
 = 1.2.4 =
-[FIXED] Should the `wp_head()` function be called more than once, some functions in the `/public/class-schema-scalpel-public.php` file would throw a fatal PHP error due to redundant declarations. 
+* [FIX] Prevented fatal PHP errors from redundant function declarations in `class-schema-scalpel-public.php`.
 
 = 1.2.3 =
-[UPDATE] Schema Scalpel works with WordPress 6.0!
-
-[FIXED] A few CSS class names that weren't updated to Bootstrap 5.x naming standards.
-
-[FIXED] Page and post titles were not displaying properly due to sanitization function.
+* [UPDATE] Confirmed compatibility with WordPress 6.0.
+* [FIX] Updated CSS class names to Bootstrap 5.x standards.
+* [FIX] Fixed page/post title display due to sanitization issues.
 
 = 1.2.2 =
-[UPDATED] The schema/JSON-LD format error checking has been greatly improved. 
+* [UPDATE] Improved schema/JSON-LD format error checking.
 
 = 1.2.1 =
-[FIXED] Version 1.2 was pushed without updating every instance of version number within the plugin.
+* [FIX] Updated version numbers consistently across the plugin.
 
 = 1.2 =
-[NEW] Multisite activation is now possible!
-
-[UPDATE] Removed some comment clutter.
+* [NEW] Enabled multisite activation.
+* [UPDATE] Removed unnecessary comments.
 
 = 1.0.1 =
-[FIXED] Replaced use of `wp_print_scripts` hook with `wp_enqueue_scripts` as the former prevented the loading of schema with some themes.
-
-[FIXED] A bunch of stuff I have changed since publishing Schema Scalpel but have forgotten about because I didn't know how to use my Subversion client.
-
-[UPDATE] Plugin init function `run_schema_scalpel` now called via `plugins_loaded` hook.
-
-[UPDATE] Changed the default search key to `s` to conform to WordPress's default search functionality.
-
-[UPDATE] Schema Scalpel logo now uses font paths.
+* [FIX] Replaced `wp_print_scripts` with `wp_enqueue_scripts` for better theme compatibility.
+* [FIX] Addressed multiple undocumented fixes.
+* [UPDATE] Moved plugin initialization to `plugins_loaded` hook.
+* [UPDATE] Set default search key to `s`.
+* [UPDATE] Updated logo to use font paths.
 
 = 1.0 =
-The unleashing of the Schema Scalpel upon the world. You might say that the plugin is now “off the chain”.
+* [NEW] Initial release of Schema Scalpel.
+
+== Upgrade Notice ==
+
+= 1.6 =
+Back up your database before upgrading to 1.6, as it includes schema changes to improve performance. A new "View All" and “Settings” link and uninstallation options enhance usability.
+
+== Screenshots ==
+
+1. The Schema Scalpel admin panel for creating and editing custom schema.
+2. Example of a JSON-LD schema template selection.
+3. Settings page for configuring Yoast/AIOSEO integration and uninstall options.

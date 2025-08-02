@@ -28,7 +28,7 @@ function starts_with( $haystack, $needle ) {
  * Get database exclusions.
  */
 global $wpdb;
-$current_excluded_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'exclude';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+$current_excluded_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'exclude';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 $database_exclusions      = array();
 foreach ( $current_excluded_results as $key => $value ) {
 	array_push( $database_exclusions, $current_excluded_results[ $key ]['setting_value'] );
@@ -40,7 +40,7 @@ foreach ( $current_excluded_results as $key => $value ) {
 
 $all_params;
 if ( isset( $_GET['save'] ) ) {
-	$params = parse_url( \sanitize_url( \wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_QUERY );
+	$params = parse_url( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_QUERY );
 	$params = explode( '&', $params );
 
 	foreach ( $params as $key => $value ) {
@@ -53,7 +53,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'enable_website' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_ws_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'website_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_ws_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'website_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 			if ( ! $has_ws_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -74,7 +74,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'enable_webpage' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_wp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'webpage_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+			$has_wp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'webpage_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 			if ( ! $has_wp_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -95,7 +95,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'enable_breadcrumbs' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+			$has_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 			if ( ! $has_bc_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -116,7 +116,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'disable_yoast' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'yoast_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+			$has_yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'yoast_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 			if ( ! $has_yoast_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -134,7 +134,7 @@ if ( isset( $_GET['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'disable_aio' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'aio_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+			$has_aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'aio_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 			if ( ! $has_aio_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -190,12 +190,33 @@ if ( isset( $_GET['save'] ) ) {
 	}
 
 	/**
+	 * Delete data on uninstall.
+	 */
+	foreach ( $all_params as $key => $value ) {
+		if ( 'delete_on_uninstall' === $all_params[ $key ][0] ) {
+			global $wpdb;
+			$has_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'delete_on_uninstall';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			if ( ! $has_bc_setting[0] ) {
+				$wpdb->insert(
+					$wpdb->prefix . 'scsc_settings',
+					array(
+						'setting_key'   => 'delete_on_uninstall',
+						'setting_value' => $all_params[ $key ][1],
+					)
+				);
+			} else {
+				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'delete_on_uninstall' ) );
+			}
+		}
+	}
+
+	/**
 	 * Set `urlTemplate` search parameter.
 	 */
 	foreach ( $all_params as $key => $value ) {
 		if ( 'search_param' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_sp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE setting_key = 'search_param';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+			$has_sp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'search_param';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 			if ( ! $has_sp_setting[0] ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'scsc_settings',
@@ -218,30 +239,30 @@ global $wpdb;
 /**
 * Get pages.
 */
-$all_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='page' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), \ARRAY_A );
+$all_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE post_type='page' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), ARRAY_A );
 
 /**
 * Get posts.
 */
-$all_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='post' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), \ARRAY_A );
+$all_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE post_type='post' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), ARRAY_A );
 
 /**
 * Get website setting.
 */
 $is_website_enabled = 1;
-$ws_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='website_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+$ws_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='website_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 if ( '0' === $ws_setting[0]['setting_value'] ) {
 	$is_website_enabled = 0;
 }
 
-$search_query_param = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='search_param';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+$search_query_param = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='search_param';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 $search_key         = $search_query_param[0]['setting_value'];
 
 /**
 * Get webpage setting.
 */
 $is_webpage_enabled = 1;
-$wp_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='webpage_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+$wp_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='webpage_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 if ( '0' === $wp_setting[0]['setting_value'] ) {
 	$is_webpage_enabled = 0;
 }
@@ -250,7 +271,7 @@ if ( '0' === $wp_setting[0]['setting_value'] ) {
 * Get breadcrumb setting.
 */
 $are_breadcrumbs_enabled = 1;
-$bc_setting              = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+$bc_setting              = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 if ( '0' === $bc_setting[0]['setting_value'] ) {
 	$are_breadcrumbs_enabled = 0;
 }
@@ -259,7 +280,7 @@ if ( '0' === $bc_setting[0]['setting_value'] ) {
 * Get Yoast setting.
 */
 $is_yoast_disabled = 1;
-$yoast_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='yoast_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+$yoast_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='yoast_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 if ( '0' === $yoast_setting[0]['setting_value'] ) {
 	$is_yoast_disabled = 0;
 }
@@ -268,15 +289,24 @@ if ( '0' === $yoast_setting[0]['setting_value'] ) {
 * Get AIOSEO setting.
 */
 $is_aio_disabled = 1;
-$aio_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='aio_schema';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
+$aio_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='aio_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
 if ( '0' === $aio_setting[0]['setting_value'] ) {
 	$is_aio_disabled = 0;
+}
+
+/**
+* Get data delete setting.
+*/
+$is_data_deleted = 0;
+$delete_setting  = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='delete_on_uninstall';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+if ( '1' === $delete_setting[0]['setting_value'] ) {
+	$is_data_deleted = 1;
 }
 
 $example_clarification = "<p><em>Your site's information will be substituted in the appropriate</em> <code style='color:black'>{&quot;key&quot;: &quot;value&quot;}</code> <em>pairs below.</em></p>";
 
 $if_yoast = 'disabled';
-foreach ( \get_plugins() as $key => $value ) {
+foreach ( get_plugins() as $key => $value ) {
 	if ( stripos( $value['TextDomain'], 'wordpress-seo' ) > -1 ) {
 		$if_yoast = '';
 		break;
@@ -284,7 +314,7 @@ foreach ( \get_plugins() as $key => $value ) {
 }
 
 $if_aio = 'disabled';
-foreach ( \get_plugins() as $key => $value ) {
+foreach ( get_plugins() as $key => $value ) {
 	if ( stripos( $value['TextDomain'], 'all-in-one-seo-pack' ) > -1 ) {
 		$if_aio = '';
 		break;
@@ -308,7 +338,7 @@ $scalpel_icon = new HTML_Refactory(
 	'img',
 	array(
 		'class' => array( 'mt-n4' ),
-		'src'   => \esc_url( \plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ),
+		'src'   => \esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ),
 	)
 );
 
@@ -401,9 +431,8 @@ echo new HTML_Refactory(
 				( ( 1 === $is_website_enabled ) ? 'checked' : '' ) => '',
 			),
 			'',
-			'',
-			true
-		) . new HTML_Refactory( 'strong', array(), 'Enable ' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebSite' ) . wp_kses_post( wp_slash( $default_setting_label_html ) )
+			''
+		) . new HTML_Refactory( 'strong', array(), 'Enable ' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebSite' ) . \wp_kses_post( \wp_slash( $default_setting_label_html ) )
 	) . new HTML_Refactory(
 		'label',
 		array( 'for' => 'disable_website' ),
@@ -418,8 +447,7 @@ echo new HTML_Refactory(
 				( ( 0 === $is_website_enabled ) ? 'checked' : '' ) => '',
 			),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory( 'strong', array(), 'Disable ' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebSite' )
 	)
 );
@@ -434,7 +462,7 @@ echo new HTML_Refactory(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
 			'style' => 'wdith:auto',
 		),
-		esc_html( 'WebSite Format Example:' )
+		\esc_html( 'WebSite Format Example:' )
 	) . wp_kses( $example_clarification, 'post' ) . new HTML_Refactory(
 		'pre',
 		array(
@@ -471,7 +499,7 @@ echo new HTML_Refactory(
 				'class'       => array( 'me-2' ),
 				'name'        => 'search_param',
 				'type'        => 'text',
-				'placeholder' => 'Current: ' . sanitize_text_field( $search_key ),
+				'placeholder' => 'Current: ' . \sanitize_text_field( $search_key ),
 				'disabled'    => '',
 			)
 		) . new HTML_Refactory(
@@ -517,8 +545,7 @@ echo new HTML_Refactory(
 		'class' => array( 'border', 'bg-light', 'rounded' ),
 	),
 	'',
-	'',
-	true
+	''
 );
 
 echo new HTML_Refactory(
@@ -546,9 +573,8 @@ echo new HTML_Refactory(
 				( ( $is_webpage_enabled == 1 ) ? 'checked' : '' ) => '',
 			),
 			'',
-			'',
-			true
-		) . new HTML_Refactory( 'strong', array(), 'Enable' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' ) . wp_kses_post( wp_slash( $default_setting_label_html ) )
+			''
+		) . new HTML_Refactory( 'strong', array(), 'Enable' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' ) . \wp_kses_post( \wp_slash( $default_setting_label_html ) )
 	) . new HTML_Refactory(
 		'label',
 		array( 'for' => 'disable_webpage' ),
@@ -563,8 +589,7 @@ echo new HTML_Refactory(
 				( ( $is_webpage_enabled == 0 ) ? 'checked' : '' ) => '',
 			),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory( 'strong', array(), 'Disable' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' )
 	)
 );
@@ -580,7 +605,7 @@ echo new HTML_Refactory(
 			'style' => 'wdith:auto',
 		),
 		\esc_html( 'WebPage Format Example:' )
-	) . wp_kses_post( $example_clarification ) . new HTML_Refactory(
+	) . \wp_kses_post( $example_clarification ) . new HTML_Refactory(
 		'pre',
 		array(
 			'id'          => 'webpage_example',
@@ -597,8 +622,7 @@ echo new HTML_Refactory(
 		'class' => array( 'border', 'bg-light', 'rounded' ),
 	),
 	'',
-	'',
-	true
+	''
 );
 
 echo new HTML_Refactory(
@@ -626,14 +650,12 @@ echo new HTML_Refactory(
 			'path',
 			array( 'd' => 'M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z' ),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'path',
 			array( 'd' => 'm8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z' ),
 			'',
-			'',
-			true
+			''
 		)
 	) . new HTML_Refactory(
 		'div',
@@ -664,8 +686,7 @@ echo new HTML_Refactory(
 				( ( 1 === $are_breadcrumbs_enabled ) ? 'checked' : '' ) => '',
 			),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'strong',
 			array(),
@@ -689,8 +710,7 @@ echo new HTML_Refactory(
 				( ( 0 === $are_breadcrumbs_enabled ) ? 'checked' : '' ) => '',
 			),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'strong',
 			array(),
@@ -755,8 +775,7 @@ if ( 'disabled' === $if_yoast ) {
 			'br',
 			array(),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'code',
 			array( 'class' => array( 'language-js' ) ),
@@ -765,8 +784,7 @@ if ( 'disabled' === $if_yoast ) {
 			'br',
 			array(),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'code',
 			array( 'class' => array( 'language-js' ) ),
@@ -788,8 +806,7 @@ if ( 'disabled' === $if_yoast ) {
 			'br',
 			array(),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'code',
 			array( 'class' => array( 'language-js' ) ),
@@ -798,8 +815,7 @@ if ( 'disabled' === $if_yoast ) {
 			'br',
 			array(),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'code',
 			array( 'class' => array( 'language-js' ) ),
@@ -820,12 +836,12 @@ echo new HTML_Refactory(
 		new HTML_Refactory(
 			'input',
 			array(
-				'id'                             => 'enable_yoast',
-				'type'                           => 'radio',
-				'name'                           => 'disable_yoast',
-				'value'                          => '0',
+				'id'                              => 'enable_yoast',
+				'type'                            => 'radio',
+				'name'                            => 'disable_yoast',
+				'value'                           => '0',
 				( ( $is_yoast_disabled == 0 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_yoast ) => '',
+				\sanitize_text_field( $if_yoast ) => '',
 			)
 		) . new HTML_Refactory(
 			'strong',
@@ -839,18 +855,18 @@ echo new HTML_Refactory(
 		new HTML_Refactory(
 			'input',
 			array(
-				'id'                             => 'disable_yoast',
-				'type'                           => 'radio',
-				'name'                           => 'disable_yoast',
-				'value'                          => '1',
+				'id'                              => 'disable_yoast',
+				'type'                            => 'radio',
+				'name'                            => 'disable_yoast',
+				'value'                           => '1',
 				( ( $is_yoast_disabled == 1 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_yoast ) => '',
+				\sanitize_text_field( $if_yoast ) => '',
 			)
 		) . new HTML_Refactory(
 			'strong',
 			array(),
 			'Disable',
-		) . 'Yoast Schema' . wp_kses_post( $default_setting_label_html )
+		) . 'Yoast Schema' . \wp_kses_post( $default_setting_label_html )
 	)
 );
 
@@ -877,8 +893,7 @@ if ( 'disabled' === $if_aio ) {
 			'br',
 			array(),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'code',
 			array( 'class' => array( 'language-js' ) ),
@@ -887,8 +902,7 @@ if ( 'disabled' === $if_aio ) {
 			'br',
 			array(),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'code',
 			array( 'class' => array( 'language-js' ) ),
@@ -910,8 +924,7 @@ if ( 'disabled' === $if_aio ) {
 			'br',
 			array(),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'code',
 			array( 'class' => array( 'language-js' ) ),
@@ -920,8 +933,7 @@ if ( 'disabled' === $if_aio ) {
 			'br',
 			array(),
 			'',
-			'',
-			true
+			''
 		) . new HTML_Refactory(
 			'code',
 			array( 'class' => array( 'language-js' ) ),
@@ -942,12 +954,12 @@ echo new HTML_Refactory(
 		new HTML_Refactory(
 			'input',
 			array(
-				'id'                           => 'enable_aio',
-				'type'                         => 'radio',
-				'name'                         => 'disable_aio',
-				'value'                        => '0',
+				'id'                            => 'enable_aio',
+				'type'                          => 'radio',
+				'name'                          => 'disable_aio',
+				'value'                         => '0',
 				( ( $is_aio_disabled == 0 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_aio ) => '',
+				\sanitize_text_field( $if_aio ) => '',
 			)
 		) . new HTML_Refactory(
 			'strong',
@@ -961,18 +973,18 @@ echo new HTML_Refactory(
 		new HTML_Refactory(
 			'input',
 			array(
-				'id'                           => 'disable_aio',
-				'type'                         => 'radio',
-				'name'                         => 'disable_aio',
-				'value'                        => '1',
+				'id'                            => 'disable_aio',
+				'type'                          => 'radio',
+				'name'                          => 'disable_aio',
+				'value'                         => '1',
 				( ( $is_aio_disabled == 1 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_aio ) => '',
+				\sanitize_text_field( $if_aio ) => '',
 			)
 		) . new HTML_Refactory(
 			'strong',
 			array(),
 			'Disable ',
-		) . 'AIOSEO Schema' . wp_kses_post( $default_setting_label_html )
+		) . 'AIOSEO Schema' . \wp_kses_post( $default_setting_label_html )
 	)
 );
 
@@ -983,26 +995,25 @@ echo new HTML_Refactory(
 		'class' => array( 'border', 'bg-light', 'rounded' ),
 	),
 	'',
-	'',
-	true
+	''
 );
 
 echo new HTML_Refactory(
 	'h3',
 	array(),
-	\esc_html( 'Pages to Exclude from Displaying Any Schema' )
+	'Pages to Exclude from Displaying Any Schema'
 );
 
 echo new HTML_Refactory(
 	'p',
 	array(),
-	\esc_html( 'Pages to Exclude from Displaying Any Schema' )
+	'To limit the amount of data passed to search engines, pages may be excluded from displaying any schema.'
 );
 
 echo new HTML_Refactory(
 	'p',
-	array( 'class' => array( 'font-italic' ) ),
-	\esc_html( 'In most cases, it will not be necessary to exclude a page.' )
+	array( 'class' => array( 'fst-italic' ) ),
+	'In most cases, it will not be necessary to exclude a page.'
 );
 
 echo '<div style="max-height:500px;overflow-y:scroll;"><table id="excluded_schema" class="table table-dark">';
@@ -1031,13 +1042,13 @@ echo new HTML_Refactory(
 
 if ( $all_pages ) {
 
-	$url     = \get_site_url();
+	$url     = get_site_url();
 	$tr_tags = '';
 
 	foreach ( $all_pages as $key => $value ) {
 		/**
-			* CHECK FOR EXCLUDED PAGES
-			*/
+		 * CHECK FOR EXCLUDED PAGES
+		 */
 		$is_excluded = ( in_array( $all_pages[ $key ]['ID'], $database_exclusions ) ) ? true : false;
 		$text_color  = ( $is_excluded ) ? '' : 'text-secondary';
 		$checked     = ( $is_excluded ) ? 'checked' : '';
@@ -1074,8 +1085,8 @@ if ( $all_pages ) {
 					'input',
 					array(
 						'type'     => 'checkbox',
-						'id'       => 'post_num_' . sanitize_text_field( $all_pages[ $key ]['ID'] ),
-						'name'     => 'exclude_' . sanitize_text_field( $all_pages[ $key ]['ID'] ),
+						'id'       => 'post_num_' . \sanitize_text_field( $all_pages[ $key ]['ID'] ),
+						'name'     => 'exclude_' . \sanitize_text_field( $all_pages[ $key ]['ID'] ),
 						$checked   => '',
 						'data-key' => $key,
 					)
@@ -1093,6 +1104,61 @@ echo new HTML_Refactory(
 );
 
 echo '</table></div>';
+
+echo new HTML_Refactory(
+	'h3',
+	array(),
+	'Delete All Data on Uninstall?'
+);
+
+echo new HTML_Refactory(
+	'p',
+	array(),
+	'If schema data might be needed in the future, do not change this setting.'
+);
+
+echo new HTML_Refactory(
+	'div',
+	array( 'class' => array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) ),
+	'',
+	new HTML_Refactory(
+		'label',
+		array( 'for' => 'save_data' ),
+		'',
+		new HTML_Refactory(
+			'input',
+			array(
+				'id'    => 'save_data',
+				'type'  => 'radio',
+				'name'  => 'delete_on_uninstall',
+				'value' => '0',
+				( ( 0 === $is_data_deleted ) ? 'checked' : '' ) => '',
+			)
+		) . new HTML_Refactory(
+			'strong',
+			array(),
+			'Save ',
+		) . 'Data ' . \wp_kses_post( $default_setting_label_html )
+	) . new HTML_Refactory(
+		'label',
+		array( 'for' => 'delete_data' ),
+		'',
+		new HTML_Refactory(
+			'input',
+			array(
+				'id'    => 'delete_data',
+				'type'  => 'radio',
+				'name'  => 'delete_on_uninstall',
+				'value' => '1',
+				( ( 1 === $is_data_deleted ) ? 'checked' : '' ) => '',
+			)
+		) . new HTML_Refactory(
+			'strong',
+			array(),
+			'Delete ',
+		) . 'Data'
+	)
+);
 
 echo new HTML_Refactory(
 	'hr',
@@ -1120,7 +1186,7 @@ echo new HTML_Refactory(
 
 echo '</form></div></main>';
 
-\add_action(
+add_action(
 	'admin_footer',
 	function () {
 		echo '<script>';

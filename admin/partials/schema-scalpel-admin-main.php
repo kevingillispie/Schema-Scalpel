@@ -18,16 +18,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $wpdb;
 $custom_schemas_table = $wpdb->prefix . 'scsc_custom_schemas';
-if ( isset( $_GET['create'] ) ) {
-	$custom_schema = \sanitize_text_field( \wp_unslash( $_GET['create'] ) );
-	$wpdb->insert(
-		$custom_schemas_table,
-		array(
-			'custom_schema' => serialize( $custom_schema ),
-			'schema_type'   => \sanitize_text_field( \wp_unslash( $_GET['schemaType'] ) ),
-			'post_id'       => \sanitize_text_field( \wp_unslash( $_GET['postID'] ) ),
-		)
-	);
+
+if ( isset( $_POST['create'] ) ) {
+
+	$custom_schema = \sanitize_text_field( \wp_unslash( $_POST['create'] ) );
+	$schema_type   = isset( $_POST['schemaType'] ) ? \sanitize_text_field( \wp_unslash( $_POST['schemaType'] ) ) : '';
+	$post_id       = isset( $_POST['postID'] ) ? absint( \wp_unslash( $_POST['postID'] ) ) : 0;
+
+	// Validate inputs.
+	if ( ! empty( $custom_schema ) && ! empty( $schema_type ) && $post_id > 0 ) {
+		$wpdb->insert(
+			$custom_schemas_table,
+			array(
+				'custom_schema' => serialize( $custom_schema ),
+				'schema_type'   => $schema_type,
+				'post_id'       => $post_id,
+			),
+			array(
+				'%s', // custom_schema (serialized string).
+				'%s', // schema_type (string).
+				'%d', // post_id (integer).
+			)
+		);
+	}
 }
 
 if ( isset( $_GET['generate'] ) ) {
@@ -39,9 +52,28 @@ if ( isset( $_GET['generate'] ) ) {
 	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=posts">';
 }
 
-if ( isset( $_GET['update'] ) ) {
-	$custom_schema = \sanitize_text_field( \wp_unslash( $_GET['schema'] ) );
-	$wpdb->update( $custom_schemas_table, array( 'custom_schema' => serialize( $custom_schema ) ), array( 'id' => \sanitize_text_field( $_GET['update'] ) ) );
+if ( isset( $_POST['update'] ) ) {
+	$update_id     = absint( \wp_unslash( $_POST['update'] ) );
+	$custom_schema = isset( $_POST['schema'] ) ? \sanitize_text_field( \wp_unslash( $_POST['schema'] ) ) : '';
+
+	// Validate inputs.
+	if ( $update_id > 0 && ! empty( $custom_schema ) ) {
+		$wpdb->update(
+			$custom_schemas_table,
+			array(
+				'custom_schema' => serialize( $custom_schema ),
+			),
+			array(
+				'id' => $update_id,
+			),
+			array(
+				'%s', // custom_schema (serialized string).
+			),
+			array(
+				'%d', // id (integer).
+			)
+		);
+	}
 }
 
 if ( isset( $_GET['delete'] ) ) {
