@@ -23,16 +23,16 @@ if ( isset( $_POST['create'] ) ) {
 
 	$custom_schema = \sanitize_text_field( \wp_unslash( $_POST['create'] ) );
 	$schema_type   = isset( $_POST['schemaType'] ) ? \sanitize_text_field( \wp_unslash( $_POST['schemaType'] ) ) : '';
-	$post_id       = isset( $_POST['postID'] ) ? absint( \wp_unslash( $_POST['postID'] ) ) : 0;
+	$post_id_num   = isset( $_POST['postID'] ) ? absint( \wp_unslash( $_POST['postID'] ) ) : 0;
 
 	// Validate inputs.
-	if ( ! empty( $custom_schema ) && ! empty( $schema_type ) && $post_id > 0 ) {
+	if ( ! empty( $custom_schema ) && ! empty( $schema_type ) && $post_id_num > 0 ) {
 		$wpdb->insert(
 			$custom_schemas_table,
 			array(
 				'custom_schema' => serialize( $custom_schema ),
 				'schema_type'   => $schema_type,
-				'post_id'       => $post_id,
+				'post_id'       => $post_id_num,
 			),
 			array(
 				'%s', // custom_schema (serialized string).
