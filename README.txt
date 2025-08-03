@@ -61,6 +61,7 @@ JSON-LD is Google’s preferred format for structured data because it’s easier
 * [UPDATE] Added `delete_on_uninstall` setting to control whether tables are dropped during plugin deletion.
 * [UPDATE] Enhanced code to meet WordPress Coding Standards, removing short ternaries and ensuring inline comments end with periods.
 * [FIX] Resolved uninstallation bug to respect the `delete_on_uninstall` setting.
+* [FIX] Schema export SQL syntax.
 
 = 1.5 =
 * [UPDATE] Improved BlogPosting schema generator with more robust options for updating existing schema.
