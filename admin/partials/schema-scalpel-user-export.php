@@ -25,8 +25,8 @@ echo '<main class="container mt-5 ms-0">';
 $scalpel = new HTML_Refactory(
 	'img',
 	array(
-		'src'   => plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg',
-		'class' => array( 'mt-n4' ),
+		'src'   => \plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg',
+		'class' => array( 'mt-n4', 'position-absolute' ),
 	),
 );
 
@@ -225,7 +225,7 @@ if ( $results ) {
 			$code_tags .= new HTML_Refactory(
 				'code',
 				array( 'class' => array( 'd-inline-block', 'py-2', 'px-1', 'w-100' ) ),
-				'INSERT INTO ' . $span . "scsc_custom_schemas (`schema_type`, `post_id`, `custom_schema`) VALUES ('" . \esc_html( $results[ $key ]['schema_type'] ) . "', '" . \esc_html( $results[ $key ]['post_id'] ) . "', '" . \esc_html( $escaped ) . "';",
+				'INSERT INTO `' . $span . "scsc_custom_schemas` (`schema_type`, `post_id`, `custom_schema`) VALUES ('" . \esc_html( $results[ $key ]['schema_type'] ) . "', '" . \esc_html( $results[ $key ]['post_id'] ) . "', '" . \esc_html( $escaped ) . "');",
 			) . new HTML_Refactory(
 				'br',
 				array(),
