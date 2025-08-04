@@ -259,7 +259,9 @@ function onPostSelectChange(el) {
     let type = el.id.substring(0, 5) || el.parentElement.id.substring(0, 5);
     let postID = el.value || el.dataset.value;
     let indexInList = el.selectedIndex || el.dataset.index;
-    updateBlogPostingForm(postID);
+    if (el.dataset.type === 'post') {
+        updateBlogPostingForm(postID);
+    }
     document.querySelectorAll(".edit-block-button").forEach(btn => {
         btn.dataset.id = postID;
     });

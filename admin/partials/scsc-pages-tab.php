@@ -68,6 +68,7 @@ foreach ( $all_pages as $key => $value ) {
 				'data-value' => sanitize_text_field( $page_id ),
 				'data-index' => $key,
 				'data-title' => $page_title,
+				'data-type'  => 'page',
 			),
 			sanitize_text_field( $page_id ) . ': ' . sanitize_text_field( $page_title )
 		);

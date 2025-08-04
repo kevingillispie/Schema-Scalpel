@@ -4,7 +4,7 @@ Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json-ld, markup, per-page, yoast, all-in-one-seo, microdata, search engine
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 1.6
+Stable tag: 1.6.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -55,13 +55,15 @@ JSON-LD is Google’s preferred format for structured data because it’s easier
 
 == Changelog ==
 
+= 1.6.1 =
+* [FIX] Made distinction between pages and posts explicit due to BlogPosting schema form conflict.
+
 = 1.6 =
 * [NEW] Added a "View All" and “Settings” link on the Plugins page for quick access to the admin panel.
 * [UPDATE] Improved database schema: `id` column now `BIGINT UNSIGNED` and `custom_schema` column now `MEDIUMBLOB` for better scalability.
 * [UPDATE] Added `delete_on_uninstall` setting to control whether tables are dropped during plugin deletion.
 * [UPDATE] Enhanced code to meet WordPress Coding Standards, removing short ternaries and ensuring inline comments end with periods.
 * [FIX] Resolved uninstallation bug to respect the `delete_on_uninstall` setting.
-* [FIX] Schema export SQL syntax.
 
 = 1.5 =
 * [UPDATE] Improved BlogPosting schema generator with more robust options for updating existing schema.

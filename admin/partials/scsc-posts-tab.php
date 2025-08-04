@@ -69,6 +69,7 @@ foreach ( $all_posts as $key => $value ) :
 			'data-value' => sanitize_text_field( $blog_post_id ),
 			'data-index' => $key,
 			'data-title' => $blog_post_title,
+			'data-type'  => 'post',
 		),
 		sanitize_text_field( $blog_post_id ) . ': ' . sanitize_text_field( $blog_post_title )
 	);
