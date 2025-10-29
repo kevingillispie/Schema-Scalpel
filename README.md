@@ -1,6 +1,7 @@
 # Schema Scalpel
 
 Schema Scalpel helps you create rich text snippets for search engines in the format they prefer.
+[![WordPress](https://img.shields.io/wordpress/plugin/v/schema-scalpel?label=WP.org)](https://wordpress.org/plugins/schema-scalpel/)
 
 ## Contributors
 
