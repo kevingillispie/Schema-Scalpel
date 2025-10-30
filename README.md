@@ -1,4 +1,5 @@
 # Schema Scalpel
+
 [![WordPress](https://img.shields.io/wordpress/plugin/v/schema-scalpel?label=WP.org)](https://wordpress.org/plugins/schema-scalpel/)
 
 Schema Scalpel helps you create rich text snippets for search engines in the format they prefer.
@@ -29,7 +30,7 @@ Support Schema Scalpel at [https://schemascalpel.com/donate/](https://schemascal
 
 - **Requires at least**: WordPress 5.0
 - **Tested up to**: WordPress 6.8
-- **Stable tag**: 1.6
+- **Stable tag**: 1.6.1
 - **Requires PHP**: 7.4
 - **License**: GPLv2 or later
 - **License URI**: [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)
