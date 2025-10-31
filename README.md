@@ -7,7 +7,6 @@ Schema Scalpel helps you create rich text snippets for search engines in the for
 ## Contributors
 
 - kevingillispie
-- dantefff
 
 ## Donate
 

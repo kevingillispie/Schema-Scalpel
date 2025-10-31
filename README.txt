@@ -1,10 +1,10 @@
 === Schema Scalpel ===
-Contributors: kevingillispie, dantefff
+Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json-ld, markup, per-page, yoast, all-in-one-seo, microdata, search engine
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -55,128 +55,39 @@ JSON-LD is Google’s preferred format for structured data because it’s easier
 
 == Changelog ==
 
+= 1.6.2 =
+* [SECURITY] Fixed Stored XSS vulnerability in JSON-LD output via post/page titles.
+* Sanitized all title inputs using `sanitize_text_field()`.
+* Secured JSON encoding with `wp_json_encode()` and `JSON_HEX_*` flags.
+* Hardened breadcrumb and URL path handling.
+* Updated all comments to comply with WordPress Coding Standards.
+
 = 1.6.1 =
 * [FIX] Made distinction between pages and posts explicit due to BlogPosting schema form conflict.
 
 = 1.6 =
-* [NEW] Added a "View All" and “Settings” link on the Plugins page for quick access to the admin panel.
-* [UPDATE] Improved database schema: `id` column now `BIGINT UNSIGNED` and `custom_schema` column now `MEDIUMBLOB` for better scalability.
-* [UPDATE] Added `delete_on_uninstall` setting to control whether tables are dropped during plugin deletion.
-* [UPDATE] Enhanced code to meet WordPress Coding Standards, removing short ternaries and ensuring inline comments end with periods.
-* [FIX] Resolved uninstallation bug to respect the `delete_on_uninstall` setting.
+* [NEW] Added a "View All" and “Settings” link on the Plugins page for quick access.
+* [UPDATE] Improved database schema: `id` column now `BIGINT UNSIGNED` and `custom_schema` now `MEDIUMBLOB`.
+* [UPDATE] Added `delete_on_uninstall` setting to control data removal on deletion.
+* [UPDATE] Enhanced code to meet WordPress Coding Standards.
+* [FIX] Fixed uninstallation bug to respect the `delete_on_uninstall` setting.
 
 = 1.5 =
-* [UPDATE] Improved BlogPosting schema generator with more robust options for updating existing schema.
-
-= 1.4.7 =
-* [FIX] Fixed display issue with schema wrapped in square brackets on the admin page.
-
-= 1.4.6 =
-* [UPDATE] Applied corrections from version 1.4.5.
-
-= 1.4.5 =
-* [FIX] Corrected saving of BreadcrumbList schema.
-* [FIX] Fixed typo in documentation.
-
-= 1.4.4 =
-* [NEW] Added title-based filtering for sites with large page/post counts.
-* [UPDATE] Performed maintenance updates to the codebase.
-
-= 1.4.3 =
-* [UPDATE] Minor housekeeping updates.
-* [UPDATE] Confirmed compatibility with WordPress 6.7.
-
-= 1.4.2 =
-* [UPDATE] Confirmed compatibility with WordPress 6.6.
-* [FIX] Resolved a longstanding bug, thanks to contributor [dantefff](https://github.com/dantefff "dantefff's GitHub Profile" rel="nofollow").
-
-= 1.4.1 =
-* [FIX] Fixed a bug preventing admin pages from loading.
+* [UPDATE] Improved BlogPosting schema generator with more robust options.
 
 = 1.4 =
-* [NEW] Rebuilt codebase with a custom HTML generator for improved performance.
-* [UPDATE] Ensured full compliance with WordPress Coding Standards.
-* [UPDATE] Optimized admin JavaScript for better schema editing.
-* [FIX] Improved schema-editing JavaScript functionality.
-
-= 1.3.2 =
-* [UPDATE] Enhanced compliance with WordPress Coding Standards.
-
-= 1.3.1 =
-* [UPDATE] Clarified the BlogPosting schema generator process.
-
-= 1.3 =
-* [NEW] Added one-click schema generation for all blog posts.
-* [UPDATE] Upgraded CSS framework to Bootstrap v5.3.2.
-* [UPDATE] Improved UI elements.
-* [UPDATE] Updated PHP code throughout the plugin.
-* [FIX] Fixed menu item logo sizing.
-
-= 1.2.7.1 =
-* [NEW] Added click-to-edit feature for global, pages, and posts tabs.
-
-= 1.2.7 =
-* [UPDATE] Enabled immediate schema editing via popup textbox.
-* [FIX] Addressed minor bugs.
-
-= 1.2.6.2 =
-* [UPDATE] Replaced menu icon and updated menu names.
-* [UPDATE] Prepared codebase for a major overhaul.
-
-= 1.2.5.5 =
-* [FIX] Standardized `schema_type` for homepage schema across all files. Deactivate and reactivate to apply.
-
-= 1.2.5.4 =
-* [FIX] Set initial tab to `homepage` for proper schema-editing page loading.
-* [FIX] Defaulted search query parameter to `s`.
-
-= 1.2.5.3 =
-* [FIX] Fixed tab-switching issue when the plugin path contained “home”.
-
-= 1.2.5.2 =
-* [FIX] Included missing `admin/vars` directory.
-
-= 1.2.5 =
-* [NEW] Added Google-recommended example schemas, including `COVID Announcement`.
-* [UPDATE] Enhanced `NewsArticle` schema with `author` field.
-* [UPDATE] Sourced example schemas from an array instead of the database.
-* [FIX] Standardized spacing after commas.
-
-= 1.2.4.1 =
-* [FIX] Corrected schema type generation for create/edit buttons.
-
-= 1.2.4 =
-* [FIX] Prevented fatal PHP errors from redundant function declarations in `class-schema-scalpel-public.php`.
-
-= 1.2.3 =
-* [UPDATE] Confirmed compatibility with WordPress 6.0.
-* [FIX] Updated CSS class names to Bootstrap 5.x standards.
-* [FIX] Fixed page/post title display due to sanitization issues.
-
-= 1.2.2 =
-* [UPDATE] Improved schema/JSON-LD format error checking.
-
-= 1.2.1 =
-* [FIX] Updated version numbers consistently across the plugin.
-
-= 1.2 =
-* [NEW] Enabled multisite activation.
-* [UPDATE] Removed unnecessary comments.
-
-= 1.0.1 =
-* [FIX] Replaced `wp_print_scripts` with `wp_enqueue_scripts` for better theme compatibility.
-* [FIX] Addressed multiple undocumented fixes.
-* [UPDATE] Moved plugin initialization to `plugins_loaded` hook.
-* [UPDATE] Set default search key to `s`.
-* [UPDATE] Updated logo to use font paths.
-
-= 1.0 =
-* [NEW] Initial release of Schema Scalpel.
+* [NEW] Rebuilt codebase with custom HTML generator for performance.
+* [UPDATE] Full compliance with WordPress Coding Standards.
+* [UPDATE] Optimized admin JavaScript for schema editing.
+* [FIX] Improved schema-editing functionality.
 
 == Upgrade Notice ==
 
+= 1.6.2 =
+**Security Release** – Critical Stored XSS vulnerability patched. Update immediately to protect your site. No configuration needed.
+
 = 1.6 =
-Back up your database before upgrading to 1.6, as it includes schema changes to improve performance. A new "View All" and “Settings” link and uninstallation options enhance usability.
+Back up your database before upgrading — includes schema changes. New "Settings" link and uninstall control added.
 
 == Screenshots ==
 
