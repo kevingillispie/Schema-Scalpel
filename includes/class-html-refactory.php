@@ -7,6 +7,22 @@
  * @author     Kevin Gillispie
  * @since      1.4
  */
+
+/**
+ * Safely builds and outputs HTML elements with proper escaping and optional KSES fallback.
+ *
+ * This utility class allows developers to construct HTML tags in an object-oriented way
+ * while ensuring all attributes and content are correctly escaped. Tags explicitly
+ * marked as "allowed" bypass wp_kses_post(), while everything else is sanitized
+ * through WordPress' standard content filter.
+ *
+ * Useful for generating dynamic markup (forms, schema, admin UI, etc.) without
+ * sacrificing security.
+ *
+ * @package    Schema_Scalpel
+ * @subpackage Schema_Scalpel/includes
+ * @since      1.4
+ */
 class HTML_Refactory {
 
 	/**

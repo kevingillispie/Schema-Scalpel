@@ -3,7 +3,7 @@
  * Plugin Name:       Schema Scalpel
  * Plugin URI:        https://schemascalpel.com/
  * Description:       Boost your site’s SEO with Schema Scalpel, a user-friendly plugin for crafting custom schema markup on a per-page basis.
- * Version:           1.6.2
+ * Version:           1.6.3
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Tested up to:      6.8
@@ -14,7 +14,7 @@
  * Text Domain:       schema-scalpel
  *
  * Enhance your site’s structured data with per-page schema control.
- * Copyright (C) 2021 Kevin Gillispie
+ * Copyright (C) 2021 - 2025 Kevin Gillispie
  *
  * @link https://schemascalpel.com
  * @package SchemaScalpel
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SCHEMA_SCALPEL_VERSION', '1.6.2' );
+define( 'SCHEMA_SCALPEL_VERSION', '1.6.3' );
 define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'scsc' );
 define( 'SCHEMA_SCALPEL_SLUG', 'scsc_' );
 define( 'SCHEMA_SCALPEL_PLUGIN', __FILE__ );

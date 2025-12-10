@@ -25,14 +25,14 @@ class Schema_Scalpel_Public {
 	 *
 	 * @var string
 	 */
-	private $schema_scalpel;
+	private readonly string $schema_scalpel;
 
 	/**
 	 * Plugin version.
 	 *
 	 * @var string
 	 */
-	private $version;
+	private readonly string $version;
 
 	/**
 	 * Class constructor.
@@ -40,7 +40,7 @@ class Schema_Scalpel_Public {
 	 * @param string $schema_scalpel Plugin name.
 	 * @param string $version        Plugin version.
 	 */
-	public function __construct( $schema_scalpel, $version ) {
+	public function __construct( string $schema_scalpel, string $version ) {
 		$this->schema_scalpel = $schema_scalpel;
 		$this->version        = $version;
 	}

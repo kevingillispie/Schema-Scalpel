@@ -3,8 +3,8 @@ Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json-ld, markup, per-page, yoast, all-in-one-seo, microdata, search engine
 Requires at least: 5.0
-Tested up to: 6.8
-Stable tag: 1.6.2
+Tested up to: 6.9
+Stable tag: 1.6.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,11 @@ Version 1.6 introduces database schema improvements for better performance, a �
 JSON-LD is Google’s preferred format for structured data because it’s easier to manage within a single `<script>` tag, unlike microdata, which is embedded throughout HTML. Schema Scalpel uses JSON-LD for simplicity and compliance. [Learn more](https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data#format-placement "Introduction to Structured Data" rel="nofollow").
 
 == Changelog ==
+
+= 1.6.3 =
+* [UPDATE] Added `declare(strict_types=1);` to the main plugin file for enhanced type safety (PHP 7.4+).
+* [UPDATE] Introduced void return type declarations (`: void`) on loader methods to improve code clarity and static analysis.
+* [UPDATE] Enhanced inline documentation and PHPDoc blocks throughout the codebase for full WordPress Coding Standards compliance.
 
 = 1.6.2 =
 * [SECURITY] Fixed Stored XSS vulnerability in JSON-LD output via post/page titles.

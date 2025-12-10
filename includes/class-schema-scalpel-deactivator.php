@@ -25,7 +25,7 @@ class Schema_Scalpel_Deactivator {
 	/**
 	 * Deactivation procedure.
 	 */
-	public static function deactivate() {
+	public static function deactivate(): void {
 		// todo.
 	}
 }
