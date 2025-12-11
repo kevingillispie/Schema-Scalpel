@@ -25,14 +25,14 @@ class Schema_Scalpel_Public {
 	 *
 	 * @var string
 	 */
-	private readonly string $schema_scalpel;
+	private string $schema_scalpel;
 
 	/**
 	 * Plugin version.
 	 *
 	 * @var string
 	 */
-	private readonly string $version;
+	private string $version;
 
 	/**
 	 * Class constructor.
