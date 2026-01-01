@@ -87,6 +87,12 @@ JSON-LD is Google’s preferred format for structured data because it’s easier
 
 ## Changelog
 
+#### 1.6.4
+
+- [FIX] Removed `readonly` property modifiers from class declarations to restore full compatibility with PHP 7.4.
+- Ensures the plugin loads correctly on older PHP versions still within WordPress's minimum supported range (PHP 7.4+).
+- No functional changes to schema output or features — this is a compatibility maintenance release.
+
 #### 1.6.3
 
 - [UPDATE] Added `declare(strict_types=1);` to the main plugin file for enhanced type safety (PHP 7.4+).
@@ -113,142 +119,6 @@ JSON-LD is Google’s preferred format for structured data because it’s easier
 - [UPDATE] Enhanced code to meet WordPress Coding Standards, removing short ternaries and ensuring inline comments end with periods.
 - [FIX] Resolved uninstallation bug to respect the `delete_on_uninstall` setting.
 - [FIX] Schema export SQL syntax.
-
-#### 1.5
-
-- [UPDATE] Improved BlogPosting schema generator with more robust options for updating existing schema.
-
-#### 1.4.7
-
-- [FIX] Fixed display issue with schema wrapped in square brackets on the admin page.
-
-#### 1.4.6
-
-- [UPDATE] Applied corrections from version 1.4.5.
-
-#### 1.4.5
-
-- [FIX] Corrected saving of BreadcrumbList schema.
-- [FIX] Fixed typo in documentation.
-
-#### 1.4.4
-
-- [NEW] Added title-based filtering for sites with large page/post counts.
-- [UPDATE] Performed maintenance updates to the codebase.
-
-#### 1.4.3
-
-- [UPDATE] Minor housekeeping updates.
-- [UPDATE] Confirmed compatibility with WordPress 6.7.
-
-#### 1.4.2
-
-- [UPDATE] Confirmed compatibility with WordPress 6.6.
-- [FIX] Resolved a longstanding bug, thanks to contributor [dantefff](https://github.com/dantefff "dantefff's GitHub Profile").
-
-#### 1.4.1
-
-- [FIX] Fixed a bug preventing admin pages from loading.
-
-#### 1.4
-
-- [NEW] Rebuilt codebase with a custom HTML generator for improved performance.
-- [UPDATE] Ensured full compliance with WordPress Coding Standards.
-- [UPDATE] Optimized admin JavaScript for better schema editing.
-- [FIX] Improved schema-editing JavaScript functionality.
-
-#### 1.3.2
-
-- [UPDATE] Enhanced compliance with WordPress Coding Standards.
-
-#### 1.3.1
-
-- [UPDATE] Clarified the BlogPosting schema generator process.
-
-#### 1.3
-
-- [NEW] Added one-click schema generation for all blog posts.
-- [UPDATE] Upgraded CSS framework to Bootstrap v5.3.2.
-- [UPDATE] Improved UI elements.
-- [UPDATE] Updated PHP code throughout the plugin.
-- [FIX] Fixed menu item logo sizing.
-
-#### 1.2.7.1
-
-- [NEW] Added click-to-edit feature for global, pages, and posts tabs.
-
-#### 1.2.7
-
-- [UPDATE] Enabled immediate schema editing via popup textbox.
-- [FIX] Addressed minor bugs.
-
-#### 1.2.6.2
-
-- [UPDATE] Replaced menu icon and updated menu names.
-- [UPDATE] Prepared codebase for a major overhaul.
-
-#### 1.2.5.5
-
-- [FIX] Standardized `schema_type` for homepage schema across all files. Deactivate and reactivate to apply.
-
-#### 1.2.5.4
-
-- [FIX] Set initial tab to `homepage` for proper schema-editing page loading.
-- [FIX] Defaulted search query parameter to `s`.
-
-#### 1.2.5.3
-
-- [FIX] Fixed tab-switching issue when the plugin path contained “home”.
-
-#### 1.2.5.2
-
-- [FIX] Included missing `admin/vars` directory.
-
-#### 1.2.5
-
-- [NEW] Added Google-recommended example schemas, including `COVID Announcement`.
-- [UPDATE] Enhanced `NewsArticle` schema with `author` field.
-- [UPDATE] Sourced example schemas from an array instead of the database.
-- [FIX] Standardized spacing after commas.
-
-#### 1.2.4.1
-
-- [FIX] Corrected schema type generation for create/edit buttons.
-
-#### 1.2.4
-
-- [FIX] Prevented fatal PHP errors from redundant function declarations in `class-schema-scalpel-public.php`.
-
-#### 1.2.3
-
-- [UPDATE] Confirmed compatibility with WordPress 6.0.
-- [FIX] Updated CSS class names to Bootstrap 5.x standards.
-- [FIX] Fixed page/post title display due to sanitization issues.
-
-#### 1.2.2
-
-- [UPDATE] Improved schema/JSON-LD format error checking.
-
-#### 1.2.1
-
-- [FIX] Updated version numbers consistently across the plugin.
-
-#### 1.2
-
-- [NEW] Enabled multisite activation.
-- [UPDATE] Removed unnecessary comments.
-
-#### 1.0.1
-
-- [FIX] Replaced `wp_print_scripts` with `wp_enqueue_scripts` for better theme compatibility.
-- [FIX] Addressed multiple undocumented fixes.
-- [UPDATE] Moved plugin initialization to `plugins_loaded` hook.
-- [UPDATE] Set default search key to `s`.
-- [UPDATE] Updated logo to use font paths.
-
-#### 1.0
-
-- [NEW] Initial release of Schema Scalpel.
 
 ## Upgrade Notice
 

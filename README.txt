@@ -55,6 +55,11 @@ JSON-LD is Google’s preferred format for structured data because it’s easier
 
 == Changelog ==
 
+= 1.6.4 =
+* [FIX] Removed `readonly` property modifiers from class declarations to restore full compatibility with PHP 7.4.
+* Ensures the plugin loads correctly on older PHP versions still within WordPress's minimum supported range (PHP 7.4+).
+* No functional changes to schema output or features — this is a compatibility maintenance release.
+
 = 1.6.3 =
 * [UPDATE] Added `declare(strict_types=1);` to the main plugin file for enhanced type safety (PHP 7.4+).
 * [UPDATE] Introduced void return type declarations (`: void`) on loader methods to improve code clarity and static analysis.
