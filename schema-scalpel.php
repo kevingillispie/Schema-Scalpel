@@ -30,38 +30,38 @@ define( 'SCHEMA_SCALPEL_VERSION', '1.6.3' );
 define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'scsc' );
 define( 'SCHEMA_SCALPEL_SLUG', 'scsc_' );
 define( 'SCHEMA_SCALPEL_PLUGIN', __FILE__ );
-define( 'SCHEMA_SCALPEL_DIRECTORY', \untrailingslashit( dirname( SCHEMA_SCALPEL_PLUGIN ) ) );
+define( 'SCHEMA_SCALPEL_DIRECTORY', untrailingslashit( dirname( SCHEMA_SCALPEL_PLUGIN ) ) );
 
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-html-refactory.php';
-require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-activator.php';
-require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-deactivator.php';
-require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-upgrade.php';
+require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-scsc-activator.php';
+require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-scsc-deactivator.php';
+require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-scsc-upgrade.php';
 
-\register_activation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Activator', 'activate' ) );
-\register_deactivation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\Schema_Scalpel_Deactivator', 'deactivate' ) );
+register_activation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\SCSC_Activator', 'activate' ) );
+register_deactivation_hook( SCHEMA_SCALPEL_PLUGIN, array( __NAMESPACE__ . '\\SCSC_Deactivator', 'deactivate' ) );
 
 /**
  * Trigger database upgrade after plugin update or installation.
  *
  * @since 1.6
- * @param \WP_Upgrader $upgrader WP_Upgrader instance.
- * @param array        $data     Upgrade data.
+ * @param WP_Upgrader $upgrader WP_Upgrader instance.
+ * @param array       $data     Upgrade data.
  * @return void
  */
-function schema_scalpel_upgrader_process_complete( $upgrader, $data ) {
-	$plugin_basename = \plugin_basename( SCHEMA_SCALPEL_PLUGIN );
+function scsc_upgrader_process_complete( $upgrader, $data ) {
+	$plugin_basename = plugin_basename( SCHEMA_SCALPEL_PLUGIN );
 
 	if ( 'update' === $data['action'] && 'plugin' === $data['type'] && ! empty( $data['plugins'] ) ) {
-		if ( \in_array( $plugin_basename, $data['plugins'], true ) ) {
-			Schema_Scalpel_Upgrade::upgrade();
+		if ( in_array( $plugin_basename, $data['plugins'], true ) ) {
+			SCSC_Upgrade::upgrade();
 		}
 	} elseif ( 'install' === $data['action'] && 'plugin' === $data['type'] && ! empty( $data['plugin'] ) ) {
 		if ( $plugin_basename === $data['plugin'] ) {
-			Schema_Scalpel_Upgrade::upgrade();
+			SCSC_Upgrade::upgrade();
 		}
 	}
 }
-\add_action( 'upgrader_process_complete', __NAMESPACE__ . '\\schema_scalpel_upgrader_process_complete', 10, 2 );
+add_action( 'upgrader_process_complete', __NAMESPACE__ . '\\scsc_upgrader_process_complete', 10, 2 );
 
 require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel.php';
 
@@ -83,18 +83,18 @@ function run_schema_scalpel() {
 			$wpdb->prepare(
 				'SELECT setting_value FROM %i WHERE setting_key = %s',
 				$settings_table,
-				Schema_Scalpel_Upgrade::DB_VERSION_KEY
+				SCSC_Upgrade::DB_VERSION_KEY
 			)
 		);
 		if ( null === $stored_db_version ) {
 			$stored_db_version = '0.0.0';
 		}
-		if ( \version_compare( $stored_db_version, Schema_Scalpel_Upgrade::DB_VERSION, '<' ) ) {
-			Schema_Scalpel_Upgrade::upgrade();
+		if ( version_compare( $stored_db_version, SCSC_Upgrade::DB_VERSION, '<' ) ) {
+			SCSC_Upgrade::upgrade();
 		}
 	}
 }
-\add_action( 'plugins_loaded', __NAMESPACE__ . '\\run_schema_scalpel' );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\run_schema_scalpel' );
 
 global $wpdb;
 $settings_table = $wpdb->prefix . 'scsc_settings';
@@ -103,13 +103,13 @@ if ( isset( $table_checked ) && $table_checked === $settings_table ) {
 	// Turn off Yoast schema generator.
 	$yoast_setting = $wpdb->get_results( $wpdb->prepare( 'SELECT setting_value FROM %i WHERE setting_key = %s', $settings_table, 'yoast_schema' ), ARRAY_A );
 	if ( isset( $yoast_setting[0] ) && '1' === $yoast_setting[0]['setting_value'] ) {
-		\add_filter( 'wpseo_json_ld_output', '__return_false' );
+		add_filter( 'wpseo_json_ld_output', '__return_false' );
 	}
 
 	// Turn off AIO SEO schema.
 	$aio_setting = $wpdb->get_results( $wpdb->prepare( 'SELECT setting_value FROM %i WHERE setting_key = %s', $settings_table, 'aio_schema' ), ARRAY_A );
 	if ( isset( $aio_setting[0] ) && '1' === $aio_setting[0]['setting_value'] ) {
-		\add_filter(
+		add_filter(
 			'aioseo_schema_output',
 			function ( $graphs ) {
 				foreach ( $graphs as $index => $graph ) {

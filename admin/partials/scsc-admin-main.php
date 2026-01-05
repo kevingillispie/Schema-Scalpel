@@ -48,7 +48,7 @@ if ( isset( $_GET['generate'] ) ) {
 	$schema_post_type = \sanitize_text_field( \wp_unslash( $_GET['schemaPostType'] ) );
 	$author_type      = \sanitize_text_field( \wp_unslash( $_GET['schemaAuthorType'] ) );
 	$keywords         = isset( $_GET['keywords'] ) ? \sanitize_text_field( \wp_unslash( $_GET['keywords'] ) ) : false;
-	Schema_Scalpel_Admin::generate_blogposting_schema( $update_type, $schema_post_type, $author_type, $keywords );
+	SCSC_Admin::generate_blogposting_schema( $update_type, $schema_post_type, $author_type, $keywords );
 	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=posts">';
 }
 
@@ -1023,7 +1023,7 @@ echo new HTML_Refactory(
 		$_page       = $result_page[0]['setting_value'];
 		$result_post = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %1s WHERE setting_key='active_post';", $wpdb->prefix . 'scsc_settings' ), \ARRAY_A );
 		$_post       = $result_post[0]['setting_value'];
-		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/schema-scalpel-admin-main.js';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/scsc-admin-main.js';
 		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/prism.js';
 		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/bootstrap.min.js';
 		echo '</script>';

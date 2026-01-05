@@ -52,10 +52,12 @@ $menu_of_posts = new HTML_Refactory(
 );
 
 foreach ( $all_posts as $key => $value ) :
+
 	$classes = '';
 	if ( true === in_array( $all_posts[ $key ]['ID'], $existing_schema_ids ) ) :
-		$classes = true;
+		$classes = 'fw-bold';
 	endif;
+
 	$blog_post_id    = $all_posts[ $key ]['ID'];
 	$blog_post_title = $all_posts[ $key ]['post_title'];
 	if ( stripos( strtolower( $blog_post_title ), 'auto draft' ) > -1 ) :

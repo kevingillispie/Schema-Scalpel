@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.6.0
  */
-class Schema_Scalpel_Upgrade {
+class SCSC_Upgrade {
 
 	/**
 	 * Current database version.

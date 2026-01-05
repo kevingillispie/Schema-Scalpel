@@ -23,10 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Schema_Scalpel {
 
 	/**
-	 * Variable initialized as Schema_Scalpel_Loader class.
+	 * Variable initialized as SCSC_Loader class.
 	 *
 	 * @access   protected
-	 * @var      Schema_Scalpel_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      SCSC_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -69,15 +69,15 @@ class Schema_Scalpel {
 	 */
 	private function load_dependencies() {
 		// Include the loader class.
-		require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-schema-scalpel-loader.php';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/includes/class-scsc-loader.php';
 
 		// Include the admin class.
-		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/class-schema-scalpel-admin.php';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/class-scsc-admin.php';
 
 		// Include the public class.
-		require_once SCHEMA_SCALPEL_DIRECTORY . '/public/class-schema-scalpel-public.php';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/public/class-scsc-public.php';
 
-		$this->loader = new Schema_Scalpel_Loader();
+		$this->loader = new SCSC_Loader();
 	}
 
 	/**
@@ -87,11 +87,11 @@ class Schema_Scalpel {
 	 * @access private
 	 */
 	private function define_admin_hooks() {
-		$plugin_admin = new Schema_Scalpel_Admin( $this->get_schema_scalpel(), $this->get_version() );
+		$plugin_admin = new SCSC_Admin( $this->get_schema_scalpel(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_filter( 'plugin_action_links_' . \plugin_basename( SCHEMA_SCALPEL_PLUGIN ), $this, 'add_plugin_action_links' );
+		$this->loader->add_filter( 'plugin_action_links_' . plugin_basename( SCHEMA_SCALPEL_PLUGIN ), $this, 'add_plugin_action_links' );
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Schema_Scalpel {
 	 * @access private
 	 */
 	private function define_public_hooks() {
-		$plugin_public = new Schema_Scalpel_Public( $this->get_schema_scalpel(), $this->get_version() );
+		$plugin_public = new SCSC_Public( $this->get_schema_scalpel(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_inline_scripts' );
 	}
@@ -129,7 +129,7 @@ class Schema_Scalpel {
 	 * Initializes class variable with loader class.
 	 *
 	 * @since 1.0
-	 * @return Schema_Scalpel_Loader    Orchestrates the hooks of the plugin.
+	 * @return SCSC_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -152,8 +152,8 @@ class Schema_Scalpel {
 	 * @access private
 	 */
 	private function register() {
-		\add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
-		\add_action(
+		add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
+		add_action(
 			'admin_head',
 			function () {
 				echo <<<STYLE
@@ -169,7 +169,7 @@ class Schema_Scalpel {
 	 * @since 1.0
 	 */
 	public function admin_index_page() {
-		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/partials/schema-scalpel-admin-main.php';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/partials/scsc-admin-main.php';
 	}
 
 	/**
@@ -178,7 +178,7 @@ class Schema_Scalpel {
 	 * @since 1.0
 	 */
 	public function user_settings_page() {
-		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/partials/schema-scalpel-user-settings.php';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/partials/scsc-user-settings.php';
 	}
 
 	/**
@@ -187,7 +187,7 @@ class Schema_Scalpel {
 	 * @since 1.0
 	 */
 	public function user_export_page() {
-		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/partials/schema-scalpel-user-export.php';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/partials/scsc-user-export.php';
 	}
 
 	/**
@@ -197,14 +197,14 @@ class Schema_Scalpel {
 	 */
 	public function add_admin_pages() {
 		$default_page_title = __( SCHEMA_SCALPEL_TEXT_DOMAIN, SCHEMA_SCALPEL_TEXT_DOMAIN );
-		\add_action(
+		add_action(
 			'admin_head',
 			function () {
 				echo '<style class="scsc-admin">.toplevel_page_scsc img[src*="menu_icon.svg"] {margin-top:6px}</style>';
 			}
 		);
 
-		\add_menu_page(
+		add_menu_page(
 			__( 'Schema Scalpel Plugin', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 			'Schema Scalpel',
 			'manage_options',
@@ -214,7 +214,7 @@ class Schema_Scalpel {
 			100
 		);
 
-		\add_submenu_page(
+		add_submenu_page(
 			$default_page_title,
 			__( 'Schema Scalpel | Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 			__( 'Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN ),
@@ -223,7 +223,7 @@ class Schema_Scalpel {
 			array( $this, 'admin_index_page' )
 		);
 
-		\add_submenu_page(
+		add_submenu_page(
 			$default_page_title,
 			__( 'Schema Scalpel | Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 			__( 'Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ),
@@ -233,7 +233,7 @@ class Schema_Scalpel {
 			1
 		);
 
-		\add_submenu_page(
+		add_submenu_page(
 			$default_page_title,
 			__( 'Schema Scalpel | Export', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 			__( 'Export', SCHEMA_SCALPEL_TEXT_DOMAIN ),
@@ -252,10 +252,10 @@ class Schema_Scalpel {
 	 * @return array Modified action links with Settings link added.
 	 */
 	public function add_plugin_action_links( $links ) {
-		$schema_url    = \admin_url( 'admin.php?page=' . SCHEMA_SCALPEL_TEXT_DOMAIN );
-		$schema_link   = '<a href="' . \esc_url( $schema_url ) . '">' . \esc_html__( 'View All', SCHEMA_SCALPEL_TEXT_DOMAIN ) . '</a>';
-		$settings_url  = \admin_url( 'admin.php?page=scsc_settings' );
-		$settings_link = '<a href="' . \esc_url( $settings_url ) . '">' . \esc_html__( 'Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ) . '</a>';
+		$schema_url    = admin_url( 'admin.php?page=' . SCHEMA_SCALPEL_TEXT_DOMAIN );
+		$schema_link   = '<a href="' . esc_url( $schema_url ) . '">' . esc_html__( 'View All', SCHEMA_SCALPEL_TEXT_DOMAIN ) . '</a>';
+		$settings_url  = admin_url( 'admin.php?page=scsc_settings' );
+		$settings_link = '<a href="' . esc_url( $settings_url ) . '">' . esc_html__( 'Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ) . '</a>';
 
 		// Add Settings link before other links.
 		array_unshift( $links, $schema_link, $settings_link );

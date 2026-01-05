@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @subpackage Schema_Scalpel/includes
  * @since      1.0.0
  */
-class Schema_Scalpel_Loader {
+class SCSC_Loader {
 
 	/**
 	 * Collection of actions to register.

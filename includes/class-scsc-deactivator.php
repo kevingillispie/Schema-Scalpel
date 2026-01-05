@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  */
-class Schema_Scalpel_Deactivator {
+class SCSC_Deactivator {
 
 	/**
 	 * Deactivation procedure.

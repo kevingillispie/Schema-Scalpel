@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  */
-class Schema_Scalpel_Activator {
+class SCSC_Activator {
 
 	/**
 	 * Create database tables.

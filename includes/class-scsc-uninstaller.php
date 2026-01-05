@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class responsible for removing plugin data on uninstall.
  */
-final class Schema_Scalpel_Uninstaller {
+final class SCSC_Uninstaller {
 
 	/**
 	 * Perform uninstallation tasks.
@@ -28,7 +28,7 @@ final class Schema_Scalpel_Uninstaller {
 	 * when uninstalling the plugin, then flushes rewrite rules.
 	 *
 	 * This method is intended to be called from a separate uninstall.php file via:
-	 *     Schema_Scalpel_Uninstaller::uninstall();
+	 *     SCSC_Uninstaller::uninstall();
 	 *
 	 * @since 1.0.0
 	 * @return void

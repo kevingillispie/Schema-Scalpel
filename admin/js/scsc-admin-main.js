@@ -5,24 +5,48 @@ const TYPE_TAB_CONTENTS = document.querySelectorAll(".tab-pane");
 /**
  * GET/SET ACTIVE TAB
  */
-! function () {
-    var url = new URL(window.location.href);
-    var params = new URLSearchParams(url.search);
+(function () {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    let activeIndex = 0; // Default to first tab
+
+    // Determine which tab should be active from URL param
+    const tabFromUrl = params.get("set_tab");
+    if (tabFromUrl && TYPES.includes(tabFromUrl)) {
+        activeIndex = TYPES.indexOf(tabFromUrl);
+        if (activeIndex === -1) activeIndex = 0;
+    }
+
+    // Ensure we don't go out of bounds (in case fewer tabs exist)
+    if (activeIndex >= TYPE_TABS.length) {
+        activeIndex = 0;
+    }
+
+    // Remove active classes from all
     TYPE_TABS.forEach(tab => {
         tab.classList.remove("active");
-        tab.classList.remove("show");
     });
-    let setTab = TYPES.indexOf(params.get("set_tab"));
-    let currentTab = (-1 === setTab) ? 0 : setTab;
-    TYPE_TABS[currentTab].classList.add("active");
-    TYPE_TAB_CONTENTS[currentTab].classList.add("active");
-    TYPE_TAB_CONTENTS[currentTab].classList.add("show");
-    TYPE_TABS.forEach((tab, currentTab) => {
-        tab.addEventListener('click', function () {
-            setActiveTab(TYPES[currentTab]);
+    TYPE_TAB_CONTENTS.forEach(content => {
+        content.classList.remove("active", "show");
+    });
+
+    // Activate the correct tab and content
+    if (TYPE_TABS.length > 0) {
+        TYPE_TABS[activeIndex].classList.add("active");
+        TYPE_TAB_CONTENTS[activeIndex].classList.add("active", "show");
+    }
+
+    // Add click listeners correctly (with proper closure)
+    TYPE_TABS.forEach((tab, index) => {
+        tab.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetType = TYPES[index];
+            if (targetType) {
+                setActiveTab(targetType);
+            }
         });
     });
-}();
+})();
 
 function setActiveTab(tab) {
     document.getElementById("tab_spinner").classList.remove("d-none");

@@ -40,11 +40,12 @@ foreach ( $current_excluded_results as $key => $value ) {
 
 $all_params;
 if ( isset( $_GET['save'] ) ) {
-	$params = parse_url( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_QUERY );
-	$params = explode( '&', $params );
-
-	foreach ( $params as $key => $value ) {
-		$all_params[] = explode( '=', $value );
+	$all_params = array();
+	foreach ( $_GET as $key => $value ) {
+		$all_params[] = array(
+			sanitize_key( $key ),
+			is_scalar( $value ) ? sanitize_text_field( $value ) : $value,
+		);
 	}
 
 	/**
@@ -328,7 +329,7 @@ $default_setting_label_html = new HTML_Refactory(
 	new HTML_Refactory(
 		'i',
 		array(),
-		'(default)'
+		'&nbsp;(default)'
 	)
 );
 
@@ -338,7 +339,7 @@ $scalpel_icon = new HTML_Refactory(
 	'img',
 	array(
 		'class' => array( 'mt-n4' ),
-		'src'   => \esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ),
+		'src'   => esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ),
 	)
 );
 
@@ -355,7 +356,7 @@ $alert1 = new HTML_Refactory(
 		'class' => array( 'alert', 'alert-primary' ),
 		'role'  => 'alert',
 	),
-	\esc_html( 'The default settings for this plugin allow it to perform at its best. However, you may encounter an edge case that requires modification of the default settings.' )
+	esc_html( 'The default settings for this plugin allow it to perform at its best. However, you may encounter an edge case that requires modification of the default settings.' )
 );
 
 $alert2 = new HTML_Refactory(
@@ -369,8 +370,8 @@ $alert2 = new HTML_Refactory(
 		array(),
 		'This plugin ' . new HTML_Refactory(
 			'a',
-			array( 'href' => \esc_url( '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' ) ),
-			\esc_html( "automatically overrides Yoast's and AIOSEO's schema" )
+			array( 'href' => esc_url( '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' ) ),
+			esc_html( "automatically overrides Yoast's and AIOSEO's schema" )
 		),
 		' and injects your customized schema to better fit your SEO objectives.'
 	)
@@ -383,7 +384,9 @@ echo new HTML_Refactory(
 	$h1 . $alert1 . $alert2
 );
 
-echo '<div><form>';
+echo '<div><form method="post" action="" class="settings-page-form">';
+
+wp_nonce_field( 'scsc_save_settings', 'scsc_settings_nonce' );
 
 echo new HTML_Refactory(
 	'input',
@@ -406,11 +409,11 @@ echo new HTML_Refactory(
 echo new HTML_Refactory(
 	'h3',
 	array( 'class' => array( 'mt-5', 'mb-0' ) ),
-	'Enable Default ' . new HTML_Refactory(
+	'Enable Default&nbsp;' . new HTML_Refactory(
 		'code',
 		array(),
 		'Website'
-	) . ' Schema'
+	) . '&nbsp;Schema'
 );
 
 echo new HTML_Refactory(
@@ -432,7 +435,7 @@ echo new HTML_Refactory(
 			),
 			'',
 			''
-		) . new HTML_Refactory( 'strong', array(), 'Enable ' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebSite' ) . \wp_kses_post( \wp_slash( $default_setting_label_html ) )
+		) . new HTML_Refactory( 'strong', array(), 'Enable ' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebSite' ) . wp_kses_post( wp_slash( $default_setting_label_html ) )
 	) . new HTML_Refactory(
 		'label',
 		array( 'for' => 'disable_website' ),
@@ -462,7 +465,7 @@ echo new HTML_Refactory(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
 			'style' => 'wdith:auto',
 		),
-		\esc_html( 'WebSite Format Example:' )
+		esc_html( 'WebSite Format Example:' )
 	) . wp_kses( $example_clarification, 'post' ) . new HTML_Refactory(
 		'pre',
 		array(
@@ -487,7 +490,7 @@ echo new HTML_Refactory(
 			'code',
 			array( 'style' => 'color:black' ),
 			'urlTemplate'
-		) . 'search parameter key:'
+		) . '&nbsp;search parameter key:'
 	) . new HTML_Refactory(
 		'div',
 		array(),
@@ -499,7 +502,7 @@ echo new HTML_Refactory(
 				'class'       => array( 'me-2' ),
 				'name'        => 'search_param',
 				'type'        => 'text',
-				'placeholder' => 'Current: ' . \sanitize_text_field( $search_key ),
+				'placeholder' => 'Current: ' . sanitize_text_field( $search_key ),
 				'disabled'    => '',
 			)
 		) . new HTML_Refactory(
@@ -574,7 +577,7 @@ echo new HTML_Refactory(
 			),
 			'',
 			''
-		) . new HTML_Refactory( 'strong', array(), 'Enable' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' ) . \wp_kses_post( \wp_slash( $default_setting_label_html ) )
+		) . new HTML_Refactory( 'strong', array(), 'Enable&nbsp;' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' ) . wp_kses_post( wp_slash( $default_setting_label_html ) )
 	) . new HTML_Refactory(
 		'label',
 		array( 'for' => 'disable_webpage' ),
@@ -590,7 +593,7 @@ echo new HTML_Refactory(
 			),
 			'',
 			''
-		) . new HTML_Refactory( 'strong', array(), 'Disable' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' )
+		) . new HTML_Refactory( 'strong', array(), 'Disable&nbsp;' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' )
 	)
 );
 
@@ -604,8 +607,8 @@ echo new HTML_Refactory(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
 			'style' => 'wdith:auto',
 		),
-		\esc_html( 'WebPage Format Example:' )
-	) . \wp_kses_post( $example_clarification ) . new HTML_Refactory(
+		esc_html( 'WebPage Format Example:' )
+	) . wp_kses_post( $example_clarification ) . new HTML_Refactory(
 		'pre',
 		array(
 			'id'          => 'webpage_example',
@@ -628,7 +631,7 @@ echo new HTML_Refactory(
 echo new HTML_Refactory(
 	'h3',
 	array( 'class' => array( 'mt-5', 'mb-0' ) ),
-	'Enable Default ' . new HTML_Refactory( 'code', array(), 'BreadcrumbList' ) . ' Schema'
+	'Enable Default&nbsp;' . new HTML_Refactory( 'code', array(), 'BreadcrumbList' ) . '&nbsp;Schema'
 );
 
 echo new HTML_Refactory(
@@ -690,12 +693,12 @@ echo new HTML_Refactory(
 		) . new HTML_Refactory(
 			'strong',
 			array(),
-			'Enable'
+			'Enable&nbsp;'
 		) . new HTML_Refactory(
 			'code',
 			array( 'style' => 'color:black' ),
 			'BreadcrumbList'
-		) . \wp_kses_post( \wp_slash( $default_setting_label_html ) )
+		) . wp_kses_post( wp_slash( $default_setting_label_html ) )
 	) . new HTML_Refactory(
 		'label',
 		array( 'for' => 'disable_breadcrumbs' ),
@@ -714,7 +717,7 @@ echo new HTML_Refactory(
 		) . new HTML_Refactory(
 			'strong',
 			array(),
-			'Disable'
+			'Disable&nbsp;'
 		) . new HTML_Refactory(
 			'code',
 			array( 'style' => 'color:black' ),
@@ -733,8 +736,8 @@ echo new HTML_Refactory(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
 			'style' => 'wdith:auto',
 		),
-		\esc_html( 'BreadcrumbList Format Example:' )
-	) . \wp_kses_post( $example_clarification ) . new HTML_Refactory(
+		esc_html( 'BreadcrumbList Format Example:' )
+	) . wp_kses_post( $example_clarification ) . new HTML_Refactory(
 		'pre',
 		array(
 			'id'          => 'breadcrumb_example',
@@ -758,7 +761,7 @@ echo new HTML_Refactory(
 		'id'    => 'disable_yoast_schema',
 		'class' => array( 'mt-3' ),
 	),
-	\esc_html( 'Disable Yoast SEO schema?' )
+	esc_html( 'Disable Yoast SEO schema?' )
 );
 
 if ( 'disabled' === $if_yoast ) {
@@ -836,18 +839,18 @@ echo new HTML_Refactory(
 		new HTML_Refactory(
 			'input',
 			array(
-				'id'                              => 'enable_yoast',
-				'type'                            => 'radio',
-				'name'                            => 'disable_yoast',
-				'value'                           => '0',
+				'id'                             => 'enable_yoast',
+				'type'                           => 'radio',
+				'name'                           => 'disable_yoast',
+				'value'                          => '0',
 				( ( $is_yoast_disabled == 0 ) ? 'checked' : '' ) => '',
-				\sanitize_text_field( $if_yoast ) => '',
+				sanitize_text_field( $if_yoast ) => '',
 			)
 		) . new HTML_Refactory(
 			'strong',
 			array(),
 			'Enable',
-		) . 'Yoast Schema'
+		) . '&nbsp;Yoast Schema'
 	) . new HTML_Refactory(
 		'label',
 		array( 'for' => 'disable_yoast' ),
@@ -855,18 +858,18 @@ echo new HTML_Refactory(
 		new HTML_Refactory(
 			'input',
 			array(
-				'id'                              => 'disable_yoast',
-				'type'                            => 'radio',
-				'name'                            => 'disable_yoast',
-				'value'                           => '1',
+				'id'                             => 'disable_yoast',
+				'type'                           => 'radio',
+				'name'                           => 'disable_yoast',
+				'value'                          => '1',
 				( ( $is_yoast_disabled == 1 ) ? 'checked' : '' ) => '',
-				\sanitize_text_field( $if_yoast ) => '',
+				sanitize_text_field( $if_yoast ) => '',
 			)
 		) . new HTML_Refactory(
 			'strong',
 			array(),
 			'Disable',
-		) . 'Yoast Schema' . \wp_kses_post( $default_setting_label_html )
+		) . '&nbsp;Yoast Schema' . wp_kses_post( $default_setting_label_html )
 	)
 );
 
@@ -876,7 +879,7 @@ echo new HTML_Refactory(
 		'id'    => 'disable_aio_schema',
 		'class' => array( 'mt-3' ),
 	),
-	\esc_html( 'Disable All in One SEO schema?' )
+	esc_html( 'Disable All in One SEO schema?' )
 );
 
 if ( 'disabled' === $if_aio ) {
@@ -954,17 +957,17 @@ echo new HTML_Refactory(
 		new HTML_Refactory(
 			'input',
 			array(
-				'id'                            => 'enable_aio',
-				'type'                          => 'radio',
-				'name'                          => 'disable_aio',
-				'value'                         => '0',
+				'id'                           => 'enable_aio',
+				'type'                         => 'radio',
+				'name'                         => 'disable_aio',
+				'value'                        => '0',
 				( ( $is_aio_disabled == 0 ) ? 'checked' : '' ) => '',
-				\sanitize_text_field( $if_aio ) => '',
+				sanitize_text_field( $if_aio ) => '',
 			)
 		) . new HTML_Refactory(
 			'strong',
 			array(),
-			'Enable ',
+			'Enable&nbsp;',
 		) . 'AIOSEO Schema'
 	) . new HTML_Refactory(
 		'label',
@@ -973,18 +976,18 @@ echo new HTML_Refactory(
 		new HTML_Refactory(
 			'input',
 			array(
-				'id'                            => 'disable_aio',
-				'type'                          => 'radio',
-				'name'                          => 'disable_aio',
-				'value'                         => '1',
+				'id'                           => 'disable_aio',
+				'type'                         => 'radio',
+				'name'                         => 'disable_aio',
+				'value'                        => '1',
 				( ( $is_aio_disabled == 1 ) ? 'checked' : '' ) => '',
-				\sanitize_text_field( $if_aio ) => '',
+				sanitize_text_field( $if_aio ) => '',
 			)
 		) . new HTML_Refactory(
 			'strong',
 			array(),
-			'Disable ',
-		) . 'AIOSEO Schema' . \wp_kses_post( $default_setting_label_html )
+			'Disable&nbsp;',
+		) . 'AIOSEO Schema' . wp_kses_post( $default_setting_label_html )
 	)
 );
 
@@ -1085,8 +1088,8 @@ if ( $all_pages ) {
 					'input',
 					array(
 						'type'     => 'checkbox',
-						'id'       => 'post_num_' . \sanitize_text_field( $all_pages[ $key ]['ID'] ),
-						'name'     => 'exclude_' . \sanitize_text_field( $all_pages[ $key ]['ID'] ),
+						'id'       => 'post_num_' . sanitize_text_field( $all_pages[ $key ]['ID'] ),
+						'name'     => 'exclude_' . sanitize_text_field( $all_pages[ $key ]['ID'] ),
 						$checked   => '',
 						'data-key' => $key,
 					)
@@ -1137,8 +1140,8 @@ echo new HTML_Refactory(
 		) . new HTML_Refactory(
 			'strong',
 			array(),
-			'Save ',
-		) . 'Data ' . \wp_kses_post( $default_setting_label_html )
+			'Save&nbsp;',
+		) . 'Data' . wp_kses_post( $default_setting_label_html )
 	) . new HTML_Refactory(
 		'label',
 		array( 'for' => 'delete_data' ),
@@ -1180,7 +1183,7 @@ echo new HTML_Refactory(
 			'class' => array( 'btn', 'btn-primary', 'px-5', 'py-2' ),
 			'type'  => 'submit',
 		),
-		\esc_html( 'Save Settings' )
+		esc_html( 'Save Settings' )
 	)
 );
 
@@ -1193,7 +1196,7 @@ add_action(
 		/**
 		* LOAD ORDER MATTERS!
 		*/
-		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/schema-scalpel-user-settings.js';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/scsc-user-settings.js';
 		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/prism.js';
 		echo '</script>';
 		echo <<<SCRIPTS
