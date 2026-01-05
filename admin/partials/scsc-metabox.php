@@ -74,15 +74,30 @@ function scsc_render_metabox_preview( $post ) {
 		<img src="<?php echo esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . '/admin/images/schema-scalpel-logo.svg' ); ?>" alt="<?php esc_attr_e( 'Schema Scalpel Logo', 'schema-scalpel' ); ?>" style="max-width: 300px;">
 	</div>
 
-	<div class="scsc-metabox-tabs">
+	<div class="scsc-metabox-tabs" style="position:relative;z-index:1">
 		<h2 class="nav-tab-wrapper">
 			<a href="#scsc-tab-schema" class="nav-tab nav-tab-active"><?php esc_html_e( 'Schema', 'schema-scalpel' ); ?></a>
 			<a href="#scsc-tab-examples" class="nav-tab"><?php esc_html_e( 'Examples', 'schema-scalpel' ); ?></a>
 		</h2>
 	</div>
 
-	<div class="scsc-metabox">
-
+	<div class="scsc-metabox" style="position:relative">
+		<div class="scsc-nav-container" style="position:absolute;right:2rem">
+			<button class="hamburger-toggle" aria-label="Toggle Menu">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+				</svg>
+			</button>
+			<div class="scsc-menu">
+				<div>
+					<a href="/wp-admin/admin.php?page=scsc"><?php echo esc_html( 'Schema Scalpel ' ) . '<strong>' . esc_html( 'Dashboard' ) . '</strong>'; ?></a>
+					<hr />
+					<a href="/wp-admin/admin.php?page=scsc_settings"><?php echo esc_html( 'Schema Scalpel ' ) . '<strong>' . esc_html( 'Settings' ) . '</strong>'; ?></a>
+					<hr />
+					<a href="/wp-admin/admin.php?page=scsc_export"><?php echo esc_html( 'Schema Scalpel ' ) . '<strong>' . esc_html( 'Export' ) . '</strong>'; ?></a>
+				</div>
+			</div>
+		</div>
 		<div id="scsc-tab-schema" class="scsc-tab-content" style="display: block;">
 			<h3 style="margin: 0 0 12px 0;">
 				<?php esc_html_e( 'Structured Data Editor', 'schema-scalpel' ); ?>
@@ -395,9 +410,43 @@ function scsc_render_metabox_preview( $post ) {
 				alert('Example copied! Now click “Create as [...]” to add it.');
 			});
 		});
+		document.querySelector('.hamburger-toggle').addEventListener('click', function() {
+			document.querySelector('.scsc-menu').classList.toggle('active');
+		});
 	</script>
 
 	<style>
+		.scsc-menu {
+			display: none;
+			position: absolute;
+			right: 0;
+			padding: 1rem;
+			background-color: whitesmoke;
+			border: 1px solid lightgray;
+			border-radius: 6px;
+			box-shadow: 0 3px 5px rgba(0,0,0,.2);
+			width: 12rem;
+		}
+		
+		.scsc-menu.active {
+			display: block;
+		}
+		
+		.scsc-menu:hover {
+			background-color: white;
+		}
+
+		.scsc-menu a {
+			text-decoration: none;
+		}
+
+		.hamburger-toggle {
+			padding: .5rem .5rem .25rem;
+			background-color: rgba(192, 192, 192, .2);
+			border: 1px solid #ddd;
+			border-radius: 4px;
+		}
+		
 		.scsc-metabox-tabs {
 			max-width: 900px;
 			margin: 0 auto;
@@ -408,7 +457,8 @@ function scsc_render_metabox_preview( $post ) {
 			padding: 0 !important;
 		}
 
-		.scsc-metabox-tabs .nav-tab-wrapper a.nav-tab-active {
+		.scsc-metabox-tabs .nav-tab-wrapper a.nav-tab-active,
+		.nav-tab-active {
 			background-color: whitesmoke;
 			border-color: whitesmoke;
 		}
