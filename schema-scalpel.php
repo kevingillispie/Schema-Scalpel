@@ -3,7 +3,7 @@
  * Plugin Name:       Schema Scalpel
  * Plugin URI:        https://schemascalpel.com/
  * Description:       Boost your site’s SEO with Schema Scalpel, a user-friendly plugin for crafting custom schema markup on a per-page basis.
- * Version:           1.7
+ * Version:           2.0
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Tested up to:      6.9
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SCHEMA_SCALPEL_VERSION', '1.7' );
+define( 'SCHEMA_SCALPEL_VERSION', '2.0' );
 define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'scsc' );
 define( 'SCHEMA_SCALPEL_SLUG', 'scsc_' );
 define( 'SCHEMA_SCALPEL_PLUGIN', __FILE__ );
@@ -96,27 +96,47 @@ function run_schema_scalpel() {
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\run_schema_scalpel' );
 
-global $wpdb;
-$settings_table = $wpdb->prefix . 'scsc_settings';
-$table_checked  = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) );
-if ( isset( $table_checked ) && $table_checked === $settings_table ) {
-	// Turn off Yoast schema generator.
-	$yoast_setting = $wpdb->get_results( $wpdb->prepare( 'SELECT setting_value FROM %i WHERE setting_key = %s', $settings_table, 'yoast_schema' ), ARRAY_A );
-	if ( isset( $yoast_setting[0] ) && '1' === $yoast_setting[0]['setting_value'] ) {
-		add_filter( 'wpseo_json_ld_output', '__return_false' );
+/**
+ * Disable third-party SEO plugin schema output based on custom settings.
+ *
+ * @since 2.0
+ * @return void
+ */
+function scsc_disable_third_party_schema() {
+	global $wpdb;
+	$settings_table = $wpdb->prefix . SCHEMA_SCALPEL_SLUG . 'settings';
+
+	// Early exit if settings table doesn't exist.
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) !== $settings_table ) {
+		return;
 	}
 
-	// Turn off AIO SEO schema.
-	$aio_setting = $wpdb->get_results( $wpdb->prepare( 'SELECT setting_value FROM %i WHERE setting_key = %s', $settings_table, 'aio_schema' ), ARRAY_A );
-	if ( isset( $aio_setting[0] ) && '1' === $aio_setting[0]['setting_value'] ) {
-		add_filter(
-			'aioseo_schema_output',
-			function ( $graphs ) {
-				foreach ( $graphs as $index => $graph ) {
-					unset( $graphs[ $index ] );
-				}
-				return $graphs;
-			}
+	// Helper to get boolean setting (1 = enabled).
+	$get_setting = function ( string $key ) use ( $wpdb, $settings_table ): bool {
+		$value = $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT %1s FROM `%1s` WHERE setting_key = %s',
+				'setting_value',
+				$settings_table,
+				$key
+			)
 		);
+		return '1' === $value || null === $value;
+	};
+
+	// Disable Yoast SEO schema.
+	if ( $get_setting( 'yoast_schema' ) ) {
+		add_filter( 'wpseo_json_ld_output', '__return_false', PHP_INT_MAX );
+	}
+
+	// Disable All in One SEO schema.
+	if ( $get_setting( 'aio_schema' ) ) {
+		add_filter( 'aioseo_schema_output', '__return_empty_array', PHP_INT_MAX );
+	}
+
+	// Disable Rank Math schema.
+	if ( $get_setting( 'rankmath_schema' ) ) {
+		add_filter( 'rank_math/json_ld', '__return_empty_array', PHP_INT_MAX );
 	}
 }
+add_action( 'wp', 'SchemaScalpel\scsc_disable_third_party_schema', 5 );

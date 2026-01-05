@@ -4,25 +4,31 @@ Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json-ld, markup, per-page, yoast, all-in-one-seo, microdata, search engine
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.6.3
+Stable tag: 2.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Boost your site’s SEO with Schema Scalpel, a user-friendly plugin for crafting custom schema markup on a per-page basis.
+Custom JSON-LD schema markup on every post/page – now with a powerful editor metabox for easy per-page structured data.
 
 == Description ==
 
-Elevate your website’s SEO with **Schema Scalpel**, the ultimate tool for creating custom JSON-LD schema markup tailored to each page or post. Structured data helps search engines understand your content, improving visibility and click-through rates. Whether you’re a beginner or an SEO pro, Schema Scalpel makes it easy to enhance your site’s structured data with precision and ease.
+**Schema Scalpel 2.0** revolutionizes structured data in WordPress with a brand-new **post/page editor metabox** – add, edit, and manage custom JSON-LD schema markup directly alongside your content!
 
-### Key Features
-- Craft custom JSON-LD schema for any page, post, or site-wide.
-- Use built-in, Google-recommended schema templates for quick setup.
-- Seamlessly integrates with Yoast SEO and All in One SEO Pack.
-- User-friendly interface for all skill levels.
-- Control schema deletion with an uninstall setting for data safety.
+No more jumping to a separate dashboard. Create rich, Google-friendly structured data exactly where you need it, with real-time AJAX saving and a beautiful, intuitive interface.
 
-Get started today and optimize your site’s search presence with Schema Scalpel!
+### Why Schema Scalpel?
+- **Per-page/post precision** – Tailor JSON-LD schema for individual content (FAQ, Article, Recipe, Product, and more).
+- **New in 2.0: Full metabox editor** – Create/edit/delete schemas in the Gutenberg or Classic editor.
+- **Built-in examples tab** – Copy ready-to-use Google-recommended templates with one click.
+- **Global & homepage support** – Site-wide schemas remain available via the dashboard.
+- **Lightweight & fast** – Pure JSON-LD output, no bloat.
+- **Seamless compatibility** – Works alongside Yoast SEO, Rank Math, and All in One SEO (disable their schema if desired).
+- **Safe data handling** – Optional uninstall cleanup setting.
+
+Perfect for bloggers, agencies, eCommerce sites, and anyone serious about rich snippets, better SEO visibility, and higher click-through rates.
+
+Get started in minutes – elevate your search presence today!
 
 == Installation ==
 
@@ -41,19 +47,59 @@ Get started today and optimize your site’s search presence with Schema Scalpel
 
 == Frequently Asked Questions ==
 
-### What is schema markup?
-Schema markup (structured data) is code that helps search engines understand your website’s content, such as articles, products, or FAQs. It enhances search results with rich snippets, improving visibility and clicks.
+### Where do I manage schema now?
+In version 2.0, most users will use the new **Schema Scalpel metabox** directly in the post/page editor – it's faster and more intuitive. Global and homepage schemas are still managed via the Schema Scalpel dashboard menu.
 
-### Does Schema Scalpel work with Yoast or All in One SEO?
-Yes! Schema Scalpel integrates seamlessly with Yoast SEO and All in One SEO Pack, allowing you to disable their schema output and use custom JSON-LD markup instead.
+### Does the new metabox replace the old dashboard?
+No! The original dashboard remains for advanced/global use. The metabox brings per-page editing front-and-center.
 
-### What’s new in version 1.6?
-Version 1.6 introduces database schema improvements for better performance, a “Settings” link on the Plugins page for quick access, and a `delete_on_uninstall` setting to control data removal during uninstallation.
+### Will my existing schemas disappear? 
+Absolutely not – all existing global, post, and page schemas are preserved and now appear in the new metabox as well as the original dashboard.
 
-### Why use JSON-LD instead of microdata?
-JSON-LD is Google’s preferred format for structured data because it’s easier to manage within a single `<script>` tag, unlike microdata, which is embedded throughout HTML. Schema Scalpel uses JSON-LD for simplicity and compliance. [Learn more](https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data#format-placement "Introduction to Structured Data" rel="nofollow").
+### Can I still use schema templates? 
+Yes! The new "Examples" tab in the metabox includes copyable templates for FAQPage, Article, Recipe, Product, and many more.
+
+### Is Schema Scalpel still compatible with Yoast/Rank Math/AIOSEO? 
+Yes – it integrates perfectly. You can safely disable their built-in schema output and use Schema Scalpel's custom JSON-LD instead.
+
+### What is schema markup and why JSON-LD? 
+Schema markup (structured data) helps search engines understand your content, enabling rich snippets (stars, FAQs, etc.) in results. JSON-LD is Google's preferred format – clean, easy, and non-intrusive.
+
+== Screenshots ==
+
+1. The new Schema Scalpel metabox – edit custom JSON-LD right in the post/page editor.
+2. Built-in Examples tab with one-click copyable schema templates.
+3. Creating or editing a schema with real-time saving.
+4. Global schemas still accessible via the dashboard.
+5. Rich snippet example in Google search results.
 
 == Changelog ==
+
+= 2.0.0 =
+
+*(2026-01-05)*
+
+**Added**
+
+- **New Post/Page Editor Metabox** – Full-featured Schema Scalpel editor now directly available in the WordPress post and page editing screens.
+  - Create, edit, and delete custom JSON-LD schemas right where you write your content.
+  - Real-time saving via AJAX – no need to visit a separate settings page.
+  - Support for both post-specific and global schemas in the same interface.
+  - Built-in "Examples" tab with ready-to-use schema templates (FAQ, Article, Recipe, etc.) that can be copied with one click.
+  - Clean, modern interface with syntax-highlighted JSON editing and clear visual separation between post and global schemas.
+- Improved workflow – most users will now manage schema directly alongside their content, making structured data easier and faster to implement.
+
+**Changed**
+
+- Major version bump to reflect the significant improvement in usability and core functionality.
+- The original dashboard-based schema management remains available for advanced/global use cases.
+
+**Note for Upgraders**
+
+- All existing custom schemas (global, post, and page) are fully preserved and will now appear in the new metabox.
+- No data migration needed – everything works seamlessly.
+
+A huge leap forward in making structured data accessible and intuitive – thank you for using Schema Scalpel!
 
 = 1.6.4 =
 * [FIX] Removed `readonly` property modifiers from class declarations to restore full compatibility with PHP 7.4.
@@ -81,15 +127,6 @@ JSON-LD is Google’s preferred format for structured data because it’s easier
 * [UPDATE] Added `delete_on_uninstall` setting to control data removal on deletion.
 * [UPDATE] Enhanced code to meet WordPress Coding Standards.
 * [FIX] Fixed uninstallation bug to respect the `delete_on_uninstall` setting.
-
-= 1.5 =
-* [UPDATE] Improved BlogPosting schema generator with more robust options.
-
-= 1.4 =
-* [NEW] Rebuilt codebase with custom HTML generator for performance.
-* [UPDATE] Full compliance with WordPress Coding Standards.
-* [UPDATE] Optimized admin JavaScript for schema editing.
-* [FIX] Improved schema-editing functionality.
 
 == Upgrade Notice ==
 

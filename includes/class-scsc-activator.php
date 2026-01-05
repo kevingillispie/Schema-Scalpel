@@ -69,6 +69,7 @@ class SCSC_Activator {
 			array( 'search_param', 's' ),
 			array( 'yoast_schema', '1' ),
 			array( 'aio_schema', '1' ),
+			array( 'rankmath_schema', '1' ),
 			array( 'delete_on_uninstall', '0' ),
 		);
 

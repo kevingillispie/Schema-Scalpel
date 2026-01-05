@@ -39,9 +39,9 @@ foreach ( $current_excluded_results as $key => $value ) {
  */
 
 $all_params;
-if ( isset( $_GET['save'] ) ) {
+if ( isset( $_POST['save'] ) ) {
 	$all_params = array();
-	foreach ( $_GET as $key => $value ) {
+	foreach ( $_POST as $key => $value ) {
 		$all_params[] = array(
 			sanitize_key( $key ),
 			is_scalar( $value ) ? sanitize_text_field( $value ) : $value,
@@ -132,6 +132,9 @@ if ( isset( $_GET['save'] ) ) {
 		}
 	}
 
+	/**
+	 * AIOSEO setting.
+	 */
 	foreach ( $all_params as $key => $value ) {
 		if ( 'disable_aio' === $all_params[ $key ][0] ) {
 			global $wpdb;
@@ -146,6 +149,27 @@ if ( isset( $_GET['save'] ) ) {
 				);
 			} else {
 				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'aio_schema' ) );
+			}
+		}
+	}
+
+	/**
+	 * Rank Math setting.
+	 */
+	foreach ( $all_params as $key => $value ) {
+		if ( 'disable_rankmath' === $all_params[ $key ][0] ) {
+			global $wpdb;
+			$has_rankmath_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'rankmath_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			if ( ! $has_rankmath_setting[0] ) {
+				$wpdb->insert(
+					$wpdb->prefix . 'scsc_settings',
+					array(
+						'setting_key'   => 'rankmath_schema',
+						'setting_value' => $all_params[ $key ][1],
+					)
+				);
+			} else {
+				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'rankmath_schema' ) );
 			}
 		}
 	}
@@ -296,6 +320,15 @@ if ( '0' === $aio_setting[0]['setting_value'] ) {
 }
 
 /**
+* Get Rank Math setting.
+*/
+$is_rankmath_disabled = 1;
+$rankmath_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='rankmath_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+if ( '0' === $rankmath_setting[0]['setting_value'] ) {
+	$is_rankmath_disabled = 0;
+}
+
+/**
 * Get data delete setting.
 */
 $is_data_deleted = 0;
@@ -318,6 +351,14 @@ $if_aio = 'disabled';
 foreach ( get_plugins() as $key => $value ) {
 	if ( stripos( $value['TextDomain'], 'all-in-one-seo-pack' ) > -1 ) {
 		$if_aio = '';
+		break;
+	}
+}
+
+$if_rankmath = 'disabled';
+foreach ( get_plugins() as $key => $value ) {
+	if ( stripos( $value['TextDomain'], 'rank-math' ) > -1 ) {
+		$if_rankmath = '';
 		break;
 	}
 }
@@ -371,7 +412,7 @@ $alert2 = new HTML_Refactory(
 		'This plugin ' . new HTML_Refactory(
 			'a',
 			array( 'href' => esc_url( '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' ) ),
-			esc_html( "automatically overrides Yoast's and AIOSEO's schema" )
+			esc_html( 'automatically overrides Yoast, AIOSEO, and Rank Math schema' )
 		),
 		' and injects your customized schema to better fit your SEO objectives.'
 	)
@@ -988,6 +1029,124 @@ echo new HTML_Refactory(
 			array(),
 			'Disable&nbsp;',
 		) . 'AIOSEO Schema' . wp_kses_post( $default_setting_label_html )
+	)
+);
+
+echo new HTML_Refactory(
+	'h3',
+	array(
+		'id'    => 'disable_rankmath_schema',
+		'class' => array( 'mt-3' ),
+	),
+	esc_html( 'Disable Rank Math schema?' )
+);
+
+if ( 'disabled' === $if_rankmath ) {
+
+	echo new HTML_Refactory(
+		'pre',
+		array( 'class' => array( 'mb-0', 'rounded', 'language-js' ) ),
+		'',
+		new HTML_Refactory(
+			'code',
+			array( 'class' => array( 'language-js' ) ),
+			'&gt;&nbsp;Rank Math not detected.',
+		) . new HTML_Refactory(
+			'br',
+			array(),
+			'',
+			''
+		) . new HTML_Refactory(
+			'code',
+			array( 'class' => array( 'language-js' ) ),
+			'&gt;&gt;&nbsp;Nothing to worry about here.'
+		) . new HTML_Refactory(
+			'br',
+			array(),
+			'',
+			''
+		) . new HTML_Refactory(
+			'code',
+			array( 'class' => array( 'language-js' ) ),
+			'&gt;&gt;&gt;&nbsp;Happy schema-ing!'
+		)
+	);
+
+} else {
+
+	echo new HTML_Refactory(
+		'pre',
+		array( 'class' => array( 'mb-0', 'rounded', 'language-js' ) ),
+		'',
+		new HTML_Refactory(
+			'code',
+			array( 'class' => array( 'language-js' ) ),
+			'&gt;&nbsp;Rank Math has been detected...',
+		) . new HTML_Refactory(
+			'br',
+			array(),
+			'',
+			''
+		) . new HTML_Refactory(
+			'code',
+			array( 'class' => array( 'language-js' ) ),
+			"&gt;&nbsp;It is recommended that Rank Math's schema feature remain disabled."
+		) . new HTML_Refactory(
+			'br',
+			array(),
+			'',
+			''
+		) . new HTML_Refactory(
+			'code',
+			array( 'class' => array( 'language-js' ) ),
+			'&gt;&nbsp;All other Rank Math features will be unaffected.'
+		)
+	);
+
+}
+
+echo new HTML_Refactory(
+	'div',
+	array( 'class' => array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) ),
+	'',
+	new HTML_Refactory(
+		'label',
+		array( 'for' => 'enable_rankmath' ),
+		'',
+		new HTML_Refactory(
+			'input',
+			array(
+				'id'                                => 'enable_rankmath',
+				'type'                              => 'radio',
+				'name'                              => 'disable_rankmath',
+				'value'                             => '0',
+				( ( $is_rankmath_disabled == 0 ) ? 'checked' : '' ) => '',
+				sanitize_text_field( $if_rankmath ) => '',
+			)
+		) . new HTML_Refactory(
+			'strong',
+			array(),
+			'Enable&nbsp;',
+		) . 'Rank Math Schema'
+	) . new HTML_Refactory(
+		'label',
+		array( 'for' => 'disable_rankmath' ),
+		'',
+		new HTML_Refactory(
+			'input',
+			array(
+				'id'                                => 'disable_rankmath',
+				'type'                              => 'radio',
+				'name'                              => 'disable_rankmath',
+				'value'                             => '1',
+				( ( $is_rankmath_disabled == 1 ) ? 'checked' : '' ) => '',
+				sanitize_text_field( $if_rankmath ) => '',
+			)
+		) . new HTML_Refactory(
+			'strong',
+			array(),
+			'Disable&nbsp;',
+		) . 'Rank Math Schema' . wp_kses_post( $default_setting_label_html )
 	)
 );
 
