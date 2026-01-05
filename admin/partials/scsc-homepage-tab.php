@@ -35,15 +35,41 @@ echo new HTML_Refactory(
 	esc_html( 'Create schema to appear on the main page of your site.' )
 );
 
-echo '<div id="' . $tab_name . '_schema">';
+echo '<div id="' . esc_attr( $tab_name ) . '_schema">';
 
 global $wpdb;
-$results       = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s WHERE schema_type = %s;', $wpdb->prefix . 'scsc_custom_schemas', $tab_name ), ARRAY_A );
+$table         = $wpdb->prefix . 'scsc_custom_schemas';
+$front_page_id = (int) get_option( 'page_on_front' );
+
+if ( $front_page_id > 0 ) {
+	$results = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT * FROM %i 
+             WHERE schema_type = %s 
+                OR (schema_type = 'pages' AND post_id = %d)
+             ORDER BY id DESC",
+			$table,
+			$tab_name,
+			$front_page_id
+		),
+		ARRAY_A
+	);
+} else {
+	$results = $wpdb->get_results(
+		$wpdb->prepare(
+			'SELECT * FROM %i WHERE schema_type = %s ORDER BY id DESC',
+			$table,
+			$tab_name
+		),
+		ARRAY_A
+	);
+}
+
 $rendered_pres = '';
 
 if ( $results ) {
 	foreach ( $results as $key => $value ) {
-		$wet_cereal     = unserialize( $results[ $key ]['custom_schema'] );
+		$wet_cereal     = maybe_unserialize( $results[ $key ]['custom_schema'] );
 		$rendered_pres .= new HTML_Refactory(
 			'pre',
 			array(
@@ -63,12 +89,12 @@ echo new HTML_Refactory(
 		'legend',
 		array(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
-			'style' => 'wdith:auto',
+			'style' => 'width:auto', // Fixed typo: wdith → width
 		),
 		esc_html( 'Current:' )
 	) . new HTML_Refactory(
 		'div',
-		array( 'id' => 'current_' . $tab_name . '_schema' ),
+		array( 'id' => 'current_' . esc_attr( $tab_name ) . '_schema' ),
 		'',
 		$rendered_pres
 	)
