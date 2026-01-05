@@ -6,7 +6,7 @@
  * Version:           1.7
  * Requires at least: 5.0
  * Requires PHP:      7.4
- * Tested up to:      6.8
+ * Tested up to:      6.9
  * Author:            Kevin Gillispie
  * Author URI:        https://kevingillispie.com
  * License:           GPLv3 or later
