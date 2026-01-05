@@ -195,38 +195,15 @@ function scsc_render_metabox_preview( $post ) {
 
 			if ( ! empty( $schema_examples ) && is_array( $schema_examples ) ) :
 				foreach ( $schema_examples as $key => $json ) :
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-					// Decode and re-encode for pretty + safe JSON.
-					$decoded = json_decode( $json );
-					if ( null === $decoded ) {
-						continue; // Skip invalid JSON.
-=======
 					$decoded = json_decode( $json );
 					if ( null === $decoded ) {
 						continue;
->>>>>>> Stashed changes
-=======
-					$decoded = json_decode( $json );
-					if ( null === $decoded ) {
-						continue;
->>>>>>> Stashed changes
 					}
 					$pretty_json = wp_json_encode(
 						$decoded,
 						JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
 					);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-					// For data-json attribute: we need the raw pretty string, safely escaped for HTML attribute
-					// esc_attr() on pretty_json is safe because it contains no < > & etc., only valid JSON chars.
-					$attr_json = esc_attr( $pretty_json );
-
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 					// Human-readable title.
 					$title = ucwords( str_replace( array( '-', '_' ), ' ', $key ) );
 					?>
@@ -237,28 +214,10 @@ function scsc_render_metabox_preview( $post ) {
 						<pre class="scsc-example-preview"><?php echo esc_textarea( $pretty_json ); ?></pre>
 						<p style="margin: 12px 0 0 0;">
 							<?php
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-							$pretty_json = wp_json_encode(
-								$decoded,
-								JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-							);
-
-							// This preserves newlines and safely escapes for HTML attribute
-							$safe_for_attr = htmlspecialchars( $pretty_json, ENT_QUOTES, 'UTF-8' );
-							?>
-
-=======
-=======
->>>>>>> Stashed changes
 
 							$safe_for_attr = htmlspecialchars( $pretty_json, ENT_QUOTES, 'UTF-8' );
 
 							?>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 							<button type="button" class="button button-secondary scsc-copy-example" 
 									data-json="<?php echo $safe_for_attr; ?>">
 								<?php esc_html_e( 'Copy to Editor', 'schema-scalpel' ); ?>
@@ -323,13 +282,6 @@ function scsc_render_metabox_preview( $post ) {
 			let formatted = finalFormattingCheck(correctBracketCount(w));
 			if (!formatted) return false;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-			// EXACTLY like admin dashboard: replace quotes with HTML entities
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 			formatted = formatted.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 			return formatted;
 		}
@@ -359,13 +311,6 @@ function scsc_render_metabox_preview( $post ) {
 		}
 
 		jQuery(document).ready(function($) {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-			// Tab switching
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 			$('.nav-tab-wrapper a').on('click', function(e) {
 				e.preventDefault();
 				var target = $(this).attr('href');
@@ -375,13 +320,6 @@ function scsc_render_metabox_preview( $post ) {
 				$(target).show();
 			});
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-			// Save existing schema
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 			$('.scsc-save').on('click', function() {
 				var btn = $(this);
 				var id = btn.data('id');
@@ -395,15 +333,7 @@ function scsc_render_metabox_preview( $post ) {
 					action: 'scsc_save_metabox_schema',
 					nonce: $('#scsc_metabox_nonce').val(),
 					schema_id: id,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-					schema_json: formatted  // Now entity-encoded and cleaned exactly like dashboard
-=======
 					schema_json: formatted
->>>>>>> Stashed changes
-=======
-					schema_json: formatted
->>>>>>> Stashed changes
 				}, function(resp) {
 					if (resp.success) {
 						btn.next('.scsc-status').fadeIn().delay(1500).fadeOut();
@@ -413,13 +343,6 @@ function scsc_render_metabox_preview( $post ) {
 				});
 			});
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-			// Create new schema (post or global)
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 			$('.scsc-create-new, .scsc-create-new-global').on('click', function() {
 				var rawJson = $('textarea[name="scsc_new_schema"]').val();
 				var formatted = removeIllegalCharacters(rawJson);
@@ -458,14 +381,6 @@ function scsc_render_metabox_preview( $post ) {
 
 			$('.scsc-copy-example').on('click', function() {
 				var escapedJson = $(this).attr('data-json');
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-				// Properly unescape HTML entities and preserve formatting
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 				var temp = document.createElement('textarea');
 				temp.innerHTML = escapedJson;
 				var json = temp.value;
