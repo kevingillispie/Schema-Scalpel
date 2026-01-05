@@ -89,7 +89,7 @@ echo new HTML_Refactory(
 		'legend',
 		array(
 			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
-			'style' => 'width:auto', // Fixed typo: wdith → width
+			'style' => 'width:auto',
 		),
 		esc_html( 'Current:' )
 	) . new HTML_Refactory(
