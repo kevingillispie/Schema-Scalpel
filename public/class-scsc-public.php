@@ -171,10 +171,19 @@ class SCSC_Public {
 			ARRAY_A
 		);
 
+		$excluded_ids = array();
 		if ( ! empty( $excluded_results ) ) {
-			$excluded_ids = ! empty( $excluded_results ) ? maybe_unserialize( $excluded_results[0]['setting_value'] ) : array();
-			if ( is_array( $excluded_ids ) && in_array( $page_id, $excluded_ids, true ) ) {
+			$excluded_ids = array_map( 'absint', wp_list_pluck( $excluded_results, 'setting_value' ) );
+
+			if ( $page_id && in_array( $page_id, $excluded_ids, true ) ) {
 				return;
+			}
+
+			if ( is_home() || ( is_front_page() && 'posts' === get_option( 'show_on_front' ) ) ) {
+				$blog_page_id = absint( get_option( 'page_for_posts' ) ); // Ensure int
+				if ( $blog_page_id > 0 && in_array( $blog_page_id, $excluded_ids, true ) ) {
+					return;
+				}
 			}
 		}
 

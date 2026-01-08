@@ -101,7 +101,7 @@ if ( $schema_examples ) {
 			->child(
 				( new HTML_Refactory( 'legend' ) )
 					->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )
-					->attr( 'style', 'wdith:auto' )
+					->attr( 'style', 'width:auto' )
 					->text( $schema_type . ':' )
 					->render()
 			)

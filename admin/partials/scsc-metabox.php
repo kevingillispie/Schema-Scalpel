@@ -747,6 +747,7 @@ function scsc_render_metabox_preview( $post ) {
 			background-color: rgba(192, 192, 192, .2);
 			border: 1px solid #ddd;
 			border-radius: 4px;
+			cursor: pointer;
 		}
 		
 		.scsc-metabox-tabs {

@@ -34,7 +34,7 @@ echo '<div id="' . $tab_name . '_schema">';
 
 $legend = ( new HTML_Refactory( 'legend' ) )
 	->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )
-	->attr( 'style', 'wdith:auto' )
+	->attr( 'style', 'width:auto' )
 	->text( 'Current:' )
 	->render();
 
@@ -44,7 +44,7 @@ $rendered_pres = '';
 
 if ( $results ) {
 	foreach ( $results as $key => $value ) {
-		$wet_cereal     = maybe_unserialize( $results[ $key ]['custom_schema'] );
+		$wet_cereal     = unserialize( $results[ $key ]['custom_schema'] );
 		$rendered_pres .= ( new HTML_Refactory( 'pre' ) )
 			->attr( 'class', array( 'w-100', 'rounded', 'language-json', 'edit-block' ) )
 			->attr( 'data-id', $results[ $key ]['id'] )
