@@ -152,11 +152,12 @@ class SCSC_Admin {
 
 		// Retrieve existing post schema IDs for skip/replace logic.
 		$table                    = $wpdb->prefix . 'scsc_custom_schemas';
+		$like_pattern             = '%' . esc_sql( $post_type ) . '%';
 		$existing_results         = $wpdb->get_results(
-			$wpdb->prepare( "SELECT DISTINCT post_id FROM %i WHERE schema_type = 'posts'", $table ),
+			$wpdb->prepare( 'SELECT DISTINCT post_id FROM %i WHERE schema_type = %s AND custom_schema LIKE %s', $table, 'posts', $like_pattern ),
 			ARRAY_A
 		);
-		$existing_post_schema_ids = wp_list_pluck( $existing_results, 'post_id' );
+		$existing_post_schema_ids = array_map( 'intval', wp_list_pluck( $existing_results, 'post_id' ) );
 
 		foreach ( $post_ids as $p_id ) {
 			// Skip posts that already have schema when only adding missing ones.
@@ -197,13 +198,14 @@ BLOGPOSTING;
 
 			// Delete existing schema if replacing or updating a single post that already has one.
 			if ( 'Replace' === $update_type || ( is_numeric( $update_type ) && in_array( $p_id, $existing_post_schema_ids, true ) ) ) {
-				$wpdb->delete(
-					$table,
-					array(
-						'post_id'     => $p_id,
-						'schema_type' => 'posts',
-					),
-					array( '%d', '%s' )
+				$wpdb->query(
+					$wpdb->prepare(
+						'DELETE FROM %i WHERE post_id = %d AND schema_type = %s AND custom_schema LIKE %s',
+						$table,
+						$p_id,
+						'posts',
+						$like_pattern
+					)
 				);
 			}
 

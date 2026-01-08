@@ -18,9 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $tab_name = 'pages';
 
-$all_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE post_type='page' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), ARRAY_A );
+$all_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE post_type='page' ORDER BY post_title ASC;", $wpdb->prefix . 'posts' ), ARRAY_A );
 
-$schema_results_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %1s WHERE schema_type='pages';", $wpdb->prefix . 'scsc_custom_schemas' ), ARRAY_A );
+$schema_results_pages = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE schema_type='pages';", $wpdb->prefix . 'scsc_custom_schemas' ), ARRAY_A );
 $existing_schema_ids  = array();
 
 foreach ( $schema_results_pages as $key => $value ) :
@@ -28,28 +28,25 @@ foreach ( $schema_results_pages as $key => $value ) :
 endforeach;
 
 echo '<div class="mb-5">';
-echo new HTML_Refactory(
-	'h2',
-	array(),
-	esc_html( 'Page Schema' )
-);
+
+echo ( new HTML_Refactory( 'h2' ) )
+	->text( 'Page Schema' )
+	->render();
 
 $list_of_pages = '';
-$menu_of_pages = new HTML_Refactory(
-	'li',
-	array( 'class' => array( 'dropdown-item' ) ),
-	'',
-	new HTML_Refactory(
-		'input',
-		array(
-			'id'          => $tab_name . '_filter',
-			'class'       => array( 'form-control' ),
-			'type'        => 'text',
-			'name'        => 'filter-pages',
-			'placeholder' => 'Type to filter pages...',
-		)
+
+$menu_of_pages = ( new HTML_Refactory( 'li' ) )
+	->attr( 'class', array( 'dropdown-item' ) )
+	->child(
+		( new HTML_Refactory( 'input' ) )
+			->attr( 'id', $tab_name . '_filter' )
+			->attr( 'class', array( 'form-control' ) )
+			->attr( 'type', 'text' )
+			->attr( 'name', 'filter-pages' )
+			->attr( 'placeholder', 'Type to filter pages...' )
+			->render()
 	)
-);
+	->render();
 
 foreach ( $all_pages as $key => $value ) {
 
@@ -61,31 +58,57 @@ foreach ( $all_pages as $key => $value ) {
 		}
 		$page_id        = $all_pages[ $key ]['ID'];
 		$page_title     = $all_pages[ $key ]['post_title'];
-		$menu_of_pages .= new HTML_Refactory(
-			'li',
-			array(
-				'class'      => array( 'dropdown-item', sanitize_html_class( $classes ) ),
-				'data-value' => sanitize_text_field( $page_id ),
-				'data-index' => $key,
-				'data-title' => $page_title,
-				'data-type'  => 'page',
-			),
-			sanitize_text_field( $page_id ) . ': ' . sanitize_text_field( $page_title )
-		);
+		$menu_of_pages .= ( new HTML_Refactory( 'li' ) )
+			->attr( 'class', array( 'dropdown-item', sanitize_html_class( $classes ) ) )
+			->attr( 'data-value', sanitize_text_field( $page_id ) )
+			->attr( 'data-index', $key )
+			->attr( 'data-title', $page_title )
+			->attr( 'data-type', 'page' )
+			->text( sanitize_text_field( $page_id ) . ': ' . sanitize_text_field( $page_title ) )
+			->render();
 	}
 }
 
 $list_id = esc_attr( $tab_name ) . '_list';
-echo <<<MENU
-<div class="btn-group w-100">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        SELECT PAGE
-    </button>
-    <ul id="$list_id" class="dropdown-menu w-100">
-        $menu_of_pages
-    </ul>
-</div>
-MENU;
+
+echo ( new HTML_Refactory( 'div' ) )
+	->attr(
+		'class',
+		array(
+			0 => 'btn-group',
+			1 => 'w-100',
+		)
+	)
+	->child(
+		( new HTML_Refactory( 'button' ) )
+		->attr(
+			'class',
+			array(
+				0 => 'btn',
+				1 => 'btn-primary',
+				2 => 'dropdown-toggle',
+			)
+		)
+		->attr( 'type', 'button' )
+		->attr( 'data-bs-toggle', 'dropdown' )
+		->attr( 'aria-expanded', 'false' )
+		->child( 'SELECT PAGE' )
+		->render()
+	)
+	->child(
+		( new HTML_Refactory( 'ul' ) )
+		->attr( 'id', $list_id )
+		->attr(
+			'class',
+			array(
+				0 => 'dropdown-menu',
+				1 => 'w-100',
+			)
+		)
+		->child( $menu_of_pages )
+		->render()
+	)
+	->render();
 
 echo '<div id="' . esc_attr( $tab_name ) . '_schema">';
 
@@ -101,38 +124,33 @@ if ( $schema_results_pages ) :
 				endif;
 			endforeach;
 		$no_cereal           = unserialize( $schema_results_pages[ $key ]['custom_schema'] );
-		$formatted_pre_tags .= new HTML_Refactory(
-			'pre',
-			array(
-				'class'        => array( 'w-100', 'rounded', 'd-none', 'post-id-' . $wp_post_id, 'edit-block', 'language-json' ),
-				'data-id'      => sanitize_text_field( $schema_results_pages[ $key ]['id'] ),
-				'data-post-id' => sanitize_text_field( $wp_post_id ),
-				'data-schema'  => esc_html( $no_cereal ),
-			)
-		);
+		$formatted_pre_tags .= ( new HTML_Refactory( 'pre' ) )
+			->attr( 'class', array( 'w-100', 'rounded', 'd-none', 'post-id-' . $wp_post_id, 'edit-block', 'language-json' ) )
+			->attr( 'data-id', sanitize_text_field( $schema_results_pages[ $key ]['id'] ) )
+			->attr( 'data-post-id', sanitize_text_field( $wp_post_id ) )
+			->attr( 'data-schema', esc_html( $no_cereal ) )
+			->render();
 
 	endforeach;
 
 endif;
 
-echo new HTML_Refactory(
-	'fieldset',
-	array( 'class' => array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-5' ) ),
-	'',
-	new HTML_Refactory(
-		'legend',
-		array(
-			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
-			'style' => 'width:auto',
-		),
-		esc_html( 'Current:' )
-	) . new HTML_Refactory(
-		'div',
-		array( 'id' => 'current_pages_schema' ),
-		'',
-		$formatted_pre_tags
+echo ( new HTML_Refactory( 'fieldset' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-5' ) )
+	->child(
+		( new HTML_Refactory( 'legend' ) )
+			->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )
+			->attr( 'style', 'width:auto' )
+			->text( 'Current:' )
+			->render()
 	)
-);
+	->child(
+		( new HTML_Refactory( 'div' ) )
+			->attr( 'id', 'current_pages_schema' )
+			->child( $formatted_pre_tags )
+			->render()
+	)
+	->render();
 
 $current_partial_name = __FILE__;
 require 'scsc-create-new-schema.php';

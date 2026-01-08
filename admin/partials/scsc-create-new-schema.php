@@ -40,21 +40,18 @@ if ( isset( $_GET['set_tab'] ) ) {
 	$set_tab = 'homepage';
 }
 
-echo new HTML_Refactory(
-	'div',
-	array( 'class' => array( 'mt-3' ) ),
-	'',
-	new HTML_Refactory(
-		'button',
-		array(
-			'id'             => \sanitize_text_field( $tab_label[ $index ] ) . '_create_schema_code_block',
-			'type'           => 'button',
-			'class'          => array( 'edit-block-button', 'btn', 'bg-success', 'text-white', 'px-5' ),
-			'data-bs-toggle' => 'modal',
-			'data-bs-target' => '#schemaBlockCreateModal',
-			'data-id'        => \sanitize_text_field( ( 'homepage' === $set_tab || 'global' === $set_tab ) ? '-1' : '' ),
-			\sanitize_text_field( ( 'global' !== $tab_label[ $index ] && 'homepage' !== $tab_label[ $index ] ) ? 'disabled="true"' : null ) => '',
-		),
-		'Create New Schema'
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'mt-3' ) )
+	->child(
+		( new HTML_Refactory( 'button' ) )
+			->attr( 'id', sanitize_text_field( $tab_label[ $index ] ) . '_create_schema_code_block' )
+			->attr( 'type', 'button' )
+			->attr( 'class', array( 'edit-block-button', 'btn', 'bg-success', 'text-white', 'px-5' ) )
+			->attr( 'data-bs-toggle', 'modal' )
+			->attr( 'data-bs-target', '#schemaBlockCreateModal' )
+			->attr( 'data-id', sanitize_text_field( ( 'homepage' === $set_tab || 'global' === $set_tab ) ? '-1' : '' ) )
+			->attr( sanitize_text_field( ( 'global' !== $tab_label[ $index ] && 'homepage' !== $tab_label[ $index ] ) ? 'disabled="true"' : null ), '' )
+			->text( 'Create New Schema' )
+			->render()
 	)
-);
+	->render();

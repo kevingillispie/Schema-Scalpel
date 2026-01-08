@@ -20,64 +20,49 @@ $tab_name = 'global';
 
 echo '<div class="d-flex flex-column">';
 
-echo new HTML_Refactory(
-	'h2',
-	array(),
-	esc_html( ucfirst( $tab_name ) . ' Schema' )
-);
+echo ( new HTML_Refactory( 'h2' ) )
+	->text( ucfirst( $tab_name ) . ' Schema' )
+	->render();
 
-echo new HTML_Refactory(
-	'p',
-	array(
-		'class' => array( 'alert', 'alert-info', 'mb-0' ),
-		'role'  => 'alert',
-	),
-	esc_html( 'Create schema to appear on every page of your site.' )
-);
+echo ( new HTML_Refactory( 'p' ) )
+	->attr( 'class', array( 'alert', 'alert-info', 'mb-0' ) )
+	->attr( 'role', 'alert' )
+	->text( 'Create schema to appear on every page of your site.' )
+	->render();
 
 echo '<div id="' . $tab_name . '_schema">';
 
-
-$legend = new HTML_Refactory(
-	'legend',
-	array(
-		'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
-		'style' => 'wdith:auto',
-	),
-	esc_html( 'Current:' )
-);
+$legend = ( new HTML_Refactory( 'legend' ) )
+	->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )
+	->attr( 'style', 'wdith:auto' )
+	->text( 'Current:' )
+	->render();
 
 global $wpdb;
-$results       = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s WHERE schema_type = %s;', $wpdb->prefix . 'scsc_custom_schemas', $tab_name ), ARRAY_A );
+$results       = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE schema_type = %s;', $wpdb->prefix . 'scsc_custom_schemas', $tab_name ), ARRAY_A );
 $rendered_pres = '';
 
 if ( $results ) {
 	foreach ( $results as $key => $value ) {
-		$wet_cereal     = unserialize( $results[ $key ]['custom_schema'] );
-		$rendered_pres .= new HTML_Refactory(
-			'pre',
-			array(
-				'class'       => array( 'w-100', 'rounded', 'language-json', 'edit-block' ),
-				'data-id'     => $results[ $key ]['id'],
-				'data-schema' => $wet_cereal,
-			)
-		);
+		$wet_cereal     = maybe_unserialize( $results[ $key ]['custom_schema'] );
+		$rendered_pres .= ( new HTML_Refactory( 'pre' ) )
+			->attr( 'class', array( 'w-100', 'rounded', 'language-json', 'edit-block' ) )
+			->attr( 'data-id', $results[ $key ]['id'] )
+			->attr( 'data-schema', $wet_cereal )
+			->render();
 	}
 }
 
-$current_schema = new HTML_Refactory(
-	'div',
-	array( 'id' => 'current_' . $tab_name . '_schema' ),
-	'',
-	$rendered_pres
-);
+$current_schema = ( new HTML_Refactory( 'div' ) )
+	->attr( 'id', 'current_' . $tab_name . '_schema' )
+	->child( $rendered_pres )
+	->render();
 
-echo new HTML_Refactory(
-	'fieldset',
-	array( 'class' => array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-5' ) ),
-	'',
-	$legend . $current_schema
-);
+echo ( new HTML_Refactory( 'fieldset' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-5' ) )
+	->child( $legend )
+	->child( $current_schema )
+	->render();
 
 $current_partial_name = __FILE__;
 require 'scsc-create-new-schema.php';

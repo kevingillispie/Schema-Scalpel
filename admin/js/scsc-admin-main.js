@@ -60,9 +60,11 @@ document.querySelectorAll("select").forEach(s => {
     s.selectedIndex = 0;
 });
 
+// Fix the broken button disabling loop
 TYPES.forEach(type => {
-    if (type == "pages" && type == "posts") {
-        document.querySelector('button[id^="' + type + '_schema_create"').setAttribute("disabled", "true");
+    if (type === "pages" || type === "posts") {
+        const btn = document.querySelector('button[id^="' + type + '_schema_create"]');
+        if (btn) btn.setAttribute("disabled", "true");
     }
 });
 /////////////////////
@@ -127,20 +129,19 @@ TYPES.forEach(type => {
     })
 }();
 
+// Fix displaySchemaLoop – add the missing recursive print
 function displaySchemaLoop(container, jsonified, tabCount, syntax, lineBreak) {
-    // If jsonified is an array, wrap it in square brackets
     if (Array.isArray(jsonified)) {
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["array"][0]}</code>${lineBreak}`);
         jsonified.forEach((item, index) => {
             container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tabCount)}${syntax["object"][0]}</code>${lineBreak}`);
-            printJSONLoop(container, item, tabCount + 1);
+            printJSONLoop(container, item, tabCount + 1);  // ← ADD THIS
             container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tabCount)}${syntax["object"][1]}${index < jsonified.length - 1 ? "," : ""}</code>${lineBreak}`);
         });
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["array"][1]}</code>${lineBreak}`);
-    } else {
-        // Handle non-array (object) case, if needed
+    } else if (typeof jsonified === 'object' && jsonified !== null) {
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["object"][0]}</code>${lineBreak}`);
-        printJSONLoop(container, jsonified, tabCount);
+        printJSONLoop(container, jsonified, tabCount + 1);  // ← ADD THIS
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["object"][1]}</code>${lineBreak}`);
     }
 }
@@ -150,8 +151,46 @@ function displaySchemaLoop(container, jsonified, tabCount, syntax, lineBreak) {
  * Schema formatting functions.
  */
 function jsonify(j) {
-    return JSON.parse(j);
+    // First attempt: try parsing directly
+    try {
+        return JSON.parse(j);
+    } catch (e) {
+        // If parsing fails, attempt to preprocess common HTML entities
+        let cleaned = j;
+
+        const replacements = [
+            { regex: /<script\b[^>]*>[\s\S]*?<\/script>/gi, replacement: '' },
+            { regex: /<\/?script\b[^>]*>/gi, replacement: '' },
+            { regex: /&lt;/g, replacement: '<' },
+            { regex: /&gt;/g, replacement: '>' },
+            { regex: /&quot;/g, replacement: '"' },
+            { regex: /&apos;/g, replacement: "'" },
+            { regex: /&amp;/g, replacement: '&' },
+            { regex: /<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi, replacement: '' },
+            { regex: /<\/?iframe\b[^>]*>/gi, replacement: '' }
+        ];
+
+        for (const { regex, replacement } of replacements) {
+            cleaned = cleaned.replace(regex, replacement);
+            try {
+                JSON.parse(cleaned);  // Check if it can be parsed after each replace
+                return cleaned;  // Return immediately if successful
+            } catch (e) {
+                // Continue to the next replacement if parsing fails
+            }
+        }
+
+        // Final attempt: return error message
+        console.error("Schema parsing failed even after cleanup:", e);
+        console.error("Problematic schema string:", j.substring(0, 500) + "...");
+
+        return {
+            error: "Invalid or malformed schema (parsing failed).",
+            raw: j
+        };
+    }
 }
+
 
 function correctBracketCount(w) {
     let leftBracketCount = 0,
@@ -443,7 +482,10 @@ function editSchemaCodeBlock(id, event) {
         updateCurrentSchema(e.target.dataset.id, event);
     });
     document.getElementById('schemaBlockSave').addEventListener('click', (e) => {
-        createNewSchema(currentTabName, document.querySelector('#' + currentTabName + '_create_schema_code_block').dataset.id);
+        const activeTab = document.querySelector('.nav-link.active');
+        const currentType = activeTab ? activeTab.dataset.type || TYPES.find(t => activeTab.href.includes(t)) : 'homepage';
+        const btn = document.querySelector('#' + currentType + '_create_schema_code_block');
+        createNewSchema(currentType, btn?.dataset.id);
     });
 }();
 

@@ -77,7 +77,7 @@ class SCSC_Activator {
 			/**
 			 * If table exists, this prevents double entries of initial settings:
 			 */
-			$has_current_setting = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s WHERE setting_key = %s;', $schema_settings_table, $pair[0] ), ARRAY_A );
+			$has_current_setting = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE setting_key = %s;', $schema_settings_table, $pair[0] ), ARRAY_A );
 			if ( ! isset( $has_current_setting[0] ) ) :
 				$wpdb->insert(
 					$schema_settings_table,

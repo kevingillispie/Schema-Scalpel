@@ -16,269 +16,277 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 
-global $wpdb, $prefix;
-$prefix  = $wpdb->prefix;
-$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1s;', $prefix . 'scsc_custom_schemas' ), ARRAY_A );
+global $wpdb;
+$prefix     = $wpdb->prefix;
+$table_name = $prefix . 'scsc_custom_schemas';
+$results    = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name}" ), ARRAY_A );
 
 echo '<main class="container mt-5 ms-0">';
 
-$scalpel = new HTML_Refactory(
-	'img',
-	array(
-		'src'   => \plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg',
-		'class' => array( 'mt-n4', 'position-absolute' ),
-	),
-);
+// Title with scalpel icon
+$scalpel_icon = ( new HTML_Refactory( 'img' ) )
+	->attr( 'src', esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ) )
+	->attr( 'class', array( 'mt-n4', 'position-absolute' ) )
+	->render();
 
-$h1 = new HTML_Refactory(
-	'h1',
-	array(),
-	'User Tools ',
-	$scalpel
-);
+echo ( new HTML_Refactory( 'header' ) )
+	->child(
+		( new HTML_Refactory( 'h1' ) )
+			->text( 'User Tools ' )
+			->child( $scalpel_icon )
+			->render()
+	)
+	->render();
 
-echo new HTML_Refactory(
-	'header',
-	array(),
-	'',
-	$h1
-);
+echo ( new HTML_Refactory( 'hr' ) )->render();
 
-echo new HTML_Refactory(
-	'hr',
-	array(),
-);
-
+// Database contents table
 echo '<div style="max-height:500px;overflow-y:auto;">';
 
-echo new HTML_Refactory(
-	'h2',
-	array(),
-	'Database Contents'
-);
+echo ( new HTML_Refactory( 'h2' ) )
+	->text( 'Database Contents' )
+	->render();
 
-echo new HTML_Refactory(
-	'p',
-	array(),
-	'This table lists all of your custom schema available for export.'
-);
+echo ( new HTML_Refactory( 'p' ) )
+	->text( 'This table lists all of your custom schema available for export.' )
+	->render();
 
 echo '<table id="excluded_schema" class="table table-dark">';
 
-$th        = '';
+// Table header
+$th_tags   = '';
 $col_names = array( 'ID', 'Created On', 'Modified On', 'Schema Type', 'Post ID', 'Schema' );
+
 foreach ( $col_names as $name ) {
-	$th .= new HTML_Refactory(
-		'th',
-		array(
-			'scope' => 'col',
-		),
-		$name
-	);
+	$th_tags .= ( new HTML_Refactory( 'th' ) )
+		->attr( 'scope', 'col' )
+		->text( $name )
+		->render();
 }
 
-$tr = new HTML_Refactory(
-	'tr',
-	array(),
-	'',
-	$th
-);
+echo ( new HTML_Refactory( 'thead' ) )
+	->child(
+		( new HTML_Refactory( 'tr' ) )
+			->child( $th_tags )
+			->render()
+	)
+	->render();
 
-echo new HTML_Refactory(
-	'thead',
-	array(),
-	'',
-	$tr
-);
-
+// Table body
 echo '<tbody>';
 
 if ( $results ) {
+	foreach ( $results as $row ) {
+		if ( 'example' === ( $row['schema_type'] ?? '' ) ) {
+			continue;
+		}
 
-	$col_data = array( 'id', 'created', 'updated', 'schema_type', 'post_id', 'trunked' );
+		// Safely unserialize and prepare truncated display
+		$json_string = '';
+		if ( ! empty( $row['custom_schema'] ) ) {
+			$unserialized = unserialize( $row['custom_schema'] );
+			if ( $unserialized !== false ) {
+				$json_string = str_replace( '&quot;', '"', $unserialized );
+			}
+		}
+		$truncated = strlen( $json_string ) > 100
+			? substr( $json_string, 0, 100 ) . ' . . .'
+			: $json_string;
 
-	foreach ( $results as $key => $value ) {
+		$cells   = '';
+		$columns = array(
+			'id'          => $row['id'] ?? '',
+			'created'     => $row['created'] ?? '',
+			'updated'     => $row['updated'] ?? '',
+			'schema_type' => $row['schema_type'] ?? '',
+			'post_id'     => $row['post_id'] ?? '(global)',
+			'trunked'     => $truncated,
+		);
 
-		if ( 'example' !== $results[ $key ]['schema_type'] ) {
+		foreach ( $columns as $key => $value ) {
+			// Ensure $value is always a string
+			$value = (string) $value;
 
-			$no_cereal = unserialize( $results[ $key ]['custom_schema'] );
-			$no_cereal = str_replace( '&quot;', '"', $no_cereal );
-			$trunked   = ( strlen( $no_cereal ) > 100 ) ? substr( $no_cereal, 0, 100 ) . ' . . .' : $no_cereal;
-			$cols      = '';
+			$cell = ( new HTML_Refactory( $key === 'id' ? 'th' : 'td' ) )
+				->text( $value );
 
-
-			foreach ( $col_data as $col_key => $col_value ) {
-				$tag_name = ( 0 === $col_key ) ? 'th' : 'td';
-				$attr     = ( 0 === $col_key ) ? array( 'scope' => 'row' ) : array( 'data-empty' => '' );
-				$cols    .= new HTML_Refactory(
-					$tag_name,
-					$attr,
-					( 'trunked' === $col_value ) ? $trunked : $results[ $key ][ $col_value ]
-				);
+			if ( 'id' === $key ) {
+				$cell->attr( 'scope', 'row' );
 			}
 
-
-			echo new HTML_Refactory(
-				'tr',
-				array(),
-				'',
-				$cols
-			);
+			$cells .= $cell->render();
 		}
+
+		echo ( new HTML_Refactory( 'tr' ) )
+			->child( $cells )
+			->render();
 	}
 }
 
 echo '</tbody></table></div>';
 
-echo new HTML_Refactory(
-	'hr',
-	array()
-);
+echo ( new HTML_Refactory( 'hr' ) )->render();
 
-echo new HTML_Refactory(
-	'h2',
-	array(),
-	'Export Tool'
-);
+// Export Tool Section.
+echo ( new HTML_Refactory( 'h2' ) )
+	->text( 'Export Tool' )
+	->render();
 
-echo '<fieldset class="d-flex flex-column justify-content-between bg-light border rounded p-3 mt-5">';
-
-echo new HTML_Refactory(
-	'legend',
-	array(
-		'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
-		'style' => 'width:auto',
-	),
-	'SQL:'
-);
-
-
-$code = new HTML_Refactory(
-	'code',
-	array(
-		'class' => array( 'rounded' ),
-	),
-	\esc_html( $prefix )
-);
-
-echo new HTML_Refactory(
-	'p',
-	array( 'class' => array( 'h5' ) ),
-	'Current WordPress Database Prefix: ',
-	$code
-);
-
-echo new HTML_Refactory(
-	'p',
-	array(),
-	"Use this tool to export your schema as a SQL query. Simply copy and paste the code below into your database's query editor and run it."
-);
-
-echo new HTML_Refactory(
-	'hr',
-	array( 'class' => array( 'w-100' ) ),
-);
-
-$italic = new HTML_Refactory(
-	'i',
-	array(),
-	'Type the prefix of the WordPress database to which the schema is being transferred:'
-);
-
-echo new HTML_Refactory(
-	'label',
-	array( 'for' => 'wpdb_prefix' ),
-	'',
-	$italic
-);
-
-echo new HTML_Refactory(
-	'input',
-	array(
-		'id'          => 'wpdb_prefix',
-		'type'        => 'text',
-		'placeholder' => \esc_attr( $prefix ),
+echo ( new HTML_Refactory( 'fieldset' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-5' ) )
+	->child(
+		( new HTML_Refactory( 'legend' ) )
+			->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )
+			->attr( 'style', 'width:auto' )
+			->text( 'SQL:' )
+			->render()
 	)
-);
+	->child(
+		( new HTML_Refactory( 'p' ) )
+			->attr( 'class', array( 'h5' ) )
+			->child( 'Current WordPress Database Prefix: ' )
+			->child(
+				( new HTML_Refactory( 'code' ) )
+					->attr( 'class', array( 'rounded' ) )
+					->text( $prefix )
+					->render()
+			)
+			->render()
+	)
+	->child(
+		( new HTML_Refactory( 'p' ) )
+			->text( "Use this tool to export your schema as a SQL query. Simply copy and paste the code below into your database's query editor and run it." )
+			->render()
+	)
+	->child( ( new HTML_Refactory( 'hr' ) )->attr( 'class', array( 'w-100' ) )->render() )
+	->child(
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'wpdb_prefix' )
+			->child(
+				( new HTML_Refactory( 'i' ) )
+					->text( 'Type the prefix of the WordPress database to which the schema is being transferred:' )
+					->render()
+			)
+			->render()
+	)
+	->child(
+		( new HTML_Refactory( 'input' ) )
+			->attr( 'id', 'wpdb_prefix' )
+			->attr( 'type', 'text' )
+			->attr( 'placeholder', esc_attr( $prefix ) )
+			->render()
+	)
+	->child(
+		( new HTML_Refactory( 'button' ) )
+			->attr( 'id', 'copy-sql' )
+			->attr( 'class', array( 'btn', 'btn-primary', 'py-2', 'mt-2' ) )
+			->text( 'Copy SQL to Clipboard' )
+			->render()
+	)
+	->child(
+		// Only add the <pre> block if there are actual schemas to export.
+		( function () use ( $results, $prefix ) {
+			$inserts = '';
+			foreach ( $results as $row ) {
+				if ( 'example' === ( $row['schema_type'] ?? '' ) ) {
+					continue;
+				}
 
-echo new HTML_Refactory(
-	'button',
-	array(
-		'id'    => 'copy-sql',
-		'class' => array( 'btn', 'btn-primary', 'py-2', 'mt-2' ),
-	),
-	'Copy SQL to Clipboard'
-);
+				$schema_type = $row['schema_type'] ?? '';
+				$post_id     = $row['post_id'] ?? '';
+				$raw_schema  = $row['custom_schema'] ?? '';
 
-if ( $results ) {
+				// Only process if there's actual schema data
+				if ( '' === $raw_schema ) {
+					continue;
+				}
 
-	$code_tags = '';
-	foreach ( $results as $key => $value ) {
-		if ( 'example' !== $results[ $key ]['schema_type'] ) {
-			$escaped = str_replace( array( "\r\n", "\n", "\r" ), '', htmlentities( $results[ $key ]['custom_schema'] ) );
-			$span    = new HTML_Refactory(
-				'span',
-				array( 'class' => array( 'wpdb-prefix' ) ),
-				\esc_html( $prefix )
-			);
+				$unserialized = unserialize( $raw_schema );
+				if ( $unserialized === false ) {
+					continue; // skip corrupted data
+				}
 
-			$code_tags .= new HTML_Refactory(
-				'code',
-				array( 'class' => array( 'd-inline-block', 'py-2', 'px-1', 'w-100' ) ),
-				'INSERT INTO `' . $span . "scsc_custom_schemas` (`schema_type`, `post_id`, `custom_schema`) VALUES ('" . \esc_html( $results[ $key ]['schema_type'] ) . "', '" . \esc_html( $results[ $key ]['post_id'] ) . "', '" . \esc_html( $escaped ) . "');",
-			) . new HTML_Refactory(
-				'br',
-				array(),
-				'',
-				''
-			);
-		}
-	}
+				$escaped = htmlentities( $unserialized, ENT_QUOTES, 'UTF-8' );
 
-	echo new HTML_Refactory(
-		'pre',
-		array( 'class' => array( 'rounded' ) ),
-		'',
-		$code_tags
-	);
+				$inserts .= ( new HTML_Refactory( 'code' ) )
+					->attr( 'class', array( 'd-inline-block', 'py-2', 'px-1', 'w-100' ) )
+					->child( 'INSERT INTO `' )
+					->child(
+						( new HTML_Refactory( 'span' ) )
+						->attr( 'class', array( 'wpdb-prefix' ) )
+						->text( $prefix )
+						->render()
+					)
+					->child( "scsc_custom_schemas` (`schema_type`, `post_id`, `custom_schema`) VALUES ('" )
+					->child( esc_html( $schema_type ) )
+					->child( "', '" )
+					->child( esc_html( $post_id ) )
+					->child( "', '" )
+					->child( esc_html( $escaped ) )
+					->child( "');" )
+					->render()
+					. ( new HTML_Refactory( 'br' ) )->render();
+			}
 
-}
+			if ( '' === $inserts ) {
+				return ( new HTML_Refactory( 'p' ) )
+					->attr( 'class', array( 'text-muted', 'mt-3' ) )
+					->text( 'No custom schemas found to export.' )
+					->render();
+			}
 
-echo '</fieldset></main>';
+			return ( new HTML_Refactory( 'pre' ) )
+				->attr( 'class', array( 'rounded', 'mt-3' ) )
+				->child( $inserts )
+				->render();
+		} )()
+	)
+	->render();
 
-\add_action(
+echo '</main>';
+
+// Admin footer scripts
+add_action(
 	'admin_footer',
-	function () {
-		global $prefix;
+	function () use ( $prefix ) {
 		echo '<script>';
-		/**
-		 * Load order matters.
-		 */
 		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/prism.js';
 		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/bootstrap.min.js';
 		echo '</script>';
+
 		echo <<<SCRIPTS
-        <script>
-            function updatePrefix(el) {
-                let newPrefix = (el.value == "") ? "{$prefix}" : el.value;
-                document.querySelectorAll('.wpdb-prefix').forEach(prefix => {
-                    prefix.innerText = newPrefix;
-                });
-            }
+<script>
+    function updatePrefix(el) {
+        let newPrefix = (el.value === "") ? "{$prefix}" : el.value;
+        document.querySelectorAll('.wpdb-prefix').forEach(prefix => {
+            prefix.innerText = newPrefix;
+        });
+    }
 
-            function copySchema(sib) {
-                navigator.clipboard.writeText(sib.innerText);
-            }
+    function copySchema(sib) {
+        navigator.clipboard.writeText(sib.innerText);
+    }
 
-            ! function (){
-                document.getElementById('copy-sql').addEventListener('click', (e)=>{
-                    copySchema(e.target.nextElementSibling);
-                });
-                document.getElementById('wpdb_prefix').addEventListener('keyup', (e) => {
-                    updatePrefix(e.target);
-                });
-            }();
-        </script>
+    !function() {
+        const copyBtn = document.getElementById('copy-sql');
+        const prefixInput = document.getElementById('wpdb_prefix');
+
+        if (copyBtn) {
+            copyBtn.addEventListener('click', (e) => {
+                const pre = document.querySelector('fieldset pre');
+                if (pre) {
+                    navigator.clipboard.writeText(pre.innerText);
+                }
+            });
+        }
+
+        if (prefixInput) {
+            prefixInput.addEventListener('keyup', (e) => {
+                updatePrefix(e.target);
+            });
+        }
+    }();
+</script>
 SCRIPTS;
 	}
 );

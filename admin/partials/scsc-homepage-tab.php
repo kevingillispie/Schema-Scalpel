@@ -20,20 +20,15 @@ $tab_name = 'homepage';
 
 echo '<div class="d-flex flex-column">';
 
-echo new HTML_Refactory(
-	'h2',
-	array(),
-	esc_html( ucfirst( $tab_name ) . ' Schema' )
-);
+echo ( new HTML_Refactory( 'h2' ) )
+	->text( ucfirst( $tab_name ) . ' Schema' )
+	->render();
 
-echo new HTML_Refactory(
-	'p',
-	array(
-		'class' => array( 'alert', 'alert-info', 'mb-0' ),
-		'role'  => 'alert',
-	),
-	esc_html( 'Create schema to appear on the main page of your site.' )
-);
+echo ( new HTML_Refactory( 'p' ) )
+	->attr( 'class', array( 'alert', 'alert-info', 'mb-0' ) )
+	->attr( 'role', 'alert' )
+	->text( 'Create schema to appear on the main page of your site.' )
+	->render();
 
 echo '<div id="' . esc_attr( $tab_name ) . '_schema">';
 
@@ -70,35 +65,30 @@ $rendered_pres = '';
 if ( $results ) {
 	foreach ( $results as $key => $value ) {
 		$wet_cereal     = maybe_unserialize( $results[ $key ]['custom_schema'] );
-		$rendered_pres .= new HTML_Refactory(
-			'pre',
-			array(
-				'class'       => array( 'w-100', 'rounded', 'language-json', 'edit-block', 'post-id-0' ),
-				'data-id'     => $results[ $key ]['id'],
-				'data-schema' => $wet_cereal,
-			)
-		);
+		$rendered_pres .= ( new HTML_Refactory( 'pre' ) )
+			->attr( 'class', array( 'w-100', 'rounded', 'language-json', 'edit-block', 'post-id-0' ) )
+			->attr( 'data-id', $results[ $key ]['id'] )
+			->attr( 'data-schema', $wet_cereal )
+			->render();
 	}
 }
 
-echo new HTML_Refactory(
-	'fieldset',
-	array( 'class' => array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-5' ) ),
-	'',
-	new HTML_Refactory(
-		'legend',
-		array(
-			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
-			'style' => 'width:auto',
-		),
-		esc_html( 'Current:' )
-	) . new HTML_Refactory(
-		'div',
-		array( 'id' => 'current_' . esc_attr( $tab_name ) . '_schema' ),
-		'',
-		$rendered_pres
+echo ( new HTML_Refactory( 'fieldset' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-5' ) )
+	->child(
+		( new HTML_Refactory( 'legend' ) )
+			->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )
+			->attr( 'style', 'width:auto' )
+			->text( 'Current:' )
+			->render()
 	)
-);
+	->child(
+		( new HTML_Refactory( 'div' ) )
+			->attr( 'id', 'current_' . esc_attr( $tab_name ) . '_schema' )
+			->child( $rendered_pres )
+			->render()
+	)
+	->render();
 
 $current_partial_name = __FILE__;
 require 'scsc-create-new-schema.php';

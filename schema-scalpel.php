@@ -115,7 +115,7 @@ function scsc_disable_third_party_schema() {
 	$get_setting = function ( string $key ) use ( $wpdb, $settings_table ): bool {
 		$value = $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT %1s FROM `%1s` WHERE setting_key = %s',
+				'SELECT %s FROM %i WHERE setting_key = %s',
 				'setting_value',
 				$settings_table,
 				$key

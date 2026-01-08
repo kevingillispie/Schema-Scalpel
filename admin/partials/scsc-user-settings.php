@@ -363,820 +363,841 @@ foreach ( get_plugins() as $key => $value ) {
 	}
 }
 
-$default_setting_label_html = new HTML_Refactory(
-	'small',
-	array( 'class' => array( 'text-secondary' ) ),
-	'',
-	new HTML_Refactory(
-		'i',
-		array(),
-		'&nbsp;(default)'
+$default_setting_label_html = ( new HTML_Refactory( 'small' ) )
+	->attr( 'class', array( 'text-secondary' ) )
+	->child(
+		( new HTML_Refactory( 'i' ) )
+			->text( '&nbsp;(default)' )
+			->render()
 	)
-);
+	->render();
 
 echo '<main class="container mt-5 ms-0">';
 
-$scalpel_icon = new HTML_Refactory(
-	'img',
-	array(
-		'class' => array( 'mt-n4' ),
-		'src'   => esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ),
+$scalpel_icon = ( new HTML_Refactory( 'img' ) )
+	->attr( 'class', array( 'mt-n4' ) )
+	->attr( 'src', esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ) )
+	->render();
+
+$h1 = ( new HTML_Refactory( 'h1' ) )
+	->text( 'User Settings&nbsp;' )
+	->child( $scalpel_icon )
+	->render();
+
+$alert1 = ( new HTML_Refactory( 'p' ) )
+	->attr( 'class', array( 'alert', 'alert-primary' ) )
+	->attr( 'role', 'alert' )
+	->text( 'The default settings for this plugin allow it to perform at its best. However, you may encounter an edge case that requires modification of the default settings.' )
+	->render();
+
+$alert2 = ( new HTML_Refactory( 'p' ) )
+	->attr( 'class', array( 'alert', 'alert-warning', 'mt-4' ) )
+	->attr( 'role', 'alert' )
+	->text( 'NOTE: ' )
+	->child(
+		( new HTML_Refactory( 'em' ) )
+			->text( 'This plugin ' )
+			->child(
+				( new HTML_Refactory( 'a' ) )
+					->attr( 'href', esc_url( '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' ) )
+					->text( 'automatically overrides Yoast, AIOSEO, and Rank Math schema' )
+			)
+			->child( ' and injects your customized schema to better fit your SEO objectives.' )
+			->render()
 	)
-);
+	->render();
 
-$h1 = new HTML_Refactory(
-	'h1',
-	array(),
-	'User Settings ',
-	$scalpel_icon
-);
-
-$alert1 = new HTML_Refactory(
-	'p',
-	array(
-		'class' => array( 'alert', 'alert-primary' ),
-		'role'  => 'alert',
-	),
-	esc_html( 'The default settings for this plugin allow it to perform at its best. However, you may encounter an edge case that requires modification of the default settings.' )
-);
-
-$alert2 = new HTML_Refactory(
-	'p',
-	array(
-		'class' => array( 'alert', 'alert-warning', 'mt-4' ),
-		'role'  => 'alert',
-	),
-	'NOTE: ' . new HTML_Refactory(
-		'em',
-		array(),
-		'This plugin ' . new HTML_Refactory(
-			'a',
-			array( 'href' => esc_url( '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' ) ),
-			esc_html( 'automatically overrides Yoast, AIOSEO, and Rank Math schema' )
-		),
-		' and injects your customized schema to better fit your SEO objectives.'
-	)
-);
-
-echo new HTML_Refactory(
-	'header',
-	array(),
-	'',
-	$h1 . $alert1 . $alert2
-);
+echo ( new HTML_Refactory( 'header' ) )
+	->child( $h1 )
+	->child( $alert1 )
+	->child( $alert2 )
+	->render();
 
 echo '<div><form method="post" action="" class="settings-page-form">';
 
 wp_nonce_field( 'scsc_save_settings', 'scsc_settings_nonce' );
 
-echo new HTML_Refactory(
-	'input',
-	array(
-		'type'  => 'hidden',
-		'name'  => 'page',
-		'value' => 'scsc_settings',
+echo ( new HTML_Refactory( 'input' ) )
+	->attr( 'type', 'hidden' )
+	->attr( 'name', 'page' )
+	->attr( 'value', 'scsc_settings' )
+	->render();
+
+echo ( new HTML_Refactory( 'input' ) )
+	->attr( 'type', 'hidden' )
+	->attr( 'name', 'save' )
+	->attr( 'value', 'save' )
+	->render();
+
+echo ( new HTML_Refactory( 'h3' ) )
+	->attr( 'class', array( 'mt-5', 'mb-0' ) )
+	->text( 'Enable Default&nbsp;' )
+	->child(
+		( new HTML_Refactory( 'code' ) )
+			->attr( 'style', 'border-radius:3px' )
+			->text( 'Website' )
+			->render()
 	)
-);
+	->child( '&nbsp;Schema' )
+	->render();
 
-echo new HTML_Refactory(
-	'input',
-	array(
-		'type'  => 'hidden',
-		'name'  => 'save',
-		'value' => 'save',
-	)
-);
-
-echo new HTML_Refactory(
-	'h3',
-	array( 'class' => array( 'mt-5', 'mb-0' ) ),
-	'Enable Default&nbsp;' . new HTML_Refactory(
-		'code',
-		array(),
-		'Website'
-	) . '&nbsp;Schema'
-);
-
-echo new HTML_Refactory(
-	'div',
-	array( 'class' => array( 'd-flex', 'flex-column', 'mb-0', 'ps-4', 'py-3', 'radio-border-left' ) ),
-	'',
-	new HTML_Refactory(
-		'label',
-		array( 'for' => 'enable_website' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'    => 'enable_website',
-				'type'  => 'radio',
-				'name'  => 'enable_website',
-				'value' => '1',
-				( ( 1 === $is_website_enabled ) ? 'checked' : '' ) => '',
-			),
-			'',
-			''
-		) . new HTML_Refactory( 'strong', array(), 'Enable ' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebSite' ) . wp_kses_post( wp_slash( $default_setting_label_html ) )
-	) . new HTML_Refactory(
-		'label',
-		array( 'for' => 'disable_website' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'    => 'disable_website',
-				'type'  => 'radio',
-				'name'  => 'enable_website',
-				'value' => '0',
-				( ( 0 === $is_website_enabled ) ? 'checked' : '' ) => '',
-			),
-			'',
-			''
-		) . new HTML_Refactory( 'strong', array(), 'Disable ' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebSite' )
-	)
-);
-
-echo new HTML_Refactory(
-	'fieldset',
-	array( 'class' => array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-4', 'noselect' ) ),
-	'',
-	new HTML_Refactory(
-		'legend',
-		array(
-			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
-			'style' => 'wdith:auto',
-		),
-		esc_html( 'WebSite Format Example:' )
-	) . wp_kses( $example_clarification, 'post' ) . new HTML_Refactory(
-		'pre',
-		array(
-			'id'          => 'website_example',
-			'class'       => array( 'mb-0', 'rounded', 'language-json' ),
-			'data-schema' => "{&quot;@context&quot;:&quot;http://schema.org/&quot;,&quot;@id&quot;:&quot;https://example.com/#website&quot;,&quot;@type&quot;:&quot;WebSite&quot;,&quot;url&quot;:&quot;https://example.com/&quot;,&quot;name&quot;:&quot;WebSite Name&quot;,&quot;potentialAction&quot;:[{&quot;@type&quot;:&quot;SearchAction&quot;,&quot;target&quot;:{&quot;@type&quot;:&quot;EntryPoint&quot;,&quot;urlTemplate&quot;:&quot;https://example.com/?{$search_key}={search_term_string}&quot;},&quot;query-input&quot;:&quot;required name=search_term_string&quot;}]}",
-		)
-	)
-);
-
-echo new HTML_Refactory(
-	'label',
-	array(
-		'class' => array( 'd-flex', 'flex-column', 'mt-3' ),
-		'for'   => 'search_param',
-	),
-	'',
-	new HTML_Refactory(
-		'div',
-		array( 'class' => array( 'mb-2' ) ),
-		new HTML_Refactory(
-			'code',
-			array( 'style' => 'color:black' ),
-			'urlTemplate'
-		) . '&nbsp;search parameter key:'
-	) . new HTML_Refactory(
-		'div',
-		array(),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'          => 'search_param',
-				'class'       => array( 'me-2' ),
-				'name'        => 'search_param',
-				'type'        => 'text',
-				'placeholder' => 'Current: ' . sanitize_text_field( $search_key ),
-				'disabled'    => '',
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mb-0', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->child(
+		// Enable WebSite option
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'enable_website' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'enable_website' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'enable_website' )
+					->attr( 'value', '1' )
+					->attr( 'checked', ( 1 === $is_website_enabled ) )  // ← Fixed: boolean
+					->render()
 			)
-		) . new HTML_Refactory(
-			'div',
-			array(
-				'id'    => 'search_param_lock',
-				'class' => array( 'btn', 'btn-outline-danger' ),
-			),
-			'',
-			new HTML_Refactory(
-				'svg',
-				array(
-					'id'      => 'lock-icon',
-					'xmlns'   => 'http://www.w3.org/2000/svg',
-					'width'   => '16',
-					'height'  => '16',
-					'fill'    => 'currentColor',
-					'viewBox' => '0 0 16 16',
-				),
-				'',
-				new HTML_Refactory(
-					'path',
-					array( 'd' => 'M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z' )
-				)
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Enable ' )
+					->render()
 			)
-		)
-	) . new HTML_Refactory(
-		'div',
-		array(),
-		'',
-		new HTML_Refactory(
-			'i',
-			array( 'style' => 'font-size:.75em' ),
-			'Note: The default WordPress search parameter key is the letter ' . new HTML_Refactory( 'code', array(), 's' ) . '.'
-		)
+			->child(
+				( new HTML_Refactory( 'code' ) )
+					->attr( 'style', 'color:black;border-radius:3px' )
+					->text( 'WebSite' )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'small' ) )
+					->attr( 'class', array( 'text-secondary' ) )
+					->child(
+						( new HTML_Refactory( 'i' ) )
+							->text( '&nbsp;(default)' )
+							->render()
+					)
+					->render()
+			)
+			->render()
 	)
-);
-
-echo new HTML_Refactory(
-	'hr',
-	array(
-		'style' => 'height:5px',
-		'class' => array( 'border', 'bg-light', 'rounded' ),
-	),
-	'',
-	''
-);
-
-echo new HTML_Refactory(
-	'h3',
-	array( 'class' => array( 'mt-5', 'mb-0' ) ),
-	'Enable Default ' . new HTML_Refactory( 'code', array(), 'WebPage' ) . ' Schema'
-);
-
-
-echo new HTML_Refactory(
-	'div',
-	array( 'class' => array( 'd-flex', 'flex-column', 'mb-3', 'ps-4', 'py-3', 'radio-border-left' ) ),
-	'',
-	new HTML_Refactory(
-		'label',
-		array( 'for' => 'enable_webpage' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'    => 'enable_webpage',
-				'type'  => 'radio',
-				'name'  => 'enable_webpage',
-				'value' => '1',
-				( ( $is_webpage_enabled == 1 ) ? 'checked' : '' ) => '',
-			),
-			'',
-			''
-		) . new HTML_Refactory( 'strong', array(), 'Enable&nbsp;' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' ) . wp_kses_post( wp_slash( $default_setting_label_html ) )
-	) . new HTML_Refactory(
-		'label',
-		array( 'for' => 'disable_webpage' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'    => 'disable_webpage',
-				'type'  => 'radio',
-				'name'  => 'enable_webpage',
-				'value' => '0',
-				( ( $is_webpage_enabled == 0 ) ? 'checked' : '' ) => '',
-			),
-			'',
-			''
-		) . new HTML_Refactory( 'strong', array(), 'Disable&nbsp;' ) . new HTML_Refactory( 'code', array( 'style' => 'color:black' ), 'WebPage' )
+	->child(
+		// Disable WebSite option
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'disable_website' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'disable_website' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'enable_website' )
+					->attr( 'value', '0' )
+					->attr( 'checked', ( 0 === $is_website_enabled ) )  // ← Fixed: boolean
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Disable ' )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'code' ) )
+					->attr( 'style', 'color:black;border-radius:3px' )
+					->text( 'WebSite' )
+					->render()
+			)
+			->render()
 	)
-);
+	->render();
 
-echo new HTML_Refactory(
-	'fieldset',
-	array( 'class' => array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-4', 'noselect' ) ),
-	'',
-	new HTML_Refactory(
-		'legend',
-		array(
-			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
-			'style' => 'wdith:auto',
-		),
-		esc_html( 'WebPage Format Example:' )
-	) . wp_kses_post( $example_clarification ) . new HTML_Refactory(
-		'pre',
-		array(
-			'id'          => 'webpage_example',
-			'class'       => array( 'mb-0', 'rounded', 'language-json' ),
-			'data-schema' => '{&quot;@context&quot;:&quot;http://schema.org/&quot;,&quot;@id&quot;:&quot;https://example.com/pathname#webpage&quot;,&quot;@type&quot;:&quot;WebPage&quot;,&quot;url&quot;:&quot;https://example.com/pathname&quot;,&quot;name&quot;:&quot;Pathname Page Title&quot;}',
-		)
+echo ( new HTML_Refactory( 'fieldset' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-4', 'noselect' ) )
+	->child(
+		( new HTML_Refactory( 'legend' ) )
+			->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )
+			->attr( 'style', 'width:auto' )
+			->text( 'WebSite Format Example:' )
+			->render()
 	)
-);
-
-echo new HTML_Refactory(
-	'hr',
-	array(
-		'style' => 'height:5px',
-		'class' => array( 'border', 'bg-light', 'rounded' ),
-	),
-	'',
-	''
-);
-
-echo new HTML_Refactory(
-	'h3',
-	array( 'class' => array( 'mt-5', 'mb-0' ) ),
-	'Enable Default&nbsp;' . new HTML_Refactory( 'code', array(), 'BreadcrumbList' ) . '&nbsp;Schema'
-);
-
-echo new HTML_Refactory(
-	'div',
-	array( 'class' => array( 'd-flex', 'flex-row', 'mb-1', 'pt-1' ) ),
-	'',
-	new HTML_Refactory(
-		'svg',
-		array(
-			'class'   => array( 'bi', 'bi-info-circle', 'text-secondary', 'mt-n1' ),
-			'xmlns'   => 'http://www.w3.org/2000/svg',
-			'widht'   => '16',
-			'height'  => '16',
-			'fill'    => 'currentColor',
-			'viewBox' => '0 0 16 16',
-		),
-		'',
-		new HTML_Refactory(
-			'path',
-			array( 'd' => 'M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z' ),
-			'',
-			''
-		) . new HTML_Refactory(
-			'path',
-			array( 'd' => 'm8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z' ),
-			'',
-			''
-		)
-	) . new HTML_Refactory(
-		'div',
-		array(
-			'class' => array( 'text-secondary', 'ms-1' ),
-			'style' => 'font-size:10pt;margin-top:-1px',
-		),
-		'',
-		new HTML_Refactory( 'em', array(), 'It is recommended that breadcrumbs remain enabled as they are utilized by Google.' )
+	->child( wp_kses( $example_clarification, 'post' ) )
+	->child(
+		( new HTML_Refactory( 'pre' ) )
+			->attr( 'id', 'website_example' )
+			->attr( 'class', array( 'mb-0', 'rounded', 'language-json' ) )
+			->attr( 'data-schema', "{&quot;@context&quot;:&quot;http://schema.org/&quot;,&quot;@id&quot;:&quot;https://example.com/#website&quot;,&quot;@type&quot;:&quot;WebSite&quot;,&quot;url&quot;:&quot;https://example.com/&quot;,&quot;name&quot;:&quot;WebSite Name&quot;,&quot;potentialAction&quot;:[{&quot;@type&quot;:&quot;SearchAction&quot;,&quot;target&quot;:{&quot;@type&quot;:&quot;EntryPoint&quot;,&quot;urlTemplate&quot;:&quot;https://example.com/?{$search_key}={search_term_string}&quot;},&quot;query-input&quot;:&quot;required name=search_term_string&quot;}]}" )
+			->render()
 	)
-);
+	->render();
 
-echo new HTML_Refactory(
-	'div',
-	array( 'class' => array( 'd-flex', 'flex-column', 'mb-3', 'ps-4', 'py-3', 'radio-border-left' ) ),
-	'',
-	new HTML_Refactory(
-		'label',
-		array( 'for' => 'enable_breadcrumbs' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'    => 'enable_breadcrumbs',
-				'type'  => 'radio',
-				'name'  => 'enable_breadcrumbs',
-				'value' => '1',
-				( ( 1 === $are_breadcrumbs_enabled ) ? 'checked' : '' ) => '',
-			),
-			'',
-			''
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Enable&nbsp;'
-		) . new HTML_Refactory(
-			'code',
-			array( 'style' => 'color:black' ),
-			'BreadcrumbList'
-		) . wp_kses_post( wp_slash( $default_setting_label_html ) )
-	) . new HTML_Refactory(
-		'label',
-		array( 'for' => 'disable_breadcrumbs' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'    => 'disable_breadcrumbs',
-				'type'  => 'radio',
-				'name'  => 'enable_breadcrumbs',
-				'value' => '0',
-				( ( 0 === $are_breadcrumbs_enabled ) ? 'checked' : '' ) => '',
-			),
-			'',
-			''
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Disable&nbsp;'
-		) . new HTML_Refactory(
-			'code',
-			array( 'style' => 'color:black' ),
-			'BreadcrumbList'
-		)
+echo ( new HTML_Refactory( 'label' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3' ) )
+	->attr( 'for', 'search_param' )
+	->child(
+		// Label text: "urlTemplate search parameter key:"
+		( new HTML_Refactory( 'div' ) )
+			->attr( 'class', array( 'mb-2' ) )
+			->child(
+				( new HTML_Refactory( 'code' ) )
+					->attr( 'style', 'color:black;border-radius:3px' )
+					->text( 'urlTemplate' )
+					->render()
+			)
+			->child( ' search parameter key:' )
+			->render()
 	)
-);
-
-echo new HTML_Refactory(
-	'fieldset',
-	array( 'class' => array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-4', 'noselect' ) ),
-	'',
-	new HTML_Refactory(
-		'legend',
-		array(
-			'class' => array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ),
-			'style' => 'wdith:auto',
-		),
-		esc_html( 'BreadcrumbList Format Example:' )
-	) . wp_kses_post( $example_clarification ) . new HTML_Refactory(
-		'pre',
-		array(
-			'id'          => 'breadcrumb_example',
-			'class'       => array( 'mb-0', 'rounded', 'language-json' ),
-			'data-schema' => '{&quot;@context&quot;: &quot;https://schema.org/&quot;,&quot;@type&quot;: &quot;BreadcrumbList&quot;,&quot;itemListElement&quot;: [{&quot;@type&quot;: &quot;ListItem&quot;,&quot;position&quot;:&quot;1&quot;,&quot;item&quot;: {&quot;@type&quot;: &quot;WebPage&quot;,&quot;@id&quot;: &quot;https://example.com/parent-page&quot;,&quot;name&quot;: &quot;Parent Page Title&quot;}},{&quot;@type&quot;: &quot;ListItem&quot;,&quot;position&quot;:&quot;2&quot;,&quot;item&quot;: {&quot;@type&quot;: &quot;WebPage&quot;,&quot;@id&quot;: &quot;https://example.com/parent-page/child-page&quot;,&quot;name&quot;: &quot;Child Page Title&quot;}},{&quot;@type&quot;: &quot;ListItem&quot;,&quot;position&quot;:&quot;3&quot;,&quot;item&quot;: {&quot;@type&quot;: &quot;WebPage&quot;,&quot;@id&quot;: &quot;https://example.com/parent-page/child-page/grandchild-page&quot;,&quot;name&quot;: &quot;Grandchild Page Title&quot;}}]}',
-		)
+	->child(
+		// Input field + lock button
+		( new HTML_Refactory( 'div' ) )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'search_param' )
+					->attr( 'class', array( 'me-2' ) )
+					->attr( 'name', 'search_param' )
+					->attr( 'type', 'text' )
+					->attr( 'placeholder', 'Current: ' . sanitize_text_field( $search_key ) )
+					->attr( 'disabled', true )
+					->render()
+			)
+			->child(
+				// Lock button
+				( new HTML_Refactory( 'div' ) )
+					->attr( 'id', 'search_param_lock' )
+					->attr( 'class', array( 'btn', 'btn-outline-danger' ) )
+					->child(
+						// SVG lock icon
+						( new HTML_Refactory( 'svg' ) )
+							->attr( 'id', 'lock-icon' )
+							->attr( 'xmlns', 'http://www.w3.org/2000/svg' )
+							->attr( 'width', '16' )
+							->attr( 'height', '16' )
+							->attr( 'fill', 'currentColor' )
+							->attr( 'viewBox', '0 0 16 16' )
+							->child(
+								( new HTML_Refactory( 'path' ) )
+									->attr( 'd', 'M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z' )
+									->render()
+							)
+							->render()
+					)
+					->render()
+			)
+			->render()
 	)
-);
-
-echo new HTML_Refactory(
-	'hr',
-	array(
-		'style' => 'height:5px',
-		'class' => array( 'border', 'bg-light', 'rounded' ),
+	->child(
+		// Note below
+		( new HTML_Refactory( 'div' ) )
+			->child(
+				( new HTML_Refactory( 'i' ) )
+					->attr( 'style', 'font-size:.75em' )
+					->child( 'Note: The default WordPress search parameter key is the letter ' )
+					->child(
+						( new HTML_Refactory( 'code' ) )
+							->attr( 'style', 'border-radius:3px' )
+							->text( 's' )
+							->render()
+					)
+					->child( '.' )
+					->render()
+			)
+			->render()
 	)
-);
+	->render();
 
-echo new HTML_Refactory(
-	'h3',
-	array(
-		'id'    => 'disable_yoast_schema',
-		'class' => array( 'mt-3' ),
-	),
-	esc_html( 'Disable Yoast SEO schema?' )
-);
+echo ( new HTML_Refactory( 'hr' ) )
+	->attr( 'style', 'height:5px' )
+	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
+	->render();
+
+echo ( new HTML_Refactory( 'h3' ) )
+	->attr( 'class', array( 'mt-5', 'mb-0' ) )
+	->text( 'Enable Default ' )
+	->child(
+		( new HTML_Refactory( 'code' ) )
+			->attr( 'style', 'border-radius:3px' )
+			->text( 'WebPage' )
+			->render()
+	)
+	->child( ' Schema' )
+	->render();
+
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mb-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->child(
+		// Enable WebPage option
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'enable_webpage' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'enable_webpage' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'enable_webpage' )
+					->attr( 'value', '1' )
+					->attr( 'checked', ( 1 === $is_webpage_enabled ) )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Enable ' )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'code' ) )
+					->attr( 'style', 'color:black;border-radius:3px' )
+					->text( 'WebPage' )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'small' ) )
+					->attr( 'class', array( 'text-secondary' ) )
+					->child(
+						( new HTML_Refactory( 'i' ) )
+							->text( '&nbsp;(default)' )
+							->render()
+					)
+					->render()
+			)
+			->render()
+	)
+	->child(
+		// Disable WebSite option
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'disable_webpage' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'disable_webpage' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'enable_webpage' )
+					->attr( 'value', '0' )
+					->attr( 'checked', ( 0 === $is_webpage_enabled ) )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Disable ' )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'code' ) )
+					->attr( 'style', 'color:black;border-radius:3px' )
+					->text( 'WebPage' )
+					->render()
+			)
+			->render()
+	)
+	->render();
+
+echo ( new HTML_Refactory( 'fieldset' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-4', 'noselect' ) )
+	->child(
+		( new HTML_Refactory( 'legend' ) )
+			->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )
+			->attr( 'style', 'width:auto' )
+			->text( esc_html( 'WebPage Format Example:' ) )
+			->render()
+	)
+	->child( wp_kses_post( $example_clarification ) )
+	->child(
+		( new HTML_Refactory( 'pre' ) )
+			->attr( 'id', 'webpage_example' )
+			->attr( 'class', array( 'mb-0', 'rounded', 'language-json' ) )
+			->attr( 'data-schema', '{&quot;@context&quot;:&quot;http://schema.org/&quot;,&quot;@id&quot;:&quot;https://example.com/pathname#webpage&quot;,&quot;@type&quot;:&quot;WebPage&quot;,&quot;url&quot;:&quot;https://example.com/pathname&quot;,&quot;name&quot;:&quot;Pathname Page Title&quot;}' )
+			->render()
+	)
+	->render();
+
+echo ( new HTML_Refactory( 'hr' ) )
+	->attr( 'style', 'height:5px' )
+	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
+	->render();
+
+echo ( new HTML_Refactory( 'h3' ) )
+	->attr( 'class', array( 'mt-5', 'mb-0' ) )
+	->text( 'Enable Default&nbsp;' )
+	->child(
+		( new HTML_Refactory( 'code' ) )
+			->attr( 'style', 'border-radius:3px' )
+			->text( 'BreadcrumbList' )
+			->render()
+	)
+	->child( '&nbsp;Schema' )
+	->render();
+
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'd-flex', 'flex-row', 'mb-1', 'pt-1' ) )
+	->child(
+		( new HTML_Refactory( 'svg' ) )
+			->attr( 'class', array( 'bi', 'bi-info-circle', 'text-secondary', 'mt-n1' ) )
+			->attr( 'xmlns', 'http://www.w3.org/2000/svg' )
+			->attr( 'width', '16' )
+			->attr( 'height', '16' )
+			->attr( 'fill', 'currentColor' )
+			->attr( 'viewBox', '0 0 16 16' )
+			->child(
+				( new HTML_Refactory( 'path' ) )
+					->attr( 'd', 'M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z' )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'path' ) )
+					->attr( 'd', 'm8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z' )
+					->render()
+			)
+			->render()
+	)
+	->child(
+		( new HTML_Refactory( 'div' ) )
+			->attr( 'class', array( 'text-secondary', 'ms-1' ) )
+			->attr( 'style', 'font-size:10pt;margin-top:-1px' )
+			->child(
+				( new HTML_Refactory( 'em' ) )
+					->text( 'It is recommended that breadcrumbs remain enabled as they are utilized by Google.' )
+					->render()
+			)
+			->render()
+	)
+	->render();
+
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mb-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->child(
+		// Enable BreadcrumbList option
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'enable_breadcrumbs' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'enable_breadcrumbs' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'enable_breadcrumbs' )
+					->attr( 'value', '1' )
+					->attr( 'checked', ( 1 === $are_breadcrumbs_enabled ) )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Enable&nbsp;' )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'code' ) )
+					->attr( 'style', 'color:black;border-radius:3px' )
+					->text( 'BreadcrumbList' )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'small' ) )
+					->attr( 'class', array( 'text-secondary' ) )
+					->child(
+						( new HTML_Refactory( 'i' ) )
+							->text( '&nbsp;(default)' )
+							->render()
+					)
+					->render()
+			)
+			->render()
+	)
+	->child(
+		// Disable BreadcrumbList option
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'disable_breadcrumbs' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'disable_breadcrumbs' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'enable_breadcrumbs' )
+					->attr( 'value', '0' )
+					->attr( 'checked', ( 0 === $are_breadcrumbs_enabled ) )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Disable&nbsp;' )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'code' ) )
+					->attr( 'style', 'color:black;border-radius:3px' )
+					->text( 'BreadcrumbList' )
+					->render()
+			)
+			->render()
+	)
+	->render();
+
+echo ( new HTML_Refactory( 'fieldset' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-4', 'noselect' ) )
+	->child(
+		( new HTML_Refactory( 'legend' ) )
+			->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )
+			->attr( 'style', 'width:auto' )
+			->text( 'BreadcrumbList Format Example:' )
+			->render()
+	)
+	->child( wp_kses_post( $example_clarification ) )
+	->child(
+		( new HTML_Refactory( 'pre' ) )
+			->attr( 'id', 'breadcrumb_example' )
+			->attr( 'class', array( 'mb-0', 'rounded', 'language-json' ) )
+			->attr( 'data-schema', '{&quot;@context&quot;: &quot;https://schema.org/&quot;,&quot;@type&quot;: &quot;BreadcrumbList&quot;,&quot;itemListElement&quot;: [{&quot;@type&quot;: &quot;ListItem&quot;,&quot;position&quot;:&quot;1&quot;,&quot;item&quot;: {&quot;@type&quot;: &quot;WebPage&quot;,&quot;@id&quot;: &quot;https://example.com/parent-page&quot;,&quot;name&quot;: &quot;Parent Page Title&quot;}},{&quot;@type&quot;: &quot;ListItem&quot;,&quot;position&quot;:&quot;2&quot;,&quot;item&quot;: {&quot;@type&quot;: &quot;WebPage&quot;,&quot;@id&quot;: &quot;https://example.com/parent-page/child-page&quot;,&quot;name&quot;: &quot;Child Page Title&quot;}},{&quot;@type&quot;: &quot;ListItem&quot;,&quot;position&quot;:&quot;3&quot;,&quot;item&quot;: {&quot;@type&quot;: &quot;WebPage&quot;,&quot;@id&quot;: &quot;https://example.com/parent-page/child-page/grandchild-page&quot;,&quot;name&quot;: &quot;Grandchild Page Title&quot;}}]}' )
+			->render()
+	)
+	->render();
+
+	// Horizontal rule
+echo ( new HTML_Refactory( 'hr' ) )
+	->attr( 'style', 'height:5px' )
+	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
+	->render();
+
+	// Heading for Yoast section
+echo ( new HTML_Refactory( 'h3' ) )
+	->attr( 'id', 'disable_yoast_schema' )
+	->attr( 'class', array( 'mt-3' ) )
+	->text( 'Disable Yoast SEO schema?' )
+	->render();
 
 if ( 'disabled' === $if_yoast ) {
 
-	echo new HTML_Refactory(
-		'pre',
-		array( 'class' => array( 'mb-0', 'rounded', 'language-js' ) ),
-		'',
-		new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&nbsp;YOAST not detected.',
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&gt;&nbsp;Nothing to worry about here.'
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&gt;&gt;&nbsp;Happy schema-ing!'
+	echo ( new HTML_Refactory( 'pre' ) )
+		->attr( 'class', array( 'mb-0', 'rounded', 'language-js' ) )
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&nbsp;YOAST not detected.' )
+				->render()
 		)
-	);
+			->child( ( new HTML_Refactory( 'br' ) )->render() )
+			->child(
+				( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&gt;&nbsp;Nothing to worry about here.' )
+				->render()
+			)
+			->child( ( new HTML_Refactory( 'br' ) )->render() )
+			->child(
+				( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&gt;&gt;&nbsp;Happy schema-ing!' )
+				->render()
+			)
+			->render();
 
 } else {
 
-	echo new HTML_Refactory(
-		'pre',
-		array( 'class' => array( 'mb-0', 'rounded', 'language-js' ) ),
-		'',
-		new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&nbsp;YOAST has been detected...',
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			"&gt;&nbsp;It is recommended that YOAST's schema feature remain disabled."
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&nbsp;All other YOAST features will be unaffected.'
+	echo ( new HTML_Refactory( 'pre' ) )
+		->attr( 'class', array( 'mb-0', 'rounded', 'language-js' ) )
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&nbsp;YOAST has been detected...' )
+				->render()
 		)
-	);
+		->child( ( new HTML_Refactory( 'br' ) )->render() )
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( "&gt;&nbsp;It is recommended that YOAST's schema feature remain disabled." )
+				->render()
+		)
+		->child( ( new HTML_Refactory( 'br' ) )->render() )
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&nbsp;All other YOAST features will be unaffected.' )
+				->render()
+		)
+		->render();
 
 }
 
-echo new HTML_Refactory(
-	'div',
-	array( 'class' => array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) ),
-	'',
-	new HTML_Refactory(
-		'label',
-		array( 'for' => 'enable_yoast' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'                             => 'enable_yoast',
-				'type'                           => 'radio',
-				'name'                           => 'disable_yoast',
-				'value'                          => '0',
-				( ( $is_yoast_disabled == 0 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_yoast ) => '',
+// Yoast radio buttons
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->child(
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'enable_yoast' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'enable_yoast' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'disable_yoast' )
+					->attr( 'value', '0' )
+					->attr( 'checked', ( $is_yoast_disabled == 0 ) )
+					->attr( 'disabled', 'disabled' === $if_yoast )
+					->render()
 			)
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Enable',
-		) . '&nbsp;Yoast Schema'
-	) . new HTML_Refactory(
-		'label',
-		array( 'for' => 'disable_yoast' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'                             => 'disable_yoast',
-				'type'                           => 'radio',
-				'name'                           => 'disable_yoast',
-				'value'                          => '1',
-				( ( $is_yoast_disabled == 1 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_yoast ) => '',
-			)
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Disable',
-		) . '&nbsp;Yoast Schema' . wp_kses_post( $default_setting_label_html )
+			->child( ( new HTML_Refactory( 'strong' ) )->text( 'Enable' )->render() )
+			->child( '&nbsp;Yoast Schema' )
+			->render()
 	)
-);
+	->child(
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'disable_yoast' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'disable_yoast' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'disable_yoast' )
+					->attr( 'value', '1' )
+					->attr( 'checked', ( $is_yoast_disabled == 1 ) )
+					->attr( 'disabled', 'disabled' === $if_yoast )
+					->render()
+			)
+			->child( ( new HTML_Refactory( 'strong' ) )->text( 'Disable' )->render() )
+			->child( '&nbsp;Yoast Schema' )
+			->child( wp_kses_post( $default_setting_label_html ) )
+			->render()
+	)
+	->render();
 
-echo new HTML_Refactory(
-	'h3',
-	array(
-		'id'    => 'disable_aio_schema',
-		'class' => array( 'mt-3' ),
-	),
-	esc_html( 'Disable All in One SEO schema?' )
-);
+	// AIOSEO Heading
+echo ( new HTML_Refactory( 'h3' ) )
+	->attr( 'id', 'disable_aio_schema' )
+	->attr( 'class', array( 'mt-3' ) )
+	->text( 'Disable All in One SEO schema?' )
+	->render();
 
 if ( 'disabled' === $if_aio ) {
-
-	echo new HTML_Refactory(
-		'pre',
-		array( 'class' => array( 'mb-0', 'rounded', 'language-js' ) ),
-		'',
-		new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&nbsp;AIOSEO not detected.',
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&gt;&nbsp;Nothing to worry about here.'
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&gt;&gt;&nbsp;Happy schema-ing!'
+	// Same structure as Yoast "disabled" case – just change the text
+	echo ( new HTML_Refactory( 'pre' ) )
+		->attr( 'class', array( 'mb-0', 'rounded', 'language-js' ) )
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&nbsp;AIOSEO not detected.' )
+				->render()
 		)
-	);
-
+		->child(
+			( new HTML_Refactory( 'br' ) )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&gt;&nbsp;Nothing to worry about here.' )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'br' ) )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&gt;&gt;&nbsp;Happy schema-ing!' )
+				->render()
+		)
+		->render();
 } else {
-
-	echo new HTML_Refactory(
-		'pre',
-		array( 'class' => array( 'mb-0', 'rounded', 'language-js' ) ),
-		'',
-		new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&nbsp;AIOSEO has been detected...',
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			"&gt;&nbsp;It is recommended that AIOSEO's schema feature remain disabled."
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&nbsp;All other AIOSEO features will be unaffected.'
+	echo ( new HTML_Refactory( 'pre' ) )
+		->attr( 'class', array( 'mb-0', 'rounded', 'language-js' ) )
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&nbsp;AIOSEO has been detected...' )
+				->render()
 		)
-	);
-
+		->child(
+			( new HTML_Refactory( 'br' ) )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( "&gt;&nbsp;It is recommended that AIOSEO's schema feature remain disabled." )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'br' ) )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&nbsp;All other AIOSEO features will be unaffected.' )
+				->render()
+		)
+		->render();
 }
 
-echo new HTML_Refactory(
-	'div',
-	array( 'class' => array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) ),
-	'',
-	new HTML_Refactory(
-		'label',
-		array( 'for' => 'enable_aio' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'                           => 'enable_aio',
-				'type'                         => 'radio',
-				'name'                         => 'disable_aio',
-				'value'                        => '0',
-				( ( $is_aio_disabled == 0 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_aio ) => '',
+	// AIOSEO radio buttons (same pattern)
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->child(
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'enable_aio' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'enable_aio' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'disable_aio' )
+					->attr( 'value', '0' )
+					->attr( 'checked', ( $is_aio_disabled == 0 ) )
+					->attr( 'disabled', 'disabled' === $if_aio )
+					->render()
 			)
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Enable&nbsp;',
-		) . 'AIOSEO Schema'
-	) . new HTML_Refactory(
-		'label',
-		array( 'for' => 'disable_aio' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'                           => 'disable_aio',
-				'type'                         => 'radio',
-				'name'                         => 'disable_aio',
-				'value'                        => '1',
-				( ( $is_aio_disabled == 1 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_aio ) => '',
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Enable&nbsp;' )
+					->render()
 			)
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Disable&nbsp;',
-		) . 'AIOSEO Schema' . wp_kses_post( $default_setting_label_html )
+			->child( 'AIOSEO Schema' )
+			->render()
 	)
-);
+	->child(
+		( new HTML_Refactory( 'label' ) )->attr( 'for', 'disable_aio' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'disable_aio' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'disable_aio' )
+					->attr( 'value', '1' )
+					->attr( 'checked', ( $is_aio_disabled == 1 ) )
+					->attr( 'disabled', 'disabled' === $if_aio )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Disable&nbsp;' )
+					->render()
+			)
+			->child( 'AIOSEO Schema' )
+			->child( wp_kses_post( $default_setting_label_html ) )
+			->render()
+	)
+	->render();
 
-echo new HTML_Refactory(
-	'h3',
-	array(
-		'id'    => 'disable_rankmath_schema',
-		'class' => array( 'mt-3' ),
-	),
-	esc_html( 'Disable Rank Math schema?' )
-);
+// Rank Math section (identical pattern – just updated text and variables)
+echo ( new HTML_Refactory( 'h3' ) )
+	->attr( 'id', 'disable_rankmath_schema' )
+	->attr( 'class', array( 'mt-3' ) )
+	->text( 'Disable Rank Math schema?' )
+	->render();
 
 if ( 'disabled' === $if_rankmath ) {
-
-	echo new HTML_Refactory(
-		'pre',
-		array( 'class' => array( 'mb-0', 'rounded', 'language-js' ) ),
-		'',
-		new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&nbsp;Rank Math not detected.',
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&gt;&nbsp;Nothing to worry about here.'
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&gt;&gt;&nbsp;Happy schema-ing!'
+	echo ( new HTML_Refactory( 'pre' ) )
+		->attr( 'class', array( 'mb-0', 'rounded', 'language-js' ) )
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&nbsp;Rank Math not detected.' )
+				->render()
 		)
-	);
-
+		->child(
+			( new HTML_Refactory( 'br' ) )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&gt;&nbsp;Nothing to worry about here.' )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'br' ) )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&gt;&gt;&nbsp;Happy schema-ing!' )
+				->render()
+		)
+		->render();
 } else {
-
-	echo new HTML_Refactory(
-		'pre',
-		array( 'class' => array( 'mb-0', 'rounded', 'language-js' ) ),
-		'',
-		new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&nbsp;Rank Math has been detected...',
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			"&gt;&nbsp;It is recommended that Rank Math's schema feature remain disabled."
-		) . new HTML_Refactory(
-			'br',
-			array(),
-			'',
-			''
-		) . new HTML_Refactory(
-			'code',
-			array( 'class' => array( 'language-js' ) ),
-			'&gt;&nbsp;All other Rank Math features will be unaffected.'
+	echo ( new HTML_Refactory( 'pre' ) )
+		->attr( 'class', array( 'mb-0', 'rounded', 'language-js' ) )
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&nbsp;Rank Math has been detected...' )
+				->render()
 		)
-	);
-
+		->child(
+			( new HTML_Refactory( 'br' ) )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( "&gt;&nbsp;It is recommended that Rank Math's schema feature remain disabled." )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'br' ) )
+				->render()
+		)
+		->child(
+			( new HTML_Refactory( 'code' ) )
+				->attr( 'class', array( 'language-js' ) )
+				->raw_text( '&gt;&nbsp;All other Rank Math features will be unaffected.' )
+				->render()
+		)
+		->render();
 }
 
-echo new HTML_Refactory(
-	'div',
-	array( 'class' => array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) ),
-	'',
-	new HTML_Refactory(
-		'label',
-		array( 'for' => 'enable_rankmath' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'                                => 'enable_rankmath',
-				'type'                              => 'radio',
-				'name'                              => 'disable_rankmath',
-				'value'                             => '0',
-				( ( $is_rankmath_disabled == 0 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_rankmath ) => '',
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->child(
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'enable_rankmath' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'enable_rankmath' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'disable_rankmath' )
+					->attr( 'value', '0' )
+					->attr( 'checked', ( $is_rankmath_disabled == 0 ) )
+					->attr( 'disabled', 'disabled' === $if_rankmath )
+					->render()
 			)
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Enable&nbsp;',
-		) . 'Rank Math Schema'
-	) . new HTML_Refactory(
-		'label',
-		array( 'for' => 'disable_rankmath' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'                                => 'disable_rankmath',
-				'type'                              => 'radio',
-				'name'                              => 'disable_rankmath',
-				'value'                             => '1',
-				( ( $is_rankmath_disabled == 1 ) ? 'checked' : '' ) => '',
-				sanitize_text_field( $if_rankmath ) => '',
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Enable&nbsp;' )
+					->render()
 			)
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Disable&nbsp;',
-		) . 'Rank Math Schema' . wp_kses_post( $default_setting_label_html )
+			->child( 'Rank Math Schema' )
+			->render()
 	)
-);
+	->child(
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'disable_rankmath' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'disable_rankmath' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'disable_rankmath' )
+					->attr( 'value', '1' )
+					->attr( 'checked', ( $is_rankmath_disabled == 1 ) )
+					->attr( 'disabled', 'disabled' === $if_rankmath )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Disable&nbsp;' )
+					->render()
+			)
+			->child( 'Rank Math Schema' )
+			->child( wp_kses_post( $default_setting_label_html ) )
+			->render()
+	)
+	->render();
 
-echo new HTML_Refactory(
-	'hr',
-	array(
-		'style' => 'height:5px',
-		'class' => array( 'border', 'bg-light', 'rounded' ),
-	),
-	'',
-	''
-);
+	// Final horizontal rule
+echo ( new HTML_Refactory( 'hr' ) )
+	->attr( 'style', 'height:5px' )
+	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
+	->render();
 
-echo new HTML_Refactory(
-	'h3',
-	array(),
-	'Pages to Exclude from Displaying Any Schema'
-);
+	// Final informational section
+echo ( new HTML_Refactory( 'h3' ) )
+	->text( 'Pages to Exclude from Displaying Any Schema' )
+	->render();
 
-echo new HTML_Refactory(
-	'p',
-	array(),
-	'To limit the amount of data passed to search engines, pages may be excluded from displaying any schema.'
-);
+echo ( new HTML_Refactory( 'p' ) )
+	->text( 'To limit the amount of data passed to search engines, pages may be excluded from displaying any schema.' )
+	->render();
 
-echo new HTML_Refactory(
-	'p',
-	array( 'class' => array( 'fst-italic' ) ),
-	'In most cases, it will not be necessary to exclude a page.'
-);
+echo ( new HTML_Refactory( 'p' ) )
+	->attr( 'class', array( 'fst-italic' ) )
+	->text( 'In most cases, it will not be necessary to exclude a page.' )
+	->render();
 
 echo '<div style="max-height:500px;overflow-y:scroll;"><table id="excluded_schema" class="table table-dark">';
 
@@ -1190,17 +1211,13 @@ foreach ( $col_names as $key => $name ) {
 	);
 }
 
-echo new HTML_Refactory(
-	'thead',
-	array(),
-	'',
-	new HTML_Refactory(
-		'tr',
-		array(),
-		'',
-		$th_tags
+echo ( new HTML_Refactory( 'thead' ) )
+	->child(
+		( new HTML_Refactory( 'tr' ) )
+			->child( $th_tags )
+			->render()
 	)
-);
+	->render();
 
 if ( $all_pages ) {
 
@@ -1208,143 +1225,127 @@ if ( $all_pages ) {
 	$tr_tags = '';
 
 	foreach ( $all_pages as $key => $value ) {
-		/**
-		 * CHECK FOR EXCLUDED PAGES
-		 */
-		$is_excluded = ( in_array( $all_pages[ $key ]['ID'], $database_exclusions ) ) ? true : false;
-		$text_color  = ( $is_excluded ) ? '' : 'text-secondary';
-		$checked     = ( $is_excluded ) ? 'checked' : '';
+		$is_excluded = in_array( $all_pages[ $key ]['ID'], $database_exclusions );
+		$text_color  = $is_excluded ? '' : 'text-secondary';
+		$checked     = $is_excluded ? true : false;
 
-		$tr_tags .= new HTML_Refactory(
-			'tr',
-			array( 'class' => array( $text_color ) ),
-			'',
-			new HTML_Refactory(
-				'th',
-				array( 'scope' => 'row' ),
-				$all_pages[ $key ]['ID']
-			) . new HTML_Refactory(
-				'td',
-				array(),
-				$all_pages[ $key ]['post_title']
-			) . new HTML_Refactory(
-				'td',
-				array(),
-				'',
-				new HTML_Refactory(
-					'a',
-					array(
-						'href'   => sanitize_url( $url ) . '/' . sanitize_title_with_dashes( $all_pages[ $key ]['post_name'] ),
-						'target' => '_blank',
-					),
-					sanitize_url( $url ) . '/' . sanitize_title_with_dashes( $all_pages[ $key ]['post_name'] )
-				)
-			) . new HTML_Refactory(
-				'td',
-				array(),
-				'',
-				new HTML_Refactory(
-					'input',
-					array(
-						'type'     => 'checkbox',
-						'id'       => 'post_num_' . sanitize_text_field( $all_pages[ $key ]['ID'] ),
-						'name'     => 'exclude_' . sanitize_text_field( $all_pages[ $key ]['ID'] ),
-						$checked   => '',
-						'data-key' => $key,
-					)
-				)
+		$tr_tags .= ( new HTML_Refactory( 'tr' ) )
+			->attr( 'class', $text_color ? array( $text_color ) : null )
+			->child(
+				( new HTML_Refactory( 'th' ) )
+					->attr( 'scope', 'row' )
+					->text( $all_pages[ $key ]['ID'] )
+					->render()
 			)
-		);
+				->child(
+					( new HTML_Refactory( 'td' ) )
+					->text( $all_pages[ $key ]['post_title'] )
+					->render()
+				)
+				->child(
+					( new HTML_Refactory( 'td' ) )
+					->child(
+						( new HTML_Refactory( 'a' ) )
+							->attr( 'href', sanitize_url( $url . '/' . $all_pages[ $key ]['post_name'] ) )
+							->attr( 'target', '_blank' )
+							->text( sanitize_url( $url . '/' . $all_pages[ $key ]['post_name'] ) )
+							->render()
+					)
+					->render()
+				)
+				->child(
+					( new HTML_Refactory( 'td' ) )
+					->child(
+						( new HTML_Refactory( 'input' ) )
+							->attr( 'type', 'checkbox' )
+							->attr( 'id', 'post_num_' . sanitize_text_field( $all_pages[ $key ]['ID'] ) )
+							->attr( 'name', 'exclude_' . sanitize_text_field( $all_pages[ $key ]['ID'] ) )
+							->attr( 'checked', $checked ) // boolean attribute
+							->attr( 'data-key', $key )
+							->render()
+					)
+					->render()
+				)
+				->render();
 	}
 }
 
-echo new HTML_Refactory(
-	'tbody',
-	array(),
-	'',
-	$tr_tags
-);
+echo ( new HTML_Refactory( 'tbody' ) )
+	->child( $tr_tags )
+	->render();
 
 echo '</table></div>';
 
-echo new HTML_Refactory(
-	'h3',
-	array(),
-	'Delete All Data on Uninstall?'
-);
+	// Delete All Data on Uninstall section
+echo ( new HTML_Refactory( 'h3' ) )
+	->text( 'Delete All Data on Uninstall?' )
+	->render();
 
-echo new HTML_Refactory(
-	'p',
-	array(),
-	'If schema data might be needed in the future, do not change this setting.'
-);
+echo ( new HTML_Refactory( 'p' ) )
+	->text( 'If schema data might be needed in the future, do not change this setting.' )
+	->render();
 
-echo new HTML_Refactory(
-	'div',
-	array( 'class' => array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) ),
-	'',
-	new HTML_Refactory(
-		'label',
-		array( 'for' => 'save_data' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'    => 'save_data',
-				'type'  => 'radio',
-				'name'  => 'delete_on_uninstall',
-				'value' => '0',
-				( ( 0 === $is_data_deleted ) ? 'checked' : '' ) => '',
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->child(
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'save_data' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'save_data' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'delete_on_uninstall' )
+					->attr( 'value', '0' )
+					->attr( 'checked', ( 0 === $is_data_deleted ) )
+					->render()
 			)
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Save&nbsp;',
-		) . 'Data' . wp_kses_post( $default_setting_label_html )
-	) . new HTML_Refactory(
-		'label',
-		array( 'for' => 'delete_data' ),
-		'',
-		new HTML_Refactory(
-			'input',
-			array(
-				'id'    => 'delete_data',
-				'type'  => 'radio',
-				'name'  => 'delete_on_uninstall',
-				'value' => '1',
-				( ( 1 === $is_data_deleted ) ? 'checked' : '' ) => '',
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Save&nbsp;' )
+					->render()
 			)
-		) . new HTML_Refactory(
-			'strong',
-			array(),
-			'Delete ',
-		) . 'Data'
+			->child( 'Data' )
+			->child( wp_kses_post( $default_setting_label_html ) )
+			->render()
 	)
-);
+	->child(
+		( new HTML_Refactory( 'label' ) )
+			->attr( 'for', 'delete_data' )
+			->child(
+				( new HTML_Refactory( 'input' ) )
+					->attr( 'id', 'delete_data' )
+					->attr( 'type', 'radio' )
+					->attr( 'name', 'delete_on_uninstall' )
+					->attr( 'value', '1' )
+					->attr( 'checked', ( 1 === $is_data_deleted ) )
+					->render()
+			)
+			->child(
+				( new HTML_Refactory( 'strong' ) )
+					->text( 'Delete ' )
+					->render()
+			)
+			->child( 'Data' )
+			->render()
+	)
+	->render();
 
-echo new HTML_Refactory(
-	'hr',
-	array(
-		'class' => array( 'mb-5' ),
-	)
-);
+echo ( new HTML_Refactory( 'hr' ) )
+	->attr( 'class', array( 'mb-5' ) )
+	->render();
 
-echo new HTML_Refactory(
-	'div',
-	array(
-		'class' => array( 'fixed-bottom', 'bg-light', 'p-3', 'mb-4', 'shadow', 'rounded' ),
-		'style' => 'left:50%;right:inherit;transform:translateX(-50%)',
-	),
-	'',
-	new HTML_Refactory(
-		'button',
-		array(
-			'class' => array( 'btn', 'btn-primary', 'px-5', 'py-2' ),
-			'type'  => 'submit',
-		),
-		esc_html( 'Save Settings' )
+	// Fixed-bottom save button
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'fixed-bottom', 'bg-light', 'p-3', 'mb-4', 'shadow', 'rounded' ) )
+	->attr( 'style', 'left:50%;right:inherit;transform:translateX(-50%)' )
+	->child(
+		( new HTML_Refactory( 'button' ) )
+			->attr( 'class', array( 'btn', 'btn-primary', 'px-5', 'py-2' ) )
+			->attr( 'type', 'submit' )
+			->text( 'Save Settings' )
+			->render()
 	)
-);
+	->render();
 
 echo '</form></div></main>';
 
@@ -1359,17 +1360,17 @@ add_action(
 		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/prism.js';
 		echo '</script>';
 		echo <<<SCRIPTS
-        <script>
-            document.getElementsByTagName('HEAD')[0].insertAdjacentHTML('beforeend', '<style>.radio-border-left {border-left: 5px solid lightgray;}</style>');
-            document.getElementById('lock-icon').addEventListener('click', (e) => {
-                lockUnlock(e.target.parentElement);
+    <script>
+        document.getElementsByTagName('HEAD')[0].insertAdjacentHTML('beforeend', '<style>.radio-border-left {border-left: 5px solid lightgray;}</style>');
+        document.getElementById('lock-icon').addEventListener('click', (e) => {
+            lockUnlock(e.target.parentElement);
+        });
+        document.querySelectorAll('[id^="post_num_"').forEach(input => {
+            input.addEventListener('change', (e)=>{
+                pageSelected(e.target.dataset.key)
             });
-            document.querySelectorAll('[id^="post_num_"').forEach(input => {
-                input.addEventListener('change', (e)=>{
-                    pageSelected(e.target.dataset.key)
-                });
-            });
-        </script>
+        });
+    </script>
 SCRIPTS;
 	}
 );
