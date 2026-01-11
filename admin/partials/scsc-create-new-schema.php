@@ -35,7 +35,7 @@ if ( 'global' !== $tab_label[ $index ] && 'homepage' !== $tab_label[ $index ] ) 
 }
 
 if ( isset( $_GET['set_tab'] ) ) {
-	$set_tab = \sanitize_key( $_GET['set_tab'] );
+	$set_tab = sanitize_key( $_GET['set_tab'] );
 } else {
 	$set_tab = 'homepage';
 }

@@ -131,3 +131,14 @@ div:disabled {
 #posts_list_new li {
     cursor: pointer
 }
+
+.grid-two-equal {
+    grid-template-columns: 1fr 1fr;
+}
+
+/* Optional: stack on smaller screens */
+@media (max-width: 991px) {
+    .grid-two-equal {
+        grid-template-columns: 1fr;
+    }
+}

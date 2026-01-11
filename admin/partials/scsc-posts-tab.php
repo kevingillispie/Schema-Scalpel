@@ -132,7 +132,7 @@ if ( $schema_results_posts ) :
 endif;
 
 echo ( new HTML_Refactory( 'fieldset' ) )
-	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-5' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-3' ) )
 	->child(
 		( new HTML_Refactory( 'legend' ) )
 			->attr( 'class', array( 'px-3', 'pb-1', 'border', 'rounded', 'bg-white' ) )

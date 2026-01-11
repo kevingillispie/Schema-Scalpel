@@ -3,18 +3,28 @@ const TYPE_TABS = document.querySelectorAll(".nav-link:not(.example-nav)");
 const TYPE_TAB_CONTENTS = document.querySelectorAll(".tab-pane");
 
 /**
+ * Formatting displayed schema
+ */
+const TAB_COUNT = 1;
+const LINE_BREAK = "\n";
+const SYNTAX = {
+    "array": ["[", "]"],
+    "object": ["{", "}"]
+};
+
+/**
  * GET/SET ACTIVE TAB
  */
 (function () {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
-    let activeIndex = 0; // Default to first tab
+    let activeIndex = -1;
 
     // Determine which tab should be active from URL param
     const tabFromUrl = params.get("set_tab");
     if (tabFromUrl && TYPES.includes(tabFromUrl)) {
         activeIndex = TYPES.indexOf(tabFromUrl);
-        if (activeIndex === -1) activeIndex = 0;
+        if (activeIndex < 0) activeIndex = 0;
     }
 
     // Ensure we don't go out of bounds (in case fewer tabs exist)
@@ -31,7 +41,7 @@ const TYPE_TAB_CONTENTS = document.querySelectorAll(".tab-pane");
     });
 
     // Activate the correct tab and content
-    if (TYPE_TABS.length > 0) {
+    if (TYPE_TABS.length > 0 && -1 < activeIndex) {
         TYPE_TABS[activeIndex].classList.add("active");
         TYPE_TAB_CONTENTS[activeIndex].classList.add("active", "show");
     }
@@ -40,11 +50,14 @@ const TYPE_TAB_CONTENTS = document.querySelectorAll(".tab-pane");
     TYPE_TABS.forEach((tab, index) => {
         tab.addEventListener('click', function (e) {
             e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
             const targetType = TYPES[index];
             if (targetType) {
                 setActiveTab(targetType);
             }
-        });
+        }, { capture: true });
     });
 })();
 
@@ -60,31 +73,17 @@ document.querySelectorAll("select").forEach(s => {
     s.selectedIndex = 0;
 });
 
-// Fix the broken button disabling loop
-TYPES.forEach(type => {
-    if (type === "pages" || type === "posts") {
-        const btn = document.querySelector('button[id^="' + type + '_schema_create"]');
-        if (btn) btn.setAttribute("disabled", "true");
+// Disable create buttons on Pages & Posts tabs by default
+['pages', 'posts'].forEach(type => {
+    const btn = document.getElementById(type + '_create_schema_code_block');
+    if (btn) {
+        btn.disabled = true;
+        btn.dataset.id = '';
     }
 });
 /////////////////////
 
-var schemaPreview = (type) => {
-    switch (type) {
-        case "homepage":
-            return document.getElementById("homepage_schema_preview");
-        case "global":
-            return document.getElementById("global_schema_preview");
-        case "pages":
-            return document.getElementById("pages_schema_preview");
-        case "posts":
-            return document.getElementById("posts_schema_preview");
-        default:
-            return;
-    }
-}
-
-var existingSchema = (type) => {
+const EXISTING_SCHEMA = (type) => {
     switch (type) {
         case "homepage":
             return document.getElementById("current_homepage_schema");
@@ -99,50 +98,40 @@ var existingSchema = (type) => {
     }
 }
 
-/**
- * Formatting displayed schema
- */
-var tabCount = 1;
-var lineBreak = "\n";
-var syntax = {
-    "array": ["[", "]"],
-    "object": ["{", "}"]
-}
-
 TYPES.forEach(type => {
-    if (existingSchema(type)) {
-        let container = existingSchema(type).children;
+    if (EXISTING_SCHEMA(type)) {
+        let container = EXISTING_SCHEMA(type).children;
         for (let i = 0; i < container.length; i++) {
             let jsonified = jsonify(container[i].dataset.schema);
 
-            displaySchemaLoop(container[i], jsonified, tabCount, syntax, lineBreak);
+            displaySchemaLoop(container[i], jsonified, TAB_COUNT, SYNTAX, LINE_BREAK);
         }
     }
 });
 
-! function () {
+(function () {
     let exampleFieldsets = document.querySelectorAll('#example_fieldsets [id^="example_schema"]');
     exampleFieldsets.forEach(field => {
         let container = field.children[0];
         let jsonified = jsonify(container.dataset.schema);
-        displaySchemaLoop(container, jsonified, 1, syntax, lineBreak);
+        displaySchemaLoop(container, jsonified, 1, SYNTAX, LINE_BREAK);
     })
-}();
+})();
 
 // Fix displaySchemaLoop – add the missing recursive print
-function displaySchemaLoop(container, jsonified, tabCount, syntax, lineBreak) {
+function displaySchemaLoop(container, jsonified, TAB_COUNT, SYNTAX, LINE_BREAK) {
     if (Array.isArray(jsonified)) {
-        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["array"][0]}</code>${lineBreak}`);
+        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${SYNTAX["array"][0]}</code>${LINE_BREAK}`);
         jsonified.forEach((item, index) => {
-            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tabCount)}${syntax["object"][0]}</code>${lineBreak}`);
-            printJSONLoop(container, item, tabCount + 1);  // ← ADD THIS
-            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tabCount)}${syntax["object"][1]}${index < jsonified.length - 1 ? "," : ""}</code>${lineBreak}`);
+            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(TAB_COUNT)}${SYNTAX["object"][0]}</code>${LINE_BREAK}`);
+            printJSONLoop(container, item, TAB_COUNT + 1);  // ← ADD THIS
+            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(TAB_COUNT)}${SYNTAX["object"][1]}${index < jsonified.length - 1 ? "," : ""}</code>${LINE_BREAK}`);
         });
-        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["array"][1]}</code>${lineBreak}`);
+        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${SYNTAX["array"][1]}</code>${LINE_BREAK}`);
     } else if (typeof jsonified === 'object' && jsonified !== null) {
-        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["object"][0]}</code>${lineBreak}`);
-        printJSONLoop(container, jsonified, tabCount + 1);  // ← ADD THIS
-        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${syntax["object"][1]}</code>${lineBreak}`);
+        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${SYNTAX["object"][0]}</code>${LINE_BREAK}`);
+        printJSONLoop(container, jsonified, TAB_COUNT + 1);  // ← ADD THIS
+        container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${SYNTAX["object"][1]}</code>${LINE_BREAK}`);
     }
 }
 /////////////////////
@@ -321,28 +310,34 @@ function updateBlogPostingForm(postID) {
 function onPostSelectChange(el) {
     let type = el.id.substring(0, 5) || el.parentElement.id.substring(0, 5);
     let postID = el.value || el.dataset.value;
-    let indexInList = el.selectedIndex || el.dataset.index;
+    // let indexInList = el.selectedIndex || el.dataset.index;
     if (el.dataset.type === 'post') {
         updateBlogPostingForm(postID);
     }
     document.querySelectorAll(".edit-block-button").forEach(btn => {
         btn.dataset.id = postID;
     });
-    let buttons = [
-        document.querySelector('button[id^="' + type + '_create_schema_code_block"'),
-        document.querySelector('button[id^="' + type + '_schema_create"')
-    ];
+
+    const createCodeBlockBtn = document.getElementById(type + '_create_schema_code_block');
+    const createSchemaBtn = document.querySelector('button[id^="' + type + '_schema_create"]'); // keep old if exists
+    const buttons = [createCodeBlockBtn, createSchemaBtn].filter(Boolean); // remove nulls
+
     buttons.forEach(btn => {
         if (btn) {
-            btn.dataset.id = postID;
-            if (0 <= parseInt(indexInList)) {
-                btn.removeAttribute("disabled");
-                showPostSchema(postID, type);
+            btn.dataset.id = postID || '';
+            if (postID && postID !== '' && postID !== '-1') {
+                btn.disabled = false;
             } else {
-                disableCreateSchemaButtons(btn);
+                btn.disabled = true;
             }
         }
     });
+
+    // This is critical — keep the schema display call!
+    if (postID && postID !== '' && postID !== '-1') {
+        showPostSchema(postID, type);
+    }
+
     let activePageOrPost = (type == "pages") ? "active_page" : "active_post";
     let request = new XMLHttpRequest();
     request.open("GET", "/wp-admin/admin.php?page=scsc&" + activePageOrPost + "=" + postID);
@@ -350,16 +345,19 @@ function onPostSelectChange(el) {
 }
 
 function showPostSchema(id, type) {
-    document.querySelector('#' + type + '_schema legend').innerText = 'Current: ' + document.querySelector('li[data-value="' + id + '"]').dataset.title;
-    var CURRENT_SCHEMA_BY_POST_ID = [document.getElementById('current_pages_schema').children, document.getElementById('current_posts_schema').children];
-    CURRENT_SCHEMA_BY_POST_ID.forEach(post_type => {
-        for (i in post_type) {
-            if (isNaN(parseInt(i))) continue;
-            if (post_type.length > 0 && post_type[i].classList.contains('post-id-' + id)) {
-                post_type[i].classList.remove("d-none");
-            } else {
-                (!post_type[i].classList.contains("d-none")) ? post_type[i].classList.add("d-none") : "";
-            }
+    // Update legend
+    const selectedItem = document.querySelector(`li[data-value="${id}"]`);
+    if (selectedItem) {
+        document.querySelector(`#${type}_schema legend`).textContent =
+            'Current: ' + selectedItem.dataset.title;
+    }
+
+    // Hide all, show only matching
+    document.querySelectorAll('#current_pages_schema pre, #current_posts_schema pre').forEach(pre => {
+        if (pre.classList.contains('post-id-' + id)) {
+            pre.classList.remove('d-none');
+        } else {
+            pre.classList.add('d-none');
         }
     });
 }
@@ -390,19 +388,19 @@ function insertTabs(count) {
 function printJSONLoop(container, jObject, tab) {
     for (const [key, value] of Object.entries(jObject)) {
         if (checkType(value) == 'string') {
-            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}${isNumber(key) ? "" : `"${key}": `}"${value}",</code>${lineBreak}`);
+            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}${isNumber(key) ? "" : `"${key}": `}"${value}",</code>${LINE_BREAK}`);
         } else if (checkType(value) == "array") {
-            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}"${key}": ${syntax["array"][0]}</code>${lineBreak}`);
+            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}"${key}": ${SYNTAX["array"][0]}</code>${LINE_BREAK}`);
             tab++;
             printJSONLoop(container, value, tab);
             tab--;
-            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}${syntax["array"][1]},</code>${lineBreak}`);
+            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}${SYNTAX["array"][1]},</code>${LINE_BREAK}`);
         } else if (checkType(value) == 'object') {
-            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}${isNumber(key) ? "" : `"${key}": `}${syntax["object"][0]}</code>${lineBreak}`);
+            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}${isNumber(key) ? "" : `"${key}": `}${SYNTAX["object"][0]}</code>${LINE_BREAK}`);
             tab++;
             printJSONLoop(container, value, tab);
             tab--;
-            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}${syntax["object"][1]},</code>${lineBreak}`);
+            container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(tab)}${SYNTAX["object"][1]},</code>${LINE_BREAK}`);
         }
     }
 }
@@ -470,7 +468,7 @@ function editSchemaCodeBlock(id, event) {
     modal.setAttribute("style", "display:block;background-color:rgba(0,0,0,.5);");
 }
 
-!function () {
+(function () {
     var params = new URLSearchParams(document.location.search);
     var currentTabName = params.get("set_tab");
     document.querySelectorAll('.edit-block').forEach(element => {
@@ -482,12 +480,15 @@ function editSchemaCodeBlock(id, event) {
         updateCurrentSchema(e.target.dataset.id, event);
     });
     document.getElementById('schemaBlockSave').addEventListener('click', (e) => {
-        const activeTab = document.querySelector('.nav-link.active');
-        const currentType = activeTab ? activeTab.dataset.type || TYPES.find(t => activeTab.href.includes(t)) : 'homepage';
+        const params = new URLSearchParams(window.location.search);
+        let currentType = params.get('set_tab') || 'homepage';
+        if (!TYPES.includes(currentType)) {
+            currentType = 'homepage';
+        }
         const btn = document.querySelector('#' + currentType + '_create_schema_code_block');
-        createNewSchema(currentType, btn?.dataset.id);
+        createNewSchema(currentType, btn?.dataset.id || '');
     });
-}();
+})();
 
 function closeSchemaTextareaEditModal(event) {
     event.preventDefault();

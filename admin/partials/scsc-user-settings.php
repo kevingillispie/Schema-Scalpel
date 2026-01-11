@@ -372,7 +372,7 @@ $default_setting_label_html = ( new HTML_Refactory( 'small' ) )
 	)
 	->render();
 
-echo '<main class="container mt-5 ms-0">';
+echo '<main class="container mt-5">';
 
 $scalpel_icon = ( new HTML_Refactory( 'img' ) )
 	->attr( 'class', array( 'mt-n4' ) )
@@ -444,7 +444,7 @@ echo ( new HTML_Refactory( 'h3' ) )
 echo ( new HTML_Refactory( 'div' ) )
 	->attr( 'class', array( 'd-flex', 'flex-column', 'mb-0', 'ps-4', 'py-3', 'radio-border-left' ) )
 	->child(
-		// Enable WebSite option
+		// Enable WebSite option.
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'enable_website' )
 			->child(
@@ -556,12 +556,12 @@ echo ( new HTML_Refactory( 'label' ) )
 					->render()
 			)
 			->child(
-				// Lock button
+				// Lock button.
 				( new HTML_Refactory( 'div' ) )
 					->attr( 'id', 'search_param_lock' )
 					->attr( 'class', array( 'btn', 'btn-outline-danger' ) )
 					->child(
-						// SVG lock icon
+						// SVG lock icon.
 						( new HTML_Refactory( 'svg' ) )
 							->attr( 'id', 'lock-icon' )
 							->attr( 'xmlns', 'http://www.w3.org/2000/svg' )

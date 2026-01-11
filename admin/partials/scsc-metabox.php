@@ -358,6 +358,7 @@ function scsc_render_metabox_preview( $post ) {
 
 					// Remove trailing commas before closing brackets/objects.
 					$pretty_json = preg_replace( '/,\s*([\]}])/m', '$1', $pretty_json );
+					$label_color = ( 'global' === $item['schema_type'] ) ? '#d63638' : '#2271b1';
 
 					$existing_schema = ( new HTML_Refactory( 'div' ) )
 						->attr(
@@ -372,8 +373,8 @@ function scsc_render_metabox_preview( $post ) {
 							->attr( 'style', 'margin-bottom: 12px;' )
 							->child(
 								( new HTML_Refactory( 'strong' ) )
-								->attr( 'style', 'color: __PHP_TEXT_0__;' )
-								->child( esc_html( $label ) . 'Schema' )
+								->attr( 'style', 'color:' . $label_color )
+								->child( $label . '&nbsp;Schema' )
 								->render()
 							)
 							->child(
@@ -395,7 +396,7 @@ function scsc_render_metabox_preview( $post ) {
 									1 => 'scsc-schema-textarea',
 								)
 							)
-							->attr( 'data-id', '__PHP_TEXT_4__' )
+							->attr( 'data-id', (string) $item['id'] )
 							->attr( 'spellcheck', 'false' )
 							->child( esc_textarea( $pretty_json ) )
 							->render()
@@ -414,7 +415,7 @@ function scsc_render_metabox_preview( $post ) {
 										2 => 'scsc-save',
 									)
 								)
-								->attr( 'data-id', '__PHP_TEXT_6__' )
+								->attr( 'data-id', (string) $item['id'] )
 								->child( esc_html( __( 'Save Changes', 'schema-scalpel' ) ) )
 								->render()
 							)
@@ -554,6 +555,11 @@ function scsc_render_metabox_preview( $post ) {
 
 	<script>
 		function removeIllegalCharacters(v) {
+			if (typeof v !== 'string') {
+				console.warn('removeIllegalCharacters(v) expected string, got:', v);
+				return false;
+			}
+
 			let w, x;
 			v = v.trim();
 
@@ -562,16 +568,19 @@ function scsc_render_metabox_preview( $post ) {
 				return false;
 			}
 
-			if (v.match(/{/gm).length < v.match(/}/gm).length && v.substring(v.length - 2, v.length) == "}}") {
+			if (v.match(/{/gm).length < v.match(/}/gm).length && v.substring(v.length - 2, v.length) === "}}") {
 				v = v.substring(0, v.length - 1);
 			}
 
 			do {
 				w = v;
 
-				if (v.substring(0, 2) == "{{") v = v.substring(1, v.length);
+				if (v.substring(0, 2) === "{{") {
+					v = v.substring(1, v.length);
+				}
 
-				v = v.replace(/(\n|\r|\r\n|\n\r|\t)/g, "")
+				v = v
+					.replace(/(\n|\r|\r\n|\n\r|\t)/g, "")
 					.replace(/ {/, "{")
 					.replace(/{ /, "{")
 					.replace(/,}/g, "}")
@@ -593,26 +602,35 @@ function scsc_render_metabox_preview( $post ) {
 
 			} while (x !== w);
 
-			if (w[w.length - 1] == ",") w = w.substring(0, w.length - 1);
+			if (w[w.length - 1] === ",") {
+				w = w.substring(0, w.length - 1);
+			}
 
-			let formatted = finalFormattingCheck(correctBracketCount(w));
+			const formatted = finalFormattingCheck(correctBracketCount(w));
 			if (!formatted) return false;
 
-			formatted = formatted.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-			return formatted;
+			return formatted
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&apos;');
 		}
 
 		function correctBracketCount(w) {
-			let leftBracketCount = 0, rightBracketCount = 0;
+			let leftBracketCount = 0;
+			let rightBracketCount = 0;
+
 			for (let i = 0; i < w.length; i++) {
-				if (w[i] == "{") leftBracketCount++;
-				else if (w[i] == "}") rightBracketCount++;
+				if (w[i] === "{") leftBracketCount++;
+				else if (w[i] === "}") rightBracketCount++;
 			}
+
 			if (leftBracketCount < rightBracketCount) {
 				return correctBracketCount(w.substring(0, w.length - 1));
-			} else if (leftBracketCount > rightBracketCount) {
+			}
+
+			if (leftBracketCount > rightBracketCount) {
 				return correctBracketCount(w + "}");
 			}
+
 			return w;
 		}
 
@@ -629,7 +647,7 @@ function scsc_render_metabox_preview( $post ) {
 		jQuery(document).ready(function($) {
 			$('.nav-tab-wrapper a').on('click', function(e) {
 				e.preventDefault();
-				var target = $(this).attr('href');
+				const target = $(this).attr('href');
 				$('.nav-tab').removeClass('nav-tab-active');
 				$(this).addClass('nav-tab-active');
 				$('.scsc-tab-content').hide();
@@ -637,12 +655,12 @@ function scsc_render_metabox_preview( $post ) {
 			});
 
 			$('.scsc-save').on('click', function() {
-				var btn = $(this);
-				var id = btn.data('id');
-				var textarea = $('textarea[name="scsc_schema[' + id + ']"]');
-				var rawJson = textarea.val();
+				const btn = $(this);
+				const id = btn.data('id');
+				const textarea = $('textarea[name="scsc_schema[' + id + ']"]');
+				const rawJson = textarea.val();
 
-				var formatted = removeIllegalCharacters(rawJson);
+				const formatted = removeIllegalCharacters(rawJson);
 				if (!formatted) return;
 
 				$.post(ajaxurl, {
@@ -660,17 +678,17 @@ function scsc_render_metabox_preview( $post ) {
 			});
 
 			$('.scsc-create-new, .scsc-create-new-global').on('click', function() {
-				var rawJson = $('textarea[name="scsc_new_schema"]').val();
-				var formatted = removeIllegalCharacters(rawJson);
+				const rawJson = $('textarea[name="scsc_new_schema"]').val();
+				const formatted = removeIllegalCharacters(rawJson);
 				if (!formatted) return;
 
-				var isGlobal = $(this).hasClass('scsc-create-new-global') ? 1 : 0;
+				const isGlobal = $(this).hasClass('scsc-create-new-global') ? 1 : 0;
 
 				$.post(ajaxurl, {
 					action: 'scsc_create_metabox_schema',
 					nonce: $('#scsc_metabox_nonce').val(),
 					post_id: '<?php echo esc_js( $post_id ); ?>',
-					post_type:  '<?php echo esc_js( $post_type ); ?>s',
+					post_type: '<?php echo esc_js( $post_type ); ?>s',
 					schema_json: formatted,
 					is_global: isGlobal
 				}, function(resp) {
@@ -685,7 +703,7 @@ function scsc_render_metabox_preview( $post ) {
 			// Delete
 			$('.scsc-delete').on('click', function() {
 				if (!confirm('Delete this schema entry permanently?')) return;
-				var id = $(this).data('id');
+				const id = $(this).data('id');
 				$.post(ajaxurl, {
 					action: 'scsc_delete_metabox_schema',
 					nonce: $('#scsc_metabox_nonce').val(),
@@ -696,10 +714,10 @@ function scsc_render_metabox_preview( $post ) {
 			});
 
 			$('.scsc-copy-example').on('click', function() {
-				var escapedJson = $(this).attr('data-json');
-				var temp = document.createElement('textarea');
+				const escapedJson = $(this).attr('data-json');
+				const temp = document.createElement('textarea');
 				temp.innerHTML = escapedJson;
-				var json = temp.value;
+				const json = temp.value;
 
 				$('textarea[name="scsc_new_schema"]').val(json);
 
@@ -710,7 +728,65 @@ function scsc_render_metabox_preview( $post ) {
 
 				alert('Example copied! Now click “Create as [...]” to add it.');
 			});
+
+			// Auto-save on main post save
+			const { select, subscribe, dispatch } = wp.data;
+			let wasSaving = false;
+
+			const unsubscribe = subscribe(() => {
+				const isSaving      = select('core/editor').isSavingPost();
+				const isAutosaving  = select('core/editor').isAutosavingPost();
+				const hasFinished   = select('core/editor').didPostSaveRequestSucceed();
+
+				if (wasSaving && !isSaving && hasFinished && !isAutosaving) {
+					console.log('Main post saved successfully → auto-saving Schema Scalpel schemas...');
+
+					$('.scsc-save').each(function() {
+						const $btn = $(this);
+						const id   = $btn.data('id');
+
+						const $textarea = $('textarea[name="scsc_schema\\[' + id + '\\]"]');
+						if ($textarea.length === 0) {
+							console.warn('Textarea not found for schema id:', id);
+							return;
+						}
+
+						const rawJson = $textarea.val().trim();
+						const formatted = removeIllegalCharacters(rawJson);
+
+						if (!formatted) {
+							console.warn('Invalid schema format for id:', id, '- skipping auto-save');
+							return;
+						}
+
+						$.post(ajaxurl, {
+							action:     'scsc_save_metabox_schema',
+							nonce:      $('#scsc_metabox_nonce').val(),
+							schema_id:  id,
+							schema_json: formatted
+						}, function(resp) {
+							if (resp.success) {
+								$btn.next('.scsc-status')
+									.text('Auto-saved.')
+									.fadeIn()
+									.delay(1800)
+									.fadeOut();
+							} else {
+								console.error('Auto-save failed for schema', id, resp);
+								dispatch('core/notices').createNotice(
+									'error',
+									'Schema Scalpel: Could not auto-save one schema. Please check manually.',
+									{ isDismissible: true }
+								);
+							}
+						});
+					});
+				}
+
+				wasSaving = isSaving;
+			});
 		});
+
 		document.querySelector('.hamburger-toggle').addEventListener('click', function() {
 			document.querySelector('.scsc-menu').classList.toggle('active');
 		});
