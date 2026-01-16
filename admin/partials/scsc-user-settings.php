@@ -453,7 +453,7 @@ echo ( new HTML_Refactory( 'div' ) )
 					->attr( 'type', 'radio' )
 					->attr( 'name', 'enable_website' )
 					->attr( 'value', '1' )
-					->attr( 'checked', ( 1 === $is_website_enabled ) )  // ← Fixed: boolean
+					->attr( 'checked', ( 1 === $is_website_enabled ) )
 					->render()
 			)
 			->child(
@@ -480,7 +480,7 @@ echo ( new HTML_Refactory( 'div' ) )
 			->render()
 	)
 	->child(
-		// Disable WebSite option
+		// Disable WebSite option.
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'disable_website' )
 			->child(
@@ -489,7 +489,7 @@ echo ( new HTML_Refactory( 'div' ) )
 					->attr( 'type', 'radio' )
 					->attr( 'name', 'enable_website' )
 					->attr( 'value', '0' )
-					->attr( 'checked', ( 0 === $is_website_enabled ) )  // ← Fixed: boolean
+					->attr( 'checked', ( 0 === $is_website_enabled ) )
 					->render()
 			)
 			->child(
@@ -530,7 +530,7 @@ echo ( new HTML_Refactory( 'label' ) )
 	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3' ) )
 	->attr( 'for', 'search_param' )
 	->child(
-		// Label text: "urlTemplate search parameter key:"
+		// Label text: "urlTemplate search parameter key:".
 		( new HTML_Refactory( 'div' ) )
 			->attr( 'class', array( 'mb-2' ) )
 			->child(
@@ -543,7 +543,7 @@ echo ( new HTML_Refactory( 'label' ) )
 			->render()
 	)
 	->child(
-		// Input field + lock button
+		// Input field + lock button.
 		( new HTML_Refactory( 'div' ) )
 			->child(
 				( new HTML_Refactory( 'input' ) )
@@ -581,7 +581,6 @@ echo ( new HTML_Refactory( 'label' ) )
 			->render()
 	)
 	->child(
-		// Note below
 		( new HTML_Refactory( 'div' ) )
 			->child(
 				( new HTML_Refactory( 'i' ) )
@@ -620,7 +619,7 @@ echo ( new HTML_Refactory( 'h3' ) )
 echo ( new HTML_Refactory( 'div' ) )
 	->attr( 'class', array( 'd-flex', 'flex-column', 'mb-3', 'ps-4', 'py-3', 'radio-border-left' ) )
 	->child(
-		// Enable WebPage option
+		// Enable WebPage option.
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'enable_webpage' )
 			->child(
@@ -656,7 +655,7 @@ echo ( new HTML_Refactory( 'div' ) )
 			->render()
 	)
 	->child(
-		// Disable WebSite option
+		// Disable WebSite option.
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'disable_webpage' )
 			->child(
@@ -757,7 +756,7 @@ echo ( new HTML_Refactory( 'div' ) )
 echo ( new HTML_Refactory( 'div' ) )
 	->attr( 'class', array( 'd-flex', 'flex-column', 'mb-3', 'ps-4', 'py-3', 'radio-border-left' ) )
 	->child(
-		// Enable BreadcrumbList option
+		// Enable BreadcrumbList option.
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'enable_breadcrumbs' )
 			->child(
@@ -793,7 +792,7 @@ echo ( new HTML_Refactory( 'div' ) )
 			->render()
 	)
 	->child(
-		// Disable BreadcrumbList option
+		// Disable BreadcrumbList option.
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'disable_breadcrumbs' )
 			->child(
@@ -839,13 +838,13 @@ echo ( new HTML_Refactory( 'fieldset' ) )
 	)
 	->render();
 
-	// Horizontal rule
+	// Horizontal rule.
 echo ( new HTML_Refactory( 'hr' ) )
 	->attr( 'style', 'height:5px' )
 	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
 	->render();
 
-	// Heading for Yoast section
+	// Heading for Yoast section.
 echo ( new HTML_Refactory( 'h3' ) )
 	->attr( 'id', 'disable_yoast_schema' )
 	->attr( 'class', array( 'mt-3' ) )
@@ -906,7 +905,7 @@ if ( 'disabled' === $if_yoast ) {
 
 }
 
-// Yoast radio buttons
+// Yoast radio buttons.
 echo ( new HTML_Refactory( 'div' ) )
 	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
 	->child(
@@ -946,7 +945,7 @@ echo ( new HTML_Refactory( 'div' ) )
 	)
 	->render();
 
-	// AIOSEO Heading
+	// AIOSEO Heading.
 echo ( new HTML_Refactory( 'h3' ) )
 	->attr( 'id', 'disable_aio_schema' )
 	->attr( 'class', array( 'mt-3' ) )
@@ -954,7 +953,7 @@ echo ( new HTML_Refactory( 'h3' ) )
 	->render();
 
 if ( 'disabled' === $if_aio ) {
-	// Same structure as Yoast "disabled" case – just change the text
+	// Same structure as Yoast "disabled" case – just change the text.
 	echo ( new HTML_Refactory( 'pre' ) )
 		->attr( 'class', array( 'mb-0', 'rounded', 'language-js' ) )
 		->child(
@@ -1016,7 +1015,7 @@ if ( 'disabled' === $if_aio ) {
 		->render();
 }
 
-	// AIOSEO radio buttons (same pattern)
+	// AIOSEO radio buttons (same pattern).
 echo ( new HTML_Refactory( 'div' ) )
 	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
 	->child(
@@ -1063,7 +1062,7 @@ echo ( new HTML_Refactory( 'div' ) )
 	)
 	->render();
 
-// Rank Math section (identical pattern – just updated text and variables)
+// Rank Math section (identical pattern – just updated text and variables).
 echo ( new HTML_Refactory( 'h3' ) )
 	->attr( 'id', 'disable_rankmath_schema' )
 	->attr( 'class', array( 'mt-3' ) )
@@ -1179,13 +1178,13 @@ echo ( new HTML_Refactory( 'div' ) )
 	)
 	->render();
 
-	// Final horizontal rule
+	// Final horizontal rule.
 echo ( new HTML_Refactory( 'hr' ) )
 	->attr( 'style', 'height:5px' )
 	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
 	->render();
 
-	// Final informational section
+	// Final informational section.
 echo ( new HTML_Refactory( 'h3' ) )
 	->text( 'Pages to Exclude from Displaying Any Schema' )
 	->render();
@@ -1260,7 +1259,7 @@ if ( $all_pages ) {
 							->attr( 'type', 'checkbox' )
 							->attr( 'id', 'post_num_' . sanitize_text_field( $all_pages[ $key ]['ID'] ) )
 							->attr( 'name', 'exclude_' . sanitize_text_field( $all_pages[ $key ]['ID'] ) )
-							->attr( 'checked', $checked ) // boolean attribute
+							->attr( 'checked', $checked ) // boolean attribute.
 							->attr( 'data-key', $key )
 							->render()
 					)
@@ -1276,7 +1275,7 @@ echo ( new HTML_Refactory( 'tbody' ) )
 
 echo '</table></div>';
 
-	// Delete All Data on Uninstall section
+	// Delete All Data on Uninstall section.
 echo ( new HTML_Refactory( 'h3' ) )
 	->text( 'Delete All Data on Uninstall?' )
 	->render();
@@ -1334,7 +1333,7 @@ echo ( new HTML_Refactory( 'hr' ) )
 	->attr( 'class', array( 'mb-5' ) )
 	->render();
 
-	// Fixed-bottom save button
+	// Fixed-bottom save button.
 echo ( new HTML_Refactory( 'div' ) )
 	->attr( 'class', array( 'fixed-bottom', 'bg-light', 'p-3', 'mb-4', 'shadow', 'rounded' ) )
 	->attr( 'style', 'left:50%;right:inherit;transform:translateX(-50%)' )

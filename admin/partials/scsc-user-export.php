@@ -245,7 +245,7 @@ echo ( new HTML_Refactory( 'fieldset' ) )
 
 echo '</main>';
 
-// Admin footer scripts
+// Admin footer scripts.
 add_action(
 	'admin_footer',
 	function () use ( $prefix ) {

@@ -66,7 +66,7 @@ if ( $results ) {
 	foreach ( $results as $key => $value ) {
 		$wet_cereal     = maybe_unserialize( $results[ $key ]['custom_schema'] );
 		$rendered_pres .= ( new HTML_Refactory( 'pre' ) )
-			->attr( 'class', array( 'w-100', 'rounded', 'language-json', 'edit-block', 'post-id-0' ) )
+			->attr( 'class', array( 'w-100', 'rounded', 'language-json', 'edit-block', 'post-id-' . $front_page_id ) )
 			->attr( 'data-id', $results[ $key ]['id'] )
 			->attr( 'data-schema', $wet_cereal )
 			->render();

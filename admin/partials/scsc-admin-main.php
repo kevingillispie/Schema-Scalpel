@@ -10,7 +10,6 @@
 
 namespace SchemaScalpel;
 
-use Dom\HTMLElement;
 use HTML_Refactory;
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -136,7 +136,7 @@ class SCSC_Upgrade {
 							$settings_table,
 							array(
 								'setting_value' => self::DB_VERSION,
-								'updated'       => \current_time( 'mysql' ),
+								'updated'       => current_time( 'mysql' ),
 							),
 							array( 'setting_key' => self::DB_VERSION_KEY ),
 							array( '%s', '%s' ),
@@ -148,29 +148,29 @@ class SCSC_Upgrade {
 							array(
 								'setting_key'   => self::DB_VERSION_KEY,
 								'setting_value' => self::DB_VERSION,
-								'updated'       => \current_time( 'mysql' ),
+								'updated'       => current_time( 'mysql' ),
 							),
 							array( '%s', '%s', '%s' )
 						);
 					}
 
-					\add_action(
+					add_action(
 						'admin_notices',
 						function () {
 							?>
 							<div class="notice notice-success is-dismissible">
-								<p><?php printf( \esc_html__( 'Schema Scalpel database schema updated to version %s.', 'schema-scalpel' ), \esc_html( self::DB_VERSION ) ); ?></p>
+								<p><?php printf( esc_html__( 'Schema Scalpel database schema updated to version %s.', 'schema-scalpel' ), esc_html( self::DB_VERSION ) ); ?></p>
 							</div>
 							<?php
 						}
 					);
 				} else {
-					\add_action(
+					add_action(
 						'admin_notices',
 						function () use ( $wpdb ) {
 							?>
 							<div class="notice notice-error is-dismissible">
-								<p><?php printf( \esc_html__( 'Schema Scalpel database schema update failed: %s', 'schema-scalpel' ), \esc_html( $wpdb->last_error ) ); ?></p>
+								<p><?php printf( esc_html__( 'Schema Scalpel database schema update failed: %s', 'schema-scalpel' ), esc_html( $wpdb->last_error ) ); ?></p>
 							</div>
 							<?php
 						}
@@ -191,7 +191,7 @@ class SCSC_Upgrade {
 						$settings_table,
 						array(
 							'setting_value' => self::DB_VERSION,
-							'updated'       => \current_time( 'mysql' ),
+							'updated'       => current_time( 'mysql' ),
 						),
 						array( 'setting_key' => self::DB_VERSION_KEY ),
 						array( '%s', '%s' ),
@@ -203,7 +203,7 @@ class SCSC_Upgrade {
 						array(
 							'setting_key'   => self::DB_VERSION_KEY,
 							'setting_value' => self::DB_VERSION,
-							'updated'       => \current_time( 'mysql' ),
+							'updated'       => current_time( 'mysql' ),
 						),
 						array( '%s', '%s', '%s' )
 					);
