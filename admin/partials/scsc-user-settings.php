@@ -401,16 +401,14 @@ $h1 = ( new HTML_Refactory( 'h1' ) )
 	->child( $scalpel_icon )
 	->render();
 
-$alert1 = ( new HTML_Refactory( 'p' ) )
+$notice = ( new HTML_Refactory( 'p' ) )
 	->attr( 'class', array( 'alert', 'alert-primary' ) )
 	->attr( 'role', 'alert' )
 	->text( 'The default settings for this plugin allow it to perform at its best. However, you may encounter an edge case that requires modification of the default settings.' )
-	->render();
-
-$alert2 = ( new HTML_Refactory( 'p' ) )
-	->attr( 'class', array( 'alert', 'alert-warning', 'mt-4' ) )
-	->attr( 'role', 'alert' )
-	->text( 'NOTE: ' )
+	->child(
+		( new HTML_Refactory( 'br' ) )->render()
+	)
+	->child( 'NOTE:&nbsp;' )
 	->child(
 		( new HTML_Refactory( 'em' ) )
 			->text( 'This plugin ' )
@@ -418,6 +416,7 @@ $alert2 = ( new HTML_Refactory( 'p' ) )
 				( new HTML_Refactory( 'a' ) )
 					->attr( 'href', esc_url( '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' ) )
 					->text( 'automatically overrides Yoast, AIOSEO, and Rank Math schema' )
+					->render()
 			)
 			->child( ' and injects your customized schema to better fit your SEO objectives.' )
 			->render()
@@ -426,8 +425,7 @@ $alert2 = ( new HTML_Refactory( 'p' ) )
 
 echo ( new HTML_Refactory( 'div' ) )
 	->child( $h1 )
-	->child( $alert1 )
-	->child( $alert2 )
+	->child( $notice )
 	->render();
 
 echo '<div><form method="post" action="" class="settings-page-form">';
