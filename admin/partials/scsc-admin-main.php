@@ -110,7 +110,7 @@ if ( isset( $_GET['update_tab'] ) ) {
 
 // Start HTML output.
 $header = ( new HTML_Refactory( 'header' ) )
-	->attr( 'class', 'mb-2' )
+	->attr( 'class', array( 'mt-3', 'mb-2', 'd-flex', 'justify-content-center' ) )
 	->child(
 		( new HTML_Refactory( 'img' ) )
 			->attr( 'src', plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/schema-scalpel-logo.svg' )
@@ -3026,7 +3026,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 }
 
 $main = ( new HTML_Refactory( 'main' ) )
-	->attr( 'class', array( 'container', 'ms-0' ) )
+	->attr( 'class', array( 'container', 'ms-0', 'mt-5' ) )
 	->child( $nav )
 	->child(
 		( new HTML_Refactory( 'div' ) )
@@ -3048,7 +3048,6 @@ $main = ( new HTML_Refactory( 'main' ) )
 echo ( new HTML_Refactory( 'div' ) )
 	->attr( 'class', array( 'container', 'pt-3' ) )
 	->child( $header )
-	->child( ( new HTML_Refactory( 'hr' ) )->render() )
 	->child( $main )
 	->child( $aside_content )
 	->render();

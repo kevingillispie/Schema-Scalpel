@@ -372,6 +372,23 @@ $default_setting_label_html = ( new HTML_Refactory( 'small' ) )
 	)
 	->render();
 
+$header = ( new HTML_Refactory( 'header' ) )
+	->attr( 'class', array( 'mt-3', 'mb-2', 'd-flex', 'justify-content-center' ) )
+	->child(
+		( new HTML_Refactory( 'img' ) )
+			->attr( 'src', plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/schema-scalpel-logo.svg' )
+			->attr( 'width', '300' )
+			->attr( 'height', 'auto' )
+			->attr( 'alt', 'Schema Scalpel Logo' )
+			->render()
+	)
+	->render();
+
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'container', 'pt-3' ) )
+	->child( $header )
+	->render();
+
 echo '<main class="container mt-5">';
 
 $scalpel_icon = ( new HTML_Refactory( 'img' ) )
@@ -407,7 +424,7 @@ $alert2 = ( new HTML_Refactory( 'p' ) )
 	)
 	->render();
 
-echo ( new HTML_Refactory( 'header' ) )
+echo ( new HTML_Refactory( 'div' ) )
 	->child( $h1 )
 	->child( $alert1 )
 	->child( $alert2 )
@@ -429,8 +446,13 @@ echo ( new HTML_Refactory( 'input' ) )
 	->attr( 'value', 'save' )
 	->render();
 
+echo ( new HTML_Refactory( 'hr' ) )
+	->attr( 'style', 'height:5px;opacity:1' )
+	->attr( 'class', array( 'mt-4', 'border-0', 'bg-white', 'rounded', 'shadow-sm' ) )
+	->render();
+
 echo ( new HTML_Refactory( 'h3' ) )
-	->attr( 'class', array( 'mt-5', 'mb-0' ) )
+	->attr( 'class', array( 'mt-4', 'mb-0' ) )
 	->text( 'Enable Default&nbsp;' )
 	->child(
 		( new HTML_Refactory( 'code' ) )
@@ -442,7 +464,7 @@ echo ( new HTML_Refactory( 'h3' ) )
 	->render();
 
 echo ( new HTML_Refactory( 'div' ) )
-	->attr( 'class', array( 'd-flex', 'flex-column', 'mb-0', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'mb-0', 'ps-4', 'py-3', 'radio-border-left', 'bg-white' ) )
 	->child(
 		// Enable WebSite option.
 		( new HTML_Refactory( 'label' ) )
@@ -600,13 +622,13 @@ echo ( new HTML_Refactory( 'label' ) )
 	->render();
 
 echo ( new HTML_Refactory( 'hr' ) )
-	->attr( 'style', 'height:5px' )
-	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
+	->attr( 'style', 'height:5px;opacity:1' )
+	->attr( 'class', array( 'mt-4', 'border-0', 'bg-white', 'rounded', 'shadow-sm' ) )
 	->render();
 
 echo ( new HTML_Refactory( 'h3' ) )
-	->attr( 'class', array( 'mt-5', 'mb-0' ) )
-	->text( 'Enable Default ' )
+	->attr( 'class', array( 'mt-4', 'mb-0' ) )
+	->text( 'Enable Default&nbsp;' )
 	->child(
 		( new HTML_Refactory( 'code' ) )
 			->attr( 'style', 'border-radius:3px' )
@@ -617,7 +639,7 @@ echo ( new HTML_Refactory( 'h3' ) )
 	->render();
 
 echo ( new HTML_Refactory( 'div' ) )
-	->attr( 'class', array( 'd-flex', 'flex-column', 'mb-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'mb-0', 'ps-4', 'py-3', 'radio-border-left', 'bg-white' ) )
 	->child(
 		// Enable WebPage option.
 		( new HTML_Refactory( 'label' ) )
@@ -702,12 +724,12 @@ echo ( new HTML_Refactory( 'fieldset' ) )
 	->render();
 
 echo ( new HTML_Refactory( 'hr' ) )
-	->attr( 'style', 'height:5px' )
-	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
+	->attr( 'style', 'height:5px;opacity:1' )
+	->attr( 'class', array( 'mt-4', 'border-0', 'bg-white', 'rounded', 'shadow-sm' ) )
 	->render();
 
 echo ( new HTML_Refactory( 'h3' ) )
-	->attr( 'class', array( 'mt-5', 'mb-0' ) )
+	->attr( 'class', array( 'mt-4', 'mb-0' ) )
 	->text( 'Enable Default&nbsp;' )
 	->child(
 		( new HTML_Refactory( 'code' ) )
@@ -754,7 +776,7 @@ echo ( new HTML_Refactory( 'div' ) )
 	->render();
 
 echo ( new HTML_Refactory( 'div' ) )
-	->attr( 'class', array( 'd-flex', 'flex-column', 'mb-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'mb-0', 'ps-4', 'py-3', 'radio-border-left', 'bg-white' ) )
 	->child(
 		// Enable BreadcrumbList option.
 		( new HTML_Refactory( 'label' ) )
@@ -844,10 +866,15 @@ echo ( new HTML_Refactory( 'hr' ) )
 	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
 	->render();
 
+echo ( new HTML_Refactory( 'hr' ) )
+	->attr( 'style', 'height:5px;opacity:1' )
+	->attr( 'class', array( 'mt-1', 'border-0', 'bg-white', 'rounded', 'shadow-sm' ) )
+	->render();
+
 	// Heading for Yoast section.
 echo ( new HTML_Refactory( 'h3' ) )
 	->attr( 'id', 'disable_yoast_schema' )
-	->attr( 'class', array( 'mt-3' ) )
+	->attr( 'class', array( 'mt-5' ) )
 	->text( 'Disable Yoast SEO schema?' )
 	->render();
 
@@ -907,7 +934,7 @@ if ( 'disabled' === $if_yoast ) {
 
 // Yoast radio buttons.
 echo ( new HTML_Refactory( 'div' ) )
-	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'mb-0', 'ps-4', 'py-3', 'radio-border-left', 'bg-white' ) )
 	->child(
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'enable_yoast' )
@@ -1017,7 +1044,7 @@ if ( 'disabled' === $if_aio ) {
 
 	// AIOSEO radio buttons (same pattern).
 echo ( new HTML_Refactory( 'div' ) )
-	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'mb-0', 'ps-4', 'py-3', 'radio-border-left', 'bg-white' ) )
 	->child(
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'enable_aio' )
@@ -1132,7 +1159,7 @@ if ( 'disabled' === $if_rankmath ) {
 }
 
 echo ( new HTML_Refactory( 'div' ) )
-	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'mb-0', 'ps-4', 'py-3', 'radio-border-left', 'bg-white' ) )
 	->child(
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'enable_rankmath' )
@@ -1180,12 +1207,13 @@ echo ( new HTML_Refactory( 'div' ) )
 
 	// Final horizontal rule.
 echo ( new HTML_Refactory( 'hr' ) )
-	->attr( 'style', 'height:5px' )
-	->attr( 'class', array( 'border', 'bg-light', 'rounded' ) )
+	->attr( 'style', 'height:5px;opacity:1' )
+	->attr( 'class', array( 'mt-5', 'border-0', 'bg-white', 'rounded', 'shadow-sm' ) )
 	->render();
 
 	// Final informational section.
 echo ( new HTML_Refactory( 'h3' ) )
+	->attr( 'class', array( 'mt-5' ) )
 	->text( 'Pages to Exclude from Displaying Any Schema' )
 	->render();
 
@@ -1275,8 +1303,14 @@ echo ( new HTML_Refactory( 'tbody' ) )
 
 echo '</table></div>';
 
+echo ( new HTML_Refactory( 'hr' ) )
+	->attr( 'style', 'height:5px;opacity:1' )
+	->attr( 'class', array( 'mt-5', 'border-0', 'bg-white', 'rounded', 'shadow-sm' ) )
+	->render();
+
 	// Delete All Data on Uninstall section.
 echo ( new HTML_Refactory( 'h3' ) )
+	->attr( 'class', array( 'mt-5' ) )
 	->text( 'Delete All Data on Uninstall?' )
 	->render();
 
@@ -1285,7 +1319,7 @@ echo ( new HTML_Refactory( 'p' ) )
 	->render();
 
 echo ( new HTML_Refactory( 'div' ) )
-	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'ps-4', 'py-3', 'radio-border-left' ) )
+	->attr( 'class', array( 'd-flex', 'flex-column', 'mt-3', 'mb-0', 'ps-4', 'py-3', 'radio-border-left', 'bg-white' ) )
 	->child(
 		( new HTML_Refactory( 'label' ) )
 			->attr( 'for', 'save_data' )
@@ -1329,10 +1363,6 @@ echo ( new HTML_Refactory( 'div' ) )
 	)
 	->render();
 
-echo ( new HTML_Refactory( 'hr' ) )
-	->attr( 'class', array( 'mb-5' ) )
-	->render();
-
 	// Fixed-bottom save button.
 echo ( new HTML_Refactory( 'div' ) )
 	->attr( 'class', array( 'fixed-bottom', 'bg-light', 'p-3', 'mb-4', 'shadow', 'rounded' ) )
@@ -1360,7 +1390,7 @@ add_action(
 		echo '</script>';
 		echo <<<SCRIPTS
     <script>
-        document.getElementsByTagName('HEAD')[0].insertAdjacentHTML('beforeend', '<style>.radio-border-left {border-left: 5px solid lightgray;}</style>');
+        document.getElementsByTagName('HEAD')[0].insertAdjacentHTML('beforeend', '<style>.radio-border-left {border-left: 5px solid lightgray;border-top-right-radius:5px;border-bottom-right-radius:5px}</style>');
         document.getElementById('lock-icon').addEventListener('click', (e) => {
             lockUnlock(e.target.parentElement);
         });

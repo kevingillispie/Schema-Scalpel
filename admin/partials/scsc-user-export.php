@@ -21,6 +21,23 @@ $prefix     = $wpdb->prefix;
 $table_name = $prefix . 'scsc_custom_schemas';
 $results    = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name}" ), ARRAY_A );
 
+$header = ( new HTML_Refactory( 'header' ) )
+	->attr( 'class', array( 'mt-3', 'mb-2', 'd-flex', 'justify-content-center' ) )
+	->child(
+		( new HTML_Refactory( 'img' ) )
+			->attr( 'src', plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/schema-scalpel-logo.svg' )
+			->attr( 'width', '300' )
+			->attr( 'height', 'auto' )
+			->attr( 'alt', 'Schema Scalpel Logo' )
+			->render()
+	)
+	->render();
+
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'container', 'pt-3' ) )
+	->child( $header )
+	->render();
+
 echo '<main class="container mt-5">';
 
 // Title with scalpel icon
@@ -29,7 +46,7 @@ $scalpel_icon = ( new HTML_Refactory( 'img' ) )
 	->attr( 'class', array( 'mt-n4', 'position-absolute' ) )
 	->render();
 
-echo ( new HTML_Refactory( 'header' ) )
+echo ( new HTML_Refactory( 'div' ) )
 	->child(
 		( new HTML_Refactory( 'h1' ) )
 			->text( 'User Tools ' )
@@ -48,12 +65,12 @@ echo ( new HTML_Refactory( 'p' ) )
 	->text( 'This table lists all of your custom schema available for export.' )
 	->render();
 
-// Database contents table
+// Database contents table.
 echo '<div style="max-height:500px;overflow-y:auto;" class="bg-light border rounded p-3">';
 
 echo '<table id="excluded_schema" class="table table-dark">';
 
-// Table header
+// Table header.
 $th_tags   = '';
 $col_names = array( 'ID', 'Created On', 'Modified On', 'Schema Type', 'Post ID', 'Schema' );
 
