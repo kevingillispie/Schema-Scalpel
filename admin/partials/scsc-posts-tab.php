@@ -75,23 +75,10 @@ endforeach;
 $list_id = esc_attr( $tab_name ) . '_list';
 
 echo ( new HTML_Refactory( 'div' ) )
-	->attr(
-		'class',
-		array(
-			0 => 'btn-group',
-			1 => 'w-100',
-		)
-	)
+	->attr( 'class', array( 'btn-group', 'w-100' ) )
 	->child(
 		( new HTML_Refactory( 'button' ) )
-		->attr(
-			'class',
-			array(
-				0 => 'btn',
-				1 => 'btn-primary',
-				2 => 'dropdown-toggle',
-			)
-		)
+		->attr( 'class', array( 'btn', 'btn-primary', 'dropdown-toggle' ) )
 		->attr( 'type', 'button' )
 		->attr( 'data-bs-toggle', 'dropdown' )
 		->attr( 'aria-expanded', 'false' )
@@ -101,13 +88,7 @@ echo ( new HTML_Refactory( 'div' ) )
 	->child(
 		( new HTML_Refactory( 'ul' ) )
 		->attr( 'id', $list_id )
-		->attr(
-			'class',
-			array(
-				0 => 'dropdown-menu',
-				1 => 'w-100',
-			)
-		)
+		->attr( 'class', array( 'dropdown-menu', 'w-100' ) )
 		->child( $menu_of_posts )
 		->render()
 	)

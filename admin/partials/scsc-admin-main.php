@@ -16,97 +16,198 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 
-global $wpdb;
-$custom_schemas_table = $wpdb->prefix . 'scsc_custom_schemas';
-
-if ( isset( $_POST['create'] ) ) {
-
-	$custom_schema = sanitize_text_field( wp_unslash( $_POST['create'] ) );
-	$schema_type   = isset( $_POST['schemaType'] ) ? sanitize_text_field( wp_unslash( $_POST['schemaType'] ) ) : '';
-	$post_id_num   = isset( $_POST['postID'] ) ? absint( wp_unslash( $_POST['postID'] ) ) : 0;
-
-	// Validate inputs.
-	if ( ! empty( $custom_schema ) && ! empty( $schema_type ) && $post_id_num > 0 ) {
-		$wpdb->insert(
-			$custom_schemas_table,
-			array(
-				'custom_schema' => serialize( $custom_schema ),
-				'schema_type'   => $schema_type,
-				'post_id'       => $post_id_num,
-			),
-			array(
-				'%s', // custom_schema (serialized string).
-				'%s', // schema_type (string).
-				'%d', // post_id (integer).
-			)
-		);
-	}
-}
-
-if ( isset( $_GET['generate'] ) ) {
-	$update_type      = sanitize_text_field( wp_unslash( $_GET['updateType'] ) );
-	$schema_post_type = sanitize_text_field( wp_unslash( $_GET['schemaPostType'] ) );
-	$author_type      = sanitize_text_field( wp_unslash( $_GET['schemaAuthorType'] ) );
-	$keywords         = isset( $_GET['keywords'] ) ? sanitize_text_field( wp_unslash( $_GET['keywords'] ) ) : false;
-	SCSC_Admin::generate_blogposting_schema( $update_type, $schema_post_type, $author_type, $keywords );
-	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=posts">';
-}
-
-if ( isset( $_POST['update'] ) ) {
-	$update_id     = absint( wp_unslash( $_POST['update'] ) );
-	$custom_schema = isset( $_POST['schema'] ) ? sanitize_text_field( wp_unslash( $_POST['schema'] ) ) : '';
-
-	// Validate inputs.
-	if ( $update_id > 0 && ! empty( $custom_schema ) ) {
-		$wpdb->update(
-			$custom_schemas_table,
-			array(
-				'custom_schema' => serialize( $custom_schema ),
-			),
-			array(
-				'id' => $update_id,
-			),
-			array(
-				'%s', // custom_schema (serialized string).
-			),
-			array(
-				'%d', // id (integer).
-			)
-		);
-	}
-}
-
-if ( isset( $_GET['delete'] ) ) {
-	$wpdb->delete( $custom_schemas_table, array( 'id' => sanitize_text_field( wp_unslash( $_GET['delete'] ) ) ) );
-}
-
 /**
- * GET/SET TABS
+ * Handles the admin page requests and database operations for Schema Scalpel.
+ *
+ * This class encapsulates request handling (POST/GET) for creating, updating,
+ * deleting schemas, generating defaults, and managing UI tabs/settings.
+ *
+ * @package    SchemaScalpel
+ * @since      2.0.0
  */
-$settings_table = $wpdb->prefix . 'scsc_settings';
-if ( isset( $_GET['active_page'] ) ) {
-	$active_page = sanitize_text_field( wp_unslash( $_GET['active_page'] ) );
-	$wpdb->update( $settings_table, array( 'setting_value' => "$active_page" ), array( 'setting_key' => 'active_page' ) );
-	exit();
-}
+class SCSC_Admin_Page {
 
-if ( isset( $_GET['active_post'] ) ) {
-	$active_post = sanitize_text_field( wp_unslash( $_GET['active_post'] ) );
-	$wpdb->update( $settings_table, array( 'setting_value' => "$active_post" ), array( 'setting_key' => 'active_post' ) );
-	exit();
-}
+	/**
+	 * The global $wpdb instance for database operations.
+	 *
+	 * @var \wpdb
+	 */
+	private $wpdb;
 
-if ( 'scsc' === sanitize_text_field( wp_unslash( $_GET['page'] ) ) && ! isset( $_GET['set_tab'] ) ) {
-	$result    = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key = 'active_tab';", $settings_table ), ARRAY_A );
-	$tab_param = $result[0]['setting_value'];
-	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . sanitize_text_field( $tab_param ) . '">';
-}
+	/**
+	 * The name of the custom schemas database table.
+	 *
+	 * @var string
+	 */
+	private $custom_schemas_table;
 
-if ( isset( $_GET['update_tab'] ) ) {
-	$tab_param = sanitize_text_field( wp_unslash( $_GET['update_tab'] ) );
-	$wpdb->update( $settings_table, array( 'setting_value' => "$tab_param" ), array( 'setting_key' => 'active_tab' ) );
-	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . sanitize_text_field( $tab_param ) . '">';
+	/**
+	 * The name of the settings database table.
+	 *
+	 * @var string
+	 */
+	private $settings_table;
+
+	/**
+	 * Constructor.
+	 *
+	 * Initializes the class by assigning the global $wpdb instance and defining table names.
+	 *
+	 * @since 2.0.0
+	 */
+	public function __construct() {
+		global $wpdb;
+		$this->wpdb                 = $wpdb;
+		$this->custom_schemas_table = $wpdb->prefix . 'scsc_custom_schemas';
+		$this->settings_table       = $wpdb->prefix . 'scsc_settings';
+	}
+
+	/**
+	 * Handles all incoming admin requests (create/update/delete schema, tab management, etc.).
+	 *
+	 * Processes POST and GET requests securely with nonce verification and capability checks.
+	 * Should be called once per admin page load.
+	 *
+	 * @since 2.0.0
+	 * @return void
+	 */
+	public function handle_requests() {
+
+		// CREATE new schema.
+		if ( isset( $_POST['create'] ) ) {
+			SCSC_Security::verify_or_die( 'create_schema' );
+
+			$custom_schema = sanitize_text_field( wp_unslash( $_POST['create'] ) );
+			$schema_type   = isset( $_POST['schemaType'] ) ? sanitize_text_field( wp_unslash( $_POST['schemaType'] ) ) : '';
+			$post_id_num   = isset( $_POST['postID'] ) ? absint( wp_unslash( $_POST['postID'] ) ) : 0;
+
+			if ( empty( $custom_schema ) || empty( $schema_type ) || $post_id_num <= 0 ) {
+				wp_die(
+					esc_html__( 'Missing or invalid required fields.', 'schema-scalpel' ),
+					esc_html__( 'Invalid Input', 'schema-scalpel' ),
+					array( 'response' => 400 )
+				);
+			} else {
+				$this->wpdb->insert(
+					$this->custom_schemas_table,
+					array(
+						'custom_schema' => serialize( $custom_schema ),
+						'schema_type'   => $schema_type,
+						'post_id'       => $post_id_num,
+					),
+					array(
+						'%s', // custom_schema (serialized string).
+						'%s', // schema_type (string).
+						'%d', // post_id (integer).
+					)
+				);
+			}
+		}
+
+		// UPDATE existing schema.
+		if ( isset( $_POST['update'] ) ) {
+			SCSC_Security::verify_or_die( 'update_schema' );
+
+			$update_id     = absint( wp_unslash( $_POST['update'] ) );
+			$custom_schema = isset( $_POST['schema'] ) ? sanitize_text_field( wp_unslash( $_POST['schema'] ) ) : '';
+
+			// Validate inputs.
+			if ( $update_id > 0 && ! empty( $custom_schema ) ) {
+				$this->wpdb->update(
+					$this->custom_schemas_table,
+					array(
+						'custom_schema' => serialize( $custom_schema ),
+					),
+					array(
+						'id' => $update_id,
+					),
+					array(
+						'%s', // custom_schema (serialized string).
+					),
+					array(
+						'%d', // id (integer).
+					)
+				);
+			}
+		}
+
+		// DELETE schema.
+		if ( isset( $_GET['delete'] ) ) {
+			SCSC_Security::verify_or_die( 'delete_schema' );
+
+			$delete_id = absint( wp_unslash( $_GET['delete'] ) );
+
+			if ( $delete_id > 0 ) {
+				$this->wpdb->delete(
+					$this->custom_schemas_table,
+					array( 'id' => $delete_id ),
+					array( '%d' )
+				);
+			}
+		}
+
+		// GENERATE default BlogPosting schema.
+		if ( isset( $_GET['generate'] ) ) {
+			$update_type      = sanitize_text_field( wp_unslash( $_GET['updateType'] ) );
+			$schema_post_type = sanitize_text_field( wp_unslash( $_GET['schemaPostType'] ) );
+			$author_type      = sanitize_text_field( wp_unslash( $_GET['schemaAuthorType'] ) );
+			$keywords         = isset( $_GET['keywords'] ) ? sanitize_text_field( wp_unslash( $_GET['keywords'] ) ) : false;
+
+			SCSC_Admin::generate_blogposting_schema( $update_type, $schema_post_type, $author_type, $keywords );
+
+			echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=posts">';
+		}
+
+		// GET/SET TABS (UI state persistence).
+		if ( isset( $_GET['active_page'] ) ) {
+			$active_page = sanitize_text_field( wp_unslash( $_GET['active_page'] ) );
+			$this->wpdb->update(
+				$this->settings_table,
+				array( 'setting_value' => $active_page ),
+				array( 'setting_key' => 'active_page' )
+			);
+			exit();
+		}
+
+		if ( isset( $_GET['active_post'] ) ) {
+			$active_post = sanitize_text_field( wp_unslash( $_GET['active_post'] ) );
+			$this->wpdb->update(
+				$this->settings_table,
+				array( 'setting_value' => $active_post ),
+				array( 'setting_key' => 'active_post' )
+			);
+			exit();
+		}
+
+		if ( 'scsc' === sanitize_text_field( wp_unslash( $_GET['page'] ?? '' ) ) && ! isset( $_GET['set_tab'] ) ) {
+			$result = $this->wpdb->get_results(
+				$this->wpdb->prepare(
+					"SELECT setting_value FROM {$this->settings_table} WHERE setting_key = %s;",
+					'active_tab'
+				),
+				ARRAY_A
+			);
+
+			$tab_param = ! empty( $result ) ? $result[0]['setting_value'] : '';
+
+			if ( $tab_param ) {
+				echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . sanitize_text_field( $tab_param ) . '">';
+			}
+		}
+
+		if ( isset( $_GET['update_tab'] ) ) {
+			$tab_param = sanitize_text_field( wp_unslash( $_GET['update_tab'] ) );
+			$this->wpdb->update(
+				$this->settings_table,
+				array( 'setting_value' => $tab_param ),
+				array( 'setting_key' => 'active_tab' )
+			);
+			echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . sanitize_text_field( $tab_param ) . '">';
+		}
+	}
 }
+$admin_page = new SCSC_Admin_Page();
+$admin_page->handle_requests();
 
 // Start HTML output.
 $header = ( new HTML_Refactory( 'header' ) )
@@ -3055,6 +3156,20 @@ echo ( new HTML_Refactory( 'div' ) )
 add_action(
 	'admin_footer',
 	function () {
+		$update_nonce   = SCSC_Security::create_nonce( 'update_schema' );
+		$create_nonce   = SCSC_Security::create_nonce( 'create_schema' );
+		$generate_nonce = SCSC_Security::create_nonce( 'generate_schema' );
+		$delete_nonce   = SCSC_Security::create_nonce( 'delete_schema' );
+		?>
+<script>
+	var scscNonces = {
+		update: '<?php echo esc_js( $update_nonce ); ?>',
+		create: '<?php echo esc_js( $create_nonce ); ?>',
+		generate: '<?php echo esc_js( $generate_nonce ); ?>',
+		delete: '<?php echo esc_js( $delete_nonce ); ?>'
+	};
+</script>
+		<?php
 		echo '<script>';
 		global $wpdb;
 		$result_page = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='active_page';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );

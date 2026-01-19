@@ -103,7 +103,6 @@ TYPES.forEach(type => {
         let container = EXISTING_SCHEMA(type).children;
         for (let i = 0; i < container.length; i++) {
             let jsonified = jsonify(container[i].dataset.schema);
-
             displaySchemaLoop(container[i], jsonified, TAB_COUNT, SYNTAX, LINE_BREAK);
         }
     }
@@ -118,19 +117,18 @@ TYPES.forEach(type => {
     })
 })();
 
-// Fix displaySchemaLoop – add the missing recursive print
 function displaySchemaLoop(container, jsonified, TAB_COUNT, SYNTAX, LINE_BREAK) {
     if (Array.isArray(jsonified)) {
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${SYNTAX["array"][0]}</code>${LINE_BREAK}`);
         jsonified.forEach((item, index) => {
             container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(TAB_COUNT)}${SYNTAX["object"][0]}</code>${LINE_BREAK}`);
-            printJSONLoop(container, item, TAB_COUNT + 1);  // ← ADD THIS
+            printJSONLoop(container, item, TAB_COUNT + 1);
             container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${insertTabs(TAB_COUNT)}${SYNTAX["object"][1]}${index < jsonified.length - 1 ? "," : ""}</code>${LINE_BREAK}`);
         });
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${SYNTAX["array"][1]}</code>${LINE_BREAK}`);
     } else if (typeof jsonified === 'object' && jsonified !== null) {
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${SYNTAX["object"][0]}</code>${LINE_BREAK}`);
-        printJSONLoop(container, jsonified, TAB_COUNT + 1);  // ← ADD THIS
+        printJSONLoop(container, jsonified, TAB_COUNT + 1);
         container.insertAdjacentHTML("beforeend", `<code class="d-inline-block w-100">${SYNTAX["object"][1]}</code>${LINE_BREAK}`);
     }
 }
@@ -180,7 +178,6 @@ function jsonify(j) {
     }
 }
 
-
 function correctBracketCount(w) {
     let leftBracketCount = 0,
         rightBracketCount = 0;
@@ -203,19 +200,36 @@ function correctBracketCount(w) {
 
 function removeIllegalCharacters(v) {
     let w, x;
-    v = v.trim()
+    v = v.trim();
+
     if (v.match(/{/gm) == null || v.match(/}/gm) == null) {
-        alert("MISSING CHARACTER: An error in formatting has been detected.\nPlease review your schema.");
+        const hasOpening = v.includes("{");
+        const hasClosing = v.includes("}");
+
+        let msg = "MISSING BRACKETS DETECTED!\n\n";
+
+        if (!hasOpening && !hasClosing) {
+            msg += "Schema appears to contain NO { } brackets at all.\n";
+        } else if (!hasOpening) {
+            msg += "Found closing } but NO opening { brackets!\n";
+        } else {
+            msg += "Found opening { but NO closing } brackets!\n";
+        }
+
+        msg += "\nFirst 120 characters:\n" + v.substring(0, 120).replace(/\s+/g, ' ');
+        alert(msg);
     }
-    if (v.match(/{/gm).length < v.match(/}/gm).length && v.substring(v.length - 2, v.length) == "}}") {
+
+    if (v.match(/{/gm).length < v.match(/}/gm).length && v.substring(v.length - 2, v.length) === "}}") {
         v = v.substring(0, v.length - 1);
     }
+
     do {
         w = v;
 
-        if (v.substring(0, 2) == "{{") v = v.substring(1, v.length);
+        if (v.startsWith("{{")) v = v.substring(1);
 
-        v = v.replaceAll(/(\n|\r|\r\n|\n\r|\t)/g, "")
+        v = v.replaceAll(/[\u0000-\u001F\u007F\n\r\t]+/g, '')
             .replaceAll(" {", "{")
             .replaceAll("{ ", "{")
             .replaceAll(",}", "}")
@@ -234,22 +248,36 @@ function removeIllegalCharacters(v) {
             .replaceAll("::", ":");
 
         x = v;
-
     } while (x !== w);
 
-    if (w[w.length - 1] == ",") w = w.substring(0, w.length - 1);
+    if (v.endsWith(",")) {
+        v = v.substring(0, v.length - 1);
+    }
 
-    let formatted = finalFormattingCheck(correctBracketCount(w));
+    let formatted = finalFormattingCheck(correctBracketCount(v));
     formatted = formatted.replaceAll(`"`, `&quot;`).replaceAll(`'`, `&apos;`);
     return formatted;
 }
+
 
 function finalFormattingCheck(theSchema) {
     try {
         JSON.parse(theSchema);
         return theSchema;
     } catch (e) {
-        alert("There is an error in your schema. Please review.\n\n" + e);
+        let preview = theSchema.trim().substring(0, 160);
+        if (theSchema.length > 160) preview += "…";
+
+        alert(
+            "Final formatting check failed — schema is still invalid JSON\n\n" +
+            "Error: " + (e.message || e) + "\n\n" +
+            "Tip: most common mistakes at this stage are:\n" +
+            "• trailing or missing comma\n" +
+            "• missing closing } or ]\n" +
+            "• control characters that survived cleaning"
+        );
+
+        return { success: false, error: e.message, schema: preview };
     }
 }
 /////////////////////////
@@ -262,7 +290,7 @@ function deleteCurrentSchema(id, event) {
             location.reload();
         }
     }
-    request.open("GET", "/wp-admin/admin.php?page=scsc&delete=" + id);
+    request.open("GET", "/wp-admin/admin.php?page=scsc&delete=" + id + `&nonce=${encodeURIComponent(scscNonces.delete)}`);
     request.send();
 }
 
@@ -310,7 +338,6 @@ function updateBlogPostingForm(postID) {
 function onPostSelectChange(el) {
     let type = el.id.substring(0, 5) || el.parentElement.id.substring(0, 5);
     let postID = el.value || el.dataset.value;
-    // let indexInList = el.selectedIndex || el.dataset.index;
     if (el.dataset.type === 'post') {
         updateBlogPostingForm(postID);
     }
@@ -319,8 +346,8 @@ function onPostSelectChange(el) {
     });
 
     const createCodeBlockBtn = document.getElementById(type + '_create_schema_code_block');
-    const createSchemaBtn = document.querySelector('button[id^="' + type + '_schema_create"]'); // keep old if exists
-    const buttons = [createCodeBlockBtn, createSchemaBtn].filter(Boolean); // remove nulls
+    const createSchemaBtn = document.querySelector('button[id^="' + type + '_schema_create"]');
+    const buttons = [createCodeBlockBtn, createSchemaBtn].filter(Boolean);
 
     buttons.forEach(btn => {
         if (btn) {
@@ -418,7 +445,7 @@ function createNewSchema(type, id) {
     }
     request.open("POST", "/wp-admin/admin.php?page=scsc");
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    let data = `schemaType=${encodeURIComponent(type)}&postID=${encodeURIComponent(id)}&create=${encodeURIComponent(formatted)}`;
+    let data = `schemaType=${encodeURIComponent(type)}&postID=${encodeURIComponent(id)}&create=${encodeURIComponent(formatted)}&nonce=${encodeURIComponent(scscNonces.create)}`;
     request.send(data);
 }
 
@@ -436,7 +463,7 @@ function updateCurrentSchema(id, event) {
 
     request.open("POST", "/wp-admin/admin.php?page=scsc");
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    let data = `update=${encodeURIComponent(id)}&schema=${encodeURIComponent(formatted)}`;
+    let data = `update=${encodeURIComponent(id)}&schema=${encodeURIComponent(formatted)}&nonce=${encodeURIComponent(scscNonces.update)}`;
     request.send(data);
 }
 
@@ -480,13 +507,7 @@ function editSchemaCodeBlock(id, event) {
         updateCurrentSchema(e.target.dataset.id, event);
     });
     document.getElementById('schemaBlockSave').addEventListener('click', (e) => {
-        const params = new URLSearchParams(window.location.search);
-        let currentType = params.get('set_tab') || 'homepage';
-        if (!TYPES.includes(currentType)) {
-            currentType = 'homepage';
-        }
-        const btn = document.querySelector('#' + currentType + '_create_schema_code_block');
-        createNewSchema(currentType, btn?.dataset.id || '');
+        createNewSchema(currentTabName, document.querySelector('#' + currentTabName + '_create_schema_code_block').dataset.id);
     });
 })();
 

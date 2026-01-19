@@ -1100,7 +1100,7 @@ if ( 'disabled' === $if_rankmath ) {
 		->child(
 			( new HTML_Refactory( 'code' ) )
 				->attr( 'class', array( 'language-js' ) )
-				->raw_text( '&gt;&nbsp;Rank Math not detected.' )
+				->raw_text( '&gt;&nbsp;RANK MATH not detected.' )
 				->render()
 		)
 		->child(
@@ -1130,7 +1130,7 @@ if ( 'disabled' === $if_rankmath ) {
 		->child(
 			( new HTML_Refactory( 'code' ) )
 				->attr( 'class', array( 'language-js' ) )
-				->raw_text( '&gt;&nbsp;Rank Math has been detected...' )
+				->raw_text( '&gt;&nbsp;RANK MATH has been detected...' )
 				->render()
 		)
 		->child(
@@ -1140,7 +1140,7 @@ if ( 'disabled' === $if_rankmath ) {
 		->child(
 			( new HTML_Refactory( 'code' ) )
 				->attr( 'class', array( 'language-js' ) )
-				->raw_text( "&gt;&nbsp;It is recommended that Rank Math's schema feature remain disabled." )
+				->raw_text( "&gt;&nbsp;It is recommended that RANK MATH's schema feature remain disabled." )
 				->render()
 		)
 		->child(
@@ -1150,7 +1150,7 @@ if ( 'disabled' === $if_rankmath ) {
 		->child(
 			( new HTML_Refactory( 'code' ) )
 				->attr( 'class', array( 'language-js' ) )
-				->raw_text( '&gt;&nbsp;All other Rank Math features will be unaffected.' )
+				->raw_text( '&gt;&nbsp;All other RANK MATH features will be unaffected.' )
 				->render()
 		)
 		->render();

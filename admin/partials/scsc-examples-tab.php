@@ -92,7 +92,7 @@ if ( $schema_examples ) {
 	$fieldset_count = 0;
 	foreach ( $schema_examples as $key => $value ) {
 		$schema_type = ucwords( $key, ' ' );
-		$style       = ( intval( $fieldset_count ) === 0 ) ?: esc_html( 'display:none!important' );
+		$style       = ( intval( $fieldset_count ) === 0 ) ? '' : esc_html( 'display:none!important' );
 
 		echo ( new HTML_Refactory( 'fieldset' ) )
 			->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'noselect' ) )
@@ -108,6 +108,8 @@ if ( $schema_examples ) {
 			->child(
 				( new HTML_Refactory( 'button' ) )
 					->attr( 'class', array( 'btn', 'btn-primary', 'py-2', 'copy-example' ) )
+					->attr( 'data-bs-toggle', 'modal' )
+					->attr( 'data-bs-target', '#jsonCopyModal' )
 					->text( 'Copy to Clipboard' )
 					->render()
 			)
@@ -131,14 +133,61 @@ if ( $schema_examples ) {
 
 echo '</div></div>';
 
+// Modal block.
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'mt-5', 'modal', 'fade' ) )
+	->attr( 'id', 'jsonCopyModal' )
+	->attr( 'tabindex', '-1' )
+	->attr( 'aria-labelledby', 'jsonCopyModalLabel' )
+	->attr( 'aria-hidden', 'true' )
+	->child(
+		( new HTML_Refactory( 'div' ) )
+			->attr( 'class', array( 'modal-dialog', 'mt-5' ) )
+			->child(
+				( new HTML_Refactory( 'div' ) )
+					->attr( 'class', array( 'modal-content' ) )
+					->child(
+						( new HTML_Refactory( 'div' ) )
+						->attr( 'class', array( 'modal-header', 'border-0' ) )
+						->child(
+							( new HTML_Refactory( 'button' ) )
+								->attr( 'id', 'close-copy-modal' )
+								->attr( 'type', 'button' )
+								->attr( 'class', array( 'btn-close' ) )
+								->attr( 'data-bs-dismiss', 'modal' )
+								->attr( 'aria-label', 'Close' )
+								->render()
+						)
+						->render()
+					)
+					->child(
+						( new HTML_Refactory( 'div' ) )
+							->attr( 'class', array( 'modal-body', 'border-0' ) )
+							->child(
+								( new HTML_Refactory( 'h2' ) )
+									->attr( 'class', array( 'pb-4', 'text-center' ) )
+									->text( 'JSON Copied!' )
+									->render()
+							)
+							->render()
+					)
+					->render()
+			)
+			->render()
+	)
+	->render();
+
 add_action(
 	'admin_footer',
 	function () {
 		echo <<<SCRIPTS
 <script>
     function copySchema(sib) {
-        navigator.clipboard.writeText(sib.innerText);
+        navigator.clipboard.writeText(sib.innerText).then(() => {
+            setTimeout(() => {document.getElementById('close-copy-modal').click();}, 1250);
+        });
     }
+
     document.querySelectorAll('.copy-example').forEach(btn => {
         btn.addEventListener('click', (e) => {
             copySchema(e.target.nextElementSibling);
