@@ -16,9 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // const containerRect = container.getBoundingClientRect();
-    const containerRect = document.getElementsByTagName('BODY')[0].getBoundingClientRect();
-    console.log(containerRect)
+    let containerRect = document.getElementsByTagName('BODY')[0].getBoundingClientRect();
+    if (container.id === 'wpbody-content') {
+        containerRect = container.getBoundingClientRect();
+    }
+
+
     // Determine number of particles based on screen width
     const isMobile = window.innerWidth <= 768; // Common mobile breakpoint
     const numParticles = isMobile ? 100 : 300; // 100 for mobile, 300 for desktop

@@ -474,13 +474,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 						)
 						->child(
 							( new HTML_Refactory( 'p' ) )
-								->attr(
-									'class',
-									array(
-										0 => 'lead',
-										1 => 'mt-3',
-									)
-								)
+								->attr( 'class', array( 'lead', 'mt-3' ) )
 								->child( 'Automatically create Google-recommended schema for ' )
 								->child(
 									( new HTML_Refactory( 'strong' ) )
@@ -490,12 +484,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 								->child( ' of your blog posts... ' )
 								->child(
 									( new HTML_Refactory( 'span' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'fst-italic',
-											)
-										)
+										->attr( 'class', array( 'fst-italic' ) )
 										->child( 'at one time!' )
 										->render()
 								)
@@ -508,21 +497,11 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 					->attr( 'style', 'border-left:4px solid var(--bs-info-border-subtle);padding:10px;background-color:var(--bs-info-bg-subtle)' )
 					->child(
 						( new HTML_Refactory( 'p' ) )
-							->attr(
-								'class',
-								array(
-									0 => 'mb-2',
-								)
-							)
+							->attr( 'class', array( 'mb-2' ) )
 							->child( 'Instead of spending precious hours (' )
 							->child(
 								( new HTML_Refactory( 'span' ) )
-									->attr(
-										'class',
-										array(
-											0 => 'fst-italic',
-										)
-									)
+									->attr( 'class', array( 'fst-italic' ) )
 									->child( 'days, even!' )
 									->render()
 							)
@@ -531,12 +510,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 					)
 					->child(
 						( new HTML_Refactory( 'p' ) )
-							->attr(
-								'class',
-								array(
-									0 => 'mb-2',
-								)
-							)
+							->attr( 'class', array( 'mb-2' ) )
 							->child(
 								( new HTML_Refactory( 'strong' ) )
 									->child( 'Note:' )
@@ -553,13 +527,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 					)
 					->child(
 						( new HTML_Refactory( 'p' ) )
-							->attr(
-								'class',
-								array(
-									0 => 'mb-0',
-									1 => 'fst-italic',
-								)
-							)
+							->attr( 'class', array( 'mb-0', 'fst-italic' ) )
 							->child( 'Use the defaults for standard blog posts.' )
 							->render()
 					)
@@ -599,12 +567,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 						)
 						->child(
 							( new HTML_Refactory( 'h3' ) )
-								->attr(
-									'class',
-									array(
-										0 => 'h5',
-									)
-								)
+								->attr( 'class', array( 'h5' ) )
 								->child(
 									( new HTML_Refactory( 'svg' ) )
 										->attr( 'xmlns', 'http://www.w3.org/2000/svg' )
@@ -613,11 +576,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										->attr( 'fill', 'currentColor' )
 										->attr(
 											'class',
-											array(
-												0 => 'bi',
-												1 => 'bi-0-square-fill',
-												2 => 'me-1',
-											)
+											array( 'bi', 'bi-0-square-fill', 'me-1' )
 										)
 										->attr( 'viewbox', '0 0 16 16' )
 										->child(
@@ -647,22 +606,11 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 								)
 								->child(
 									( new HTML_Refactory( 'div' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'form-check',
-											)
-										)
+										->attr( 'class', array( 'form-check' ) )
 										->child(
 											( new HTML_Refactory( 'input' ) )
 												->attr( 'id', 'updateType1' )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-input',
-														1 => 'mt-1',
-													)
-												)
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
 												->attr( 'type', 'radio' )
 												->attr( 'name', 'updateType' )
 												->attr( 'value', 'Missing' )
@@ -672,42 +620,21 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										)
 										->child(
 											( new HTML_Refactory( 'label' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-label',
-													)
-												)
+												->attr( 'class', array( 'form-check-label' ) )
 												->attr( 'for', 'updateType1' )
 												->child(
 													( new HTML_Refactory( 'div' ) )
-														->attr(
-															'class',
-															array(
-																0 => 'd-flex',
-																1 => 'flex-row',
-															)
-														)
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
 														->child(
 															( new HTML_Refactory( 'pre' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'm-0',
-																	)
-																)
+																->attr( 'class', array( 'm-0' ) )
 																->child( 'Missing Only' )
 																->render()
 														)
 														->child( ' ' )
 														->child(
 															( new HTML_Refactory( 'small' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'text-secondary',
-																	)
-																)
+																->attr( 'class', array( 'text-secondary' ) )
 																->child( '&nbsp;(default)' )
 																->render()
 														)
@@ -719,22 +646,11 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 								)
 								->child(
 									( new HTML_Refactory( 'div' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'form-check',
-											)
-										)
+										->attr( 'class', array( 'form-check' ) )
 										->child(
 											( new HTML_Refactory( 'input' ) )
 												->attr( 'id', 'updateType2' )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-input',
-														1 => 'mt-1',
-													)
-												)
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
 												->attr( 'type', 'radio' )
 												->attr( 'name', 'updateType' )
 												->attr( 'value', 'Selected' )
@@ -744,30 +660,14 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										)
 										->child(
 											( new HTML_Refactory( 'label' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-label',
-													)
-												)
+												->attr( 'class', array( 'form-check-label' ) )
 												->attr( 'for', 'updateType2' )
 												->child(
 													( new HTML_Refactory( 'div' ) )
-														->attr(
-															'class',
-															array(
-																0 => 'd-flex',
-																1 => 'flex-row',
-															)
-														)
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
 														->child(
 															( new HTML_Refactory( 'pre' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'm-0',
-																	)
-																)
+																->attr( 'class', array( 'm-0' ) )
 																->child( 'Selected Post' )
 																->render()
 														)
@@ -775,12 +675,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 														->child(
 															( new HTML_Refactory( 'small' ) )
 																->attr( 'id', 'selectedPost' )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'text-secondary',
-																	)
-																)
+																->attr( 'class', array( 'text-secondary' ) )
 																->render()
 														)
 														->render()
@@ -791,22 +686,11 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 								)
 								->child(
 									( new HTML_Refactory( 'div' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'form-check',
-											)
-										)
+										->attr( 'class', array( 'form-check' ) )
 										->child(
 											( new HTML_Refactory( 'input' ) )
 												->attr( 'id', 'updateType3' )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-input',
-														1 => 'mt-1',
-													)
-												)
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
 												->attr( 'type', 'radio' )
 												->attr( 'name', 'updateType' )
 												->attr( 'value', 'Replace' )
@@ -815,30 +699,14 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										)
 										->child(
 											( new HTML_Refactory( 'label' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-label',
-													)
-												)
+												->attr( 'class', array( 'form-check-label' ) )
 												->attr( 'for', 'updateType3' )
 												->child(
 													( new HTML_Refactory( 'div' ) )
-														->attr(
-															'class',
-															array(
-																0 => 'd-flex',
-																1 => 'flex-row',
-															)
-														)
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
 														->child(
 															( new HTML_Refactory( 'pre' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'm-0',
-																	)
-																)
+																->attr( 'class', array( 'm-0' ) )
 																->child( 'Replace All' )
 																->render()
 														)
@@ -852,27 +720,14 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 						)
 						->child(
 							( new HTML_Refactory( 'h3' ) )
-								->attr(
-									'class',
-									array(
-										0 => 'h5',
-										1 => 'mt-3',
-									)
-								)
+								->attr( 'class', array( 'h5', 'mt-3' ) )
 								->child(
 									( new HTML_Refactory( 'svg' ) )
 										->attr( 'xmlns', 'http://www.w3.org/2000/svg' )
 										->attr( 'width', '28' )
 										->attr( 'height', '28' )
 										->attr( 'fill', 'currentColor' )
-										->attr(
-											'class',
-											array(
-												0 => 'bi',
-												1 => 'bi-1-square-fill',
-												2 => 'me-1',
-											)
-										)
+										->attr( 'class', array( 'bi', 'bi-1-square-fill', 'me-1' ) )
 										->attr( 'viewbox', '0 0 16 16' )
 										->child(
 											( new HTML_Refactory( 'path' ) )
@@ -893,34 +748,15 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 							( new HTML_Refactory( 'div' ) )
 								->attr(
 									'class',
-									array(
-										0 => 'd-flex',
-										1 => 'flex-column',
-										2 => 'bg-secondary-subtle',
-										3 => 'mb-0',
-										4 => 'ps-4',
-										5 => 'py-3',
-										6 => 'radio-border-left',
-									)
+									array( 'd-flex', 'flex-column', 'bg-secondary-subtle', 'mb-0', 'ps-4', 'py-3', 'radio-border-left' )
 								)
 								->child(
 									( new HTML_Refactory( 'div' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'form-check',
-											)
-										)
+										->attr( 'class', array( 'form-check' ) )
 										->child(
 											( new HTML_Refactory( 'input' ) )
 												->attr( 'id', 'schemaPostType1' )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-input',
-														1 => 'mt-1',
-													)
-												)
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
 												->attr( 'type', 'radio' )
 												->attr( 'name', 'schemaPostType' )
 												->attr( 'value', 'BlogPosting' )
@@ -930,42 +766,21 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										)
 										->child(
 											( new HTML_Refactory( 'label' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-label',
-													)
-												)
+												->attr( 'class', array( 'form-check-label' ) )
 												->attr( 'for', 'schemaPostType1' )
 												->child(
 													( new HTML_Refactory( 'div' ) )
-														->attr(
-															'class',
-															array(
-																0 => 'd-flex',
-																1 => 'flex-row',
-															)
-														)
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
 														->child(
 															( new HTML_Refactory( 'pre' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'm-0',
-																	)
-																)
+																->attr( 'class', array( 'm-0' ) )
 																->child( 'BlogPosting' )
 																->render()
 														)
 														->child( ' ' )
 														->child(
 															( new HTML_Refactory( 'small' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'text-secondary',
-																	)
-																)
+																->attr( 'class', array( 'text-secondary' ) )
 																->child( '&nbsp;(default)' )
 																->render()
 														)
@@ -977,22 +792,11 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 								)
 								->child(
 									( new HTML_Refactory( 'div' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'form-check',
-											)
-										)
+										->attr( 'class', array( 'form-check' ) )
 										->child(
 											( new HTML_Refactory( 'input' ) )
 												->attr( 'id', 'schemaPostType2' )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-input',
-														1 => 'mt-1',
-													)
-												)
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
 												->attr( 'type', 'radio' )
 												->attr( 'name', 'schemaPostType' )
 												->attr( 'value', 'Article' )
@@ -1001,30 +805,14 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										)
 										->child(
 											( new HTML_Refactory( 'label' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-label',
-													)
-												)
+												->attr( 'class', array( 'form-check-label' ) )
 												->attr( 'for', 'schemaPostType2' )
 												->child(
 													( new HTML_Refactory( 'div' ) )
-														->attr(
-															'class',
-															array(
-																0 => 'd-flex',
-																1 => 'flex-row',
-															)
-														)
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
 														->child(
 															( new HTML_Refactory( 'pre' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'm-0',
-																	)
-																)
+																->attr( 'class', array( 'm-0' ) )
 																->child( 'Article' )
 																->render()
 														)
@@ -1036,22 +824,11 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 								)
 								->child(
 									( new HTML_Refactory( 'div' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'form-check',
-											)
-										)
+										->attr( 'class', array( 'form-check' ) )
 										->child(
 											( new HTML_Refactory( 'input' ) )
 											->attr( 'id', 'schemaPostType3' )
-											->attr(
-												'class',
-												array(
-													0 => 'form-check-input',
-													1 => 'mt-1',
-												)
-											)
+											->attr( 'class', array( 'form-check-input', 'mt-1' ) )
 											->attr( 'type', 'radio' )
 											->attr( 'name', 'schemaPostType' )
 											->attr( 'value', 'NewsArticle' )
@@ -1062,28 +839,15 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 											( new HTML_Refactory( 'label' ) )
 												->attr(
 													'class',
-													array(
-														0 => 'form-check-label',
-													)
+													array( 'form-check-label' )
 												)
 												->attr( 'for', 'schemaPostType3' )
 												->child(
 													( new HTML_Refactory( 'div' ) )
-														->attr(
-															'class',
-															array(
-																0 => 'd-flex',
-																1 => 'flex-row',
-															)
-														)
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
 														->child(
 															( new HTML_Refactory( 'pre' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'm-0',
-																	)
-																)
+																->attr( 'class', array( 'm-0' ) )
 																->child( 'NewsArticle' )
 																->render()
 														)
@@ -1097,27 +861,14 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 						)
 						->child(
 							( new HTML_Refactory( 'h3' ) )
-								->attr(
-									'class',
-									array(
-										0 => 'h5',
-										1 => 'mt-3',
-									)
-								)
+								->attr( 'class', array( 'h5', 'mt-3' ) )
 								->child(
 									( new HTML_Refactory( 'svg' ) )
 										->attr( 'xmlns', 'http://www.w3.org/2000/svg' )
 										->attr( 'width', '28' )
 										->attr( 'height', '28' )
 										->attr( 'fill', 'currentColor' )
-										->attr(
-											'class',
-											array(
-												0 => 'bi',
-												1 => 'bi-2-square-fill',
-												2 => 'me-1',
-											)
-										)
+										->attr( 'class', array( 'bi', 'bi-2-square-fill', 'me-1' ) )
 										->attr( 'viewbox', '0 0 16 16' )
 										->child(
 											( new HTML_Refactory( 'path' ) )
@@ -1136,35 +887,13 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 						)
 						->child(
 							( new HTML_Refactory( 'div' ) )
-								->attr(
-									'class',
-									array(
-										0 => 'd-flex',
-										1 => 'flex-column',
-										2 => 'bg-secondary-subtle',
-										3 => 'mb-0',
-										4 => 'ps-4',
-										5 => 'py-3',
-										6 => 'radio-border-left',
-									)
-								)
+								->attr( 'class', array( 'd-flex', 'flex-column', 'bg-secondary-subtle', 'mb-0', 'ps-4', 'py-3', 'radio-border-left' ) )
 								->child(
 									( new HTML_Refactory( 'div' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'form-check',
-											)
-										)
+										->attr( 'class', array( 'form-check' ) )
 										->child(
 											( new HTML_Refactory( 'input' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-input',
-														1 => 'mt-1',
-													)
-												)
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
 												->attr( 'type', 'radio' )
 												->attr( 'name', 'schemaAuthorType' )
 												->attr( 'id', 'schemaAuthorType1' )
@@ -1175,42 +904,21 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										)
 										->child(
 											( new HTML_Refactory( 'label' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-label',
-													)
-												)
+												->attr( 'class', array( 'form-check-label' ) )
 												->attr( 'for', 'schemaAuthorType1' )
 												->child(
 													( new HTML_Refactory( 'div' ) )
-														->attr(
-															'class',
-															array(
-																0 => 'd-flex',
-																1 => 'flex-row',
-															)
-														)
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
 														->child(
 															( new HTML_Refactory( 'pre' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'm-0',
-																	)
-																)
+																->attr( 'class', array( 'm-0' ) )
 																->child( 'Person' )
 																->render()
 														)
 														->child( ' ' )
 														->child(
 															( new HTML_Refactory( 'small' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'text-secondary',
-																	)
-																)
+																->attr( 'class', array( 'text-secondary' ) )
 																->child( '&nbsp;(default)' )
 																->render()
 														)
@@ -1222,21 +930,10 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 								)
 								->child(
 									( new HTML_Refactory( 'div' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'form-check',
-											)
-										)
+										->attr( 'class', array( 'form-check' ) )
 										->child(
 											( new HTML_Refactory( 'input' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-input',
-														1 => 'mt-1',
-													)
-												)
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
 												->attr( 'type', 'radio' )
 												->attr( 'name', 'schemaAuthorType' )
 												->attr( 'id', 'schemaAuthorType2' )
@@ -1246,30 +943,14 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										)
 										->child(
 											( new HTML_Refactory( 'label' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'form-check-label',
-													)
-												)
+												->attr( 'class', array( 'form-check-label' ) )
 												->attr( 'for', 'schemaAuthorType2' )
 												->child(
 													( new HTML_Refactory( 'div' ) )
-														->attr(
-															'class',
-															array(
-																0 => 'd-flex',
-																1 => 'flex-row',
-															)
-														)
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
 														->child(
 															( new HTML_Refactory( 'pre' ) )
-																->attr(
-																	'class',
-																	array(
-																		0 => 'm-0',
-																	)
-																)
+																->attr( 'class', array( 'm-0' ) )
 																->child( 'Organization' )
 																->render()
 														)
@@ -1283,27 +964,14 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 						)
 						->child(
 							( new HTML_Refactory( 'h3' ) )
-								->attr(
-									'class',
-									array(
-										0 => 'h5',
-										1 => 'mt-3',
-									)
-								)
+								->attr( 'class', array( 'h5', 'mt-3' ) )
 								->child(
 									( new HTML_Refactory( 'svg' ) )
 										->attr( 'xmlns', 'http://www.w3.org/2000/svg' )
 										->attr( 'width', '28' )
 										->attr( 'height', '28' )
 										->attr( 'fill', 'currentColor' )
-										->attr(
-											'class',
-											array(
-												0 => 'bi',
-												1 => 'bi-2-square-fill',
-												2 => 'me-1',
-											)
-										)
+										->attr( 'class', array( 'bi', 'bi-2-square-fill', 'me-1' ) )
 										->attr( 'viewbox', '0 0 16 16' )
 										->child(
 											( new HTML_Refactory( 'path' ) )
@@ -1322,244 +990,130 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 						)
 						->child(
 							( new HTML_Refactory( 'div' ) )
-							->attr(
-								'class',
-								array(
-									0 => 'd-flex',
-									1 => 'flex-column',
-									2 => 'bg-secondary-subtle',
-									3 => 'mb-0',
-									4 => 'ps-4',
-									5 => 'py-3',
-									6 => 'radio-border-left',
+								->attr( 'class', array( 'd-flex', 'flex-column', 'bg-secondary-subtle', 'mb-0', 'ps-4', 'py-3', 'radio-border-left' ) )
+								->child(
+									( new HTML_Refactory( 'div' ) )
+										->attr( 'class', array( 'form-check' ) )
+										->child(
+											( new HTML_Refactory( 'input' ) )
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
+												->attr( 'type', 'radio' )
+												->attr( 'name', 'keywords' )
+												->attr( 'id', 'keywords1' )
+												->attr( 'value', 'false' )
+												->attr( 'data-label', 'None' )
+												->attr( 'checked', true )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'label' ) )
+												->attr( 'class', array( 'form-check-label' ) )
+												->attr( 'for', 'keywords1' )
+												->child(
+													( new HTML_Refactory( 'div' ) )
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
+														->child(
+															( new HTML_Refactory( 'pre' ) )
+																->attr( 'class', array( 'm-0' ) )
+																->child( 'None' )
+																->render()
+														)
+														->child( ' ' )
+														->child(
+															( new HTML_Refactory( 'small' ) )
+																->attr( 'class', array( 'text-secondary' ) )
+																->child( '&nbsp;(default)' )
+																->render()
+														)
+														->render()
+												)
+												->render()
+										)
+										->render()
 								)
-							)
-							->child(
-								( new HTML_Refactory( 'div' ) )
-									->attr(
-										'class',
-										array(
-											0 => 'form-check',
+								->child(
+									( new HTML_Refactory( 'div' ) )
+										->attr( 'class', array( 'form-check' ) )
+										->child(
+											( new HTML_Refactory( 'input' ) )
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
+												->attr( 'type', 'radio' )
+												->attr( 'name', 'keywords' )
+												->attr( 'id', 'keywords2' )
+												->attr( 'value', 'Placeholder' )
+												->attr( 'data-label', 'Placeholder' )
+												->render()
 										)
-									)
-									->child(
-										( new HTML_Refactory( 'input' ) )
-											->attr(
-												'class',
-												array(
-													0 => 'form-check-input',
-													1 => 'mt-1',
-												)
-											)
-											->attr( 'type', 'radio' )
-											->attr( 'name', 'keywords' )
-											->attr( 'id', 'keywords1' )
-											->attr( 'value', 'false' )
-											->attr( 'data-label', 'None' )
-											->attr( 'checked', true )
-											->render()
-									)
-									->child(
-										( new HTML_Refactory( 'label' ) )
-											->attr(
-												'class',
-												array(
-													0 => 'form-check-label',
-												)
-											)
-											->attr( 'for', 'keywords1' )
-											->child(
-												( new HTML_Refactory( 'div' ) )
-													->attr(
-														'class',
-														array(
-															0 => 'd-flex',
-															1 => 'flex-row',
+										->child(
+											( new HTML_Refactory( 'label' ) )
+												->attr( 'class', array( 'form-check-label' ) )
+												->attr( 'for', 'keywords2' )
+												->child(
+													( new HTML_Refactory( 'div' ) )
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
+														->child(
+															( new HTML_Refactory( 'pre' ) )
+																->attr( 'class', array( 'm-0' ) )
+																->child( 'Set Placeholder' )
+																->render()
 														)
-													)
-													->child(
-														( new HTML_Refactory( 'pre' ) )
-															->attr(
-																'class',
-																array(
-																	0 => 'm-0',
-																)
-															)
-															->child( 'None' )
-															->render()
-													)
-													->child( ' ' )
-													->child(
-														( new HTML_Refactory( 'small' ) )
-															->attr(
-																'class',
-																array(
-																	0 => 'text-secondary',
-																)
-															)
-															->child( '&nbsp;(default)' )
-															->render()
-													)
-													->render()
-											)
-											->render()
-									)
-									->render()
-							)
-							->child(
-								( new HTML_Refactory( 'div' ) )
-									->attr(
-										'class',
-										array(
-											0 => 'form-check',
+														->child( ' ' )
+														->child(
+															( new HTML_Refactory( 'small' ) )
+																->attr( 'class', array( 'text-secondary' ) )
+																->child( '(manually add later)' )
+																->render()
+														)
+														->render()
+												)
+												->render()
 										)
-									)
-									->child(
-										( new HTML_Refactory( 'input' ) )
-											->attr(
-												'class',
-												array(
-													0 => 'form-check-input',
-													1 => 'mt-1',
-												)
-											)
-											->attr( 'type', 'radio' )
-											->attr( 'name', 'keywords' )
-											->attr( 'id', 'keywords2' )
-											->attr( 'value', 'Placeholder' )
-											->attr( 'data-label', 'Placeholder' )
-											->render()
-									)
-									->child(
-										( new HTML_Refactory( 'label' ) )
-											->attr(
-												'class',
-												array(
-													0 => 'form-check-label',
-												)
-											)
-											->attr( 'for', 'keywords2' )
-											->child(
-												( new HTML_Refactory( 'div' ) )
-													->attr(
-														'class',
-														array(
-															0 => 'd-flex',
-															1 => 'flex-row',
-														)
-													)
-													->child(
-														( new HTML_Refactory( 'pre' ) )
-															->attr(
-																'class',
-																array(
-																	0 => 'm-0',
-																)
-															)
-															->child( 'Set Placeholder' )
-															->render()
-													)
-													->child( ' ' )
-													->child(
-														( new HTML_Refactory( 'small' ) )
-															->attr(
-																'class',
-																array(
-																	0 => 'text-secondary',
-																)
-															)
-															->child( '(manually add later)' )
-															->render()
-													)
-													->render()
-											)
-											->render()
-									)
-									->render()
-							)
-							->child(
-								( new HTML_Refactory( 'div' ) )
-									->attr(
-										'class',
-										array(
-											0 => 'form-check',
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'div' ) )
+										->attr( 'class', array( 'form-check' ) )
+										->child(
+											( new HTML_Refactory( 'input' ) )
+												->attr( 'class', array( 'form-check-input', 'mt-1' ) )
+												->attr( 'type', 'radio' )
+												->attr( 'name', 'keywords' )
+												->attr( 'id', 'keywords3' )
+												->attr( 'value', 'Tags' )
+												->attr( 'data-label', 'Tags' )
+												->render()
 										)
-									)
-									->child(
-										( new HTML_Refactory( 'input' ) )
-											->attr(
-												'class',
-												array(
-													0 => 'form-check-input',
-													1 => 'mt-1',
-												)
-											)
-											->attr( 'type', 'radio' )
-											->attr( 'name', 'keywords' )
-											->attr( 'id', 'keywords3' )
-											->attr( 'value', 'Tags' )
-											->attr( 'data-label', 'Tags' )
-											->render()
-									)
-									->child(
-										( new HTML_Refactory( 'label' ) )
-											->attr(
-												'class',
-												array(
-													0 => 'form-check-label',
-												)
-											)
-											->attr( 'for', 'keywords3' )
-											->child(
-												( new HTML_Refactory( 'div' ) )
-													->attr(
-														'class',
-														array(
-															0 => 'd-flex',
-															1 => 'flex-row',
+										->child(
+											( new HTML_Refactory( 'label' ) )
+												->attr( 'class', array( 'form-check-label' ) )
+												->attr( 'for', 'keywords3' )
+												->child(
+													( new HTML_Refactory( 'div' ) )
+														->attr( 'class', array( 'd-flex', 'flex-row' ) )
+														->child(
+															( new HTML_Refactory( 'pre' ) )
+																->attr( 'class', array( 'm-0' ) )
+																->child( 'Use Post Tags as Keywords' )
+																->render()
 														)
-													)
-													->child(
-														( new HTML_Refactory( 'pre' ) )
-															->attr(
-																'class',
-																array(
-																	0 => 'm-0',
-																)
-															)
-															->child( 'Use Post Tags as Keywords' )
-															->render()
-													)
-													->render()
-											)
-											->render()
-									)
-									->render()
-							)
-							->render()
+														->render()
+												)
+												->render()
+										)
+										->render()
+								)
+								->render()
 						)
 						->child(
 							( new HTML_Refactory( 'div' ) )
-								->attr(
-									'class',
-									array(
-										0 => 'mt-3',
-									)
-								)
+								->attr( 'class', array( 'mt-3' ) )
 								->child(
 									( new HTML_Refactory( 'svg' ) )
 										->attr( 'xmlns', 'http://www.w3.org/2000/svg' )
 										->attr( 'width', '28' )
 										->attr( 'height', '28' )
 										->attr( 'fill', 'currentColor' )
-										->attr(
-											'class',
-											array(
-												0 => 'bi',
-												1 => 'bi-3-square-fill',
-												2 => 'me-1',
-											)
-										)
+										->attr( 'class', array( 'bi', 'bi-3-square-fill', 'me-1' ) )
 										->attr( 'viewbox', '0 0 16 16' )
 										->child(
 											( new HTML_Refactory( 'path' ) )
@@ -1579,14 +1133,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										->attr( 'width', '28' )
 										->attr( 'height', '28' )
 										->attr( 'fill', 'currentColor' )
-										->attr(
-											'class',
-											array(
-												0 => 'bi',
-												1 => 'bi-3-square-fill',
-												2 => 'me-1',
-											)
-										)
+										->attr( 'class', array( 'bi', 'bi-3-square-fill', 'me-1' ) )
 										->attr( 'viewbox', '0 0 16 16' )
 										->child(
 											( new HTML_Refactory( 'path' ) )
@@ -1600,1423 +1147,30 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 						->child(
 							( new HTML_Refactory( 'button' ) )
 								->attr( 'type', 'submit' )
-								->attr(
-									'class',
-									array(
-										0 => 'btn',
-										1 => 'btn-primary',
-										2 => 'mt-3',
-									)
-								)
+								->attr( 'class', array( 'btn', 'btn-primary', 'mt-3' ) )
 								->child( 'Generate Post Schema' )
 								->render()
 						)
+						->render()
 				)
 				->child(
 					( new HTML_Refactory( 'div' ) )
 						->child(
 							( new HTML_Refactory( 'h3' ) )
-								->attr(
-									'class',
-									array(
-										0 => 'h5',
-										1 => 'mt-3',
-									)
-								)
+								->attr( 'class', array( 'h5', 'mt-3' ) )
 								->child( 'Example Schema' )
 								->render()
 						)
 						->child(
 							( new HTML_Refactory( 'pre' ) )
-								->attr(
-									'class',
-									array( 'w-100', 'rounded', 'language-json', 'mb-0' )
-								)
+								->attr( 'class', array( 'w-100', 'rounded', 'language-json', 'mb-0' ) )
 								->attr( 'tabindex', '0' )
 								->child(
 									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
+										->attr( 'class', array( 'language-json' ) )
 										->child(
 											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '{' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;@context&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;https://schema.org&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr( 'id', 'schemaPostType' )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;@type&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;BlogPosting&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;@id&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[URL to post]#blogposting&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;headline&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[Post Title]&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;url&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[URL to Post]&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;datePublished&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[Publish Date (GMT)]&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;dateModified&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[Modified Date (GMT)]&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;author&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '[' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr( 'id', 'schemaAuthorType' )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;@type&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;Person&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[Post Author&#039;s Name]&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;url&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[URL to Author&#039;s Site]&quot;' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;]' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;publisher&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '[' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr( 'id', 'schemaPublisherType' )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;@type&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;Person&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[Post Author&#039;s Name]&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;url&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[URL to Author&#039;s Site]&quot;' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;]' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;description&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&quot;[Post&#039;s Excerpt]&quot;' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-									->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;keywords&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '[' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;[Keyword1]&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;[Keyword2]&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;[etc.]&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;]' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
-												->child( ',' )
-												->render()
-										)
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'br' ) )
-										->render()
-								)
-								->child(
-									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;mainEntityOfPage&quot;' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
-												->child( ':' )
-												->render()
-										)
-										->child(
-											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
+												->attr( 'class', array( 'token', 'punctuation' ) )
 												->child( '{' )
 												->render()
 										)
@@ -3031,37 +1185,760 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										->attr( 'class', array( 'language-json' ) )
 										->child(
 											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'property',
-													)
-												)
-												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;@id&quot;' )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;@context&quot;' )
 												->render()
 										)
 										->child(
 											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'operator',
-													)
-												)
+												->attr( 'class', array( 'token', 'operator' ) )
 												->child( ':' )
 												->render()
 										)
 										->child(
 											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'string',
-													)
-												)
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;https://schema.org&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'id', 'schemaPostType' )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;@type&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;BlogPosting&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;@id&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[URL to post]#blogposting&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;headline&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[Post Title]&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;url&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[URL to Post]&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;datePublished&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[Publish Date (GMT)]&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;dateModified&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[Modified Date (GMT)]&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;author&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '[' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'id', 'schemaAuthorType' )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;@type&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;Person&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[Post Author&#039;s Name]&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;url&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[URL to Author&#039;s Site]&quot;' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;]' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;publisher&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '[' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'id', 'schemaPublisherType' )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;@type&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;Person&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[Post Author&#039;s Name]&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;url&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[URL to Author&#039;s Site]&quot;' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;]' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;description&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&quot;[Post&#039;s Excerpt]&quot;' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+									->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;keywords&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '[' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;[Keyword1]&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;[Keyword2]&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;[etc.]&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;]' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( ',' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&quot;mainEntityOfPage&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'punctuation' ) )
+												->child( '{' )
+												->render()
+										)
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'br' ) )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'code' ) )
+										->attr( 'class', array( 'language-json' ) )
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'property' ) )
+												->child( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;@id&quot;' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'operator' ) )
+												->child( ':' )
+												->render()
+										)
+										->child(
+											( new HTML_Refactory( 'span' ) )
+												->attr( 'class', array( 'token', 'string' ) )
 												->child( '&quot;[URL to Post]&quot;' )
 												->render()
 										)
@@ -3073,21 +1950,10 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 								)
 								->child(
 									( new HTML_Refactory( 'code' ) )
-										->attr(
-											'class',
-											array(
-												0 => 'language-json',
-											)
-										)
+										->attr( 'class', array( 'language-json' ) )
 										->child(
 											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
+												->attr( 'class', array( 'token', 'punctuation' ) )
 												->child( '&nbsp;&nbsp;&nbsp;&nbsp;}' )
 												->render()
 										)
@@ -3102,13 +1968,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 										->attr( 'class', array( 'language-json' ) )
 										->child(
 											( new HTML_Refactory( 'span' ) )
-												->attr(
-													'class',
-													array(
-														0 => 'token',
-														1 => 'punctuation',
-													)
-												)
+												->attr( 'class', array( 'token', 'punctuation' ) )
 												->child( '}' )
 												->render()
 										)
@@ -3123,15 +1983,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 		->child(
 			( new HTML_Refactory( 'hr' ) )
 				->attr( 'style', 'height:5px' )
-				->attr(
-					'class',
-					array(
-						0 => 'border',
-						1 => 'border-secondary',
-						2 => 'bg-light',
-						3 => 'rounded',
-					)
-				)
+				->attr( 'class', array( 'border', 'border-secondary', 'bg-light', 'rounded' ) )
 				->render()
 		)
 		->render();
@@ -3199,23 +2051,6 @@ add_action(
         });
         document.getElementById('schemaBlockCancelButton').addEventListener('click', ()=>{
             closeSchemaTextareaEditModal(event);
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const firstSchema = document.querySelector('.active.show pre');
-
-            // Attach the mouseover event listener
-            firstSchema.addEventListener('mouseover', ()=>{});
-
-            // Create a new mouseover event
-            const mouseOverEvent = new MouseEvent('mouseover', {
-                view: window,
-                bubbles: true,
-                cancelable: true
-            });
-
-            // Dispatch the event to trigger mouseover
-            firstSchema.dispatchEvent(mouseOverEvent);
         });
     </script>
     <script>

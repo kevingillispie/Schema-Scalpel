@@ -129,8 +129,8 @@ $db_contents_table = ( new HTML_Refactory( 'table' ) )
 	->render();
 
 $table_container = ( new HTML_Refactory( 'div' ) )
-	->attr( 'style', 'max-height:500px;overflow-y:auto' )
-	->attr( 'class', array( 'bg-light', 'border', 'rounded p-3' ) )
+	->attr( 'style', 'max-height:500px;overflow-y:auto;z-index:99' )
+	->attr( 'class', array( 'bg-light', 'border', 'rounded p-3', 'position-relative' ) )
 	->child( $db_contents_table )
 	->render();
 
