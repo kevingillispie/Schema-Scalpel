@@ -5,7 +5,7 @@
  * Centralized class providing all nonce generation, verification,
  * and authorization helper methods.
  *
- * @package    SchemaScalpel
+ * @package    Schema_Scalpel
  * @since      2.0.0
  */
 

@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // Get the container
-    const container = document.getElementById('wpbody-content');
+    let container = document.querySelector('#scsc_schema_preview .inside');
     if (!container) {
-        container = document.getElementById('scsc_schema_preview');
+        container = document.getElementById('wpbody-content');
     }
 
     if (!container) {
@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const containerRect = container.getBoundingClientRect();
+    // const containerRect = container.getBoundingClientRect();
+    const containerRect = document.getElementsByTagName('BODY')[0].getBoundingClientRect();
+    console.log(containerRect)
     // Determine number of particles based on screen width
     const isMobile = window.innerWidth <= 768; // Common mobile breakpoint
     const numParticles = isMobile ? 100 : 300; // 100 for mobile, 300 for desktop

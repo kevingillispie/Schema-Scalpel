@@ -72,160 +72,118 @@ function scsc_render_metabox_preview( $post ) {
 	}
 
 	$logo = ( new HTML_Refactory( 'div' ) )
-		->attr( 'style', 'display: flex; justify-content: center; margin-bottom: 2rem;' )
+		->attr( 'style', 'display:flex;justify-content:center;margin-bottom:2rem' )
 		->child(
 			( new HTML_Refactory( 'img' ) )
-			->attr( 'src', esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . '/admin/images/schema-scalpel-logo.svg' ) )
-			->attr( 'alt', esc_attr( 'Schema Scalpel Logo', 'schema-scalpel' ) )
-			->attr( 'style', 'max-width: 300px;' )
-			->render()
+				->attr( 'src', esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . '/admin/images/schema-scalpel-logo.svg' ) )
+				->attr( 'alt', esc_attr( 'Schema Scalpel Logo', 'schema-scalpel' ) )
+				->attr( 'style', 'max-width:300px;z-index:99' )
+				->render()
 		)
 		->render();
 	echo $logo;
 
 	$metabox_tabs = ( new HTML_Refactory( 'div' ) )
-		->attr(
-			'class',
-			array(
-				0 => 'scsc-metabox-tabs',
-			)
-		)
+		->attr( 'class', array( 'scsc-metabox-tabs' ) )
 		->attr( 'style', 'position:relative;z-index:1' )
 		->child(
 			( new HTML_Refactory( 'h2' ) )
-			->attr(
-				'class',
-				array(
-					0 => 'nav-tab-wrapper',
+				->attr( 'class', array( 'nav-tab-wrapper' ) )
+				->child(
+					( new HTML_Refactory( 'a' ) )
+						->attr( 'href', '#scsc-tab-schema' )
+						->attr( 'class', array( 'nav-tab', 'nav-tab-active' ) )
+						->child( esc_html( __( 'Schema', 'schema-scalpel' ) ) )
+						->render()
 				)
-			)
-			->child(
-				( new HTML_Refactory( 'a' ) )
-				->attr( 'href', '#scsc-tab-schema' )
-				->attr(
-					'class',
-					array(
-						0 => 'nav-tab',
-						1 => 'nav-tab-active',
-					)
+				->child(
+					( new HTML_Refactory( 'a' ) )
+						->attr( 'href', '#scsc-tab-examples' )
+						->attr( 'class', array( 'nav-tab' ) )
+						->child( esc_html( __( 'Examples', 'schema-scalpel' ) ) )
+						->render()
 				)
-				->child( esc_html( __( 'Schema', 'schema-scalpel' ) ) )
 				->render()
-			)
-			->child(
-				( new HTML_Refactory( 'a' ) )
-				->attr( 'href', '#scsc-tab-examples' )
-				->attr(
-					'class',
-					array(
-						0 => 'nav-tab',
-					)
-				)
-				->child( esc_html( __( 'Examples', 'schema-scalpel' ) ) )
-				->render()
-			)
-			->render()
 		)
 		->render();
 	echo $metabox_tabs;
 
 	?>
 
-	<div class="scsc-metabox" style="position:relative">
+	<div class="scsc-metabox" style="position:relative;z-index:99">
 		<?php
 
 		$hamburger_menu = ( new HTML_Refactory( 'div' ) )
-			->attr(
-				'class',
-				array(
-					0 => 'scsc-nav-container',
-				)
-			)
+			->attr( 'class', array( 'scsc-nav-container' ) )
 			->attr( 'style', 'position:absolute;right:2rem' )
 			->child(
 				( new HTML_Refactory( 'button' ) )
-				->attr(
-					'class',
-					array(
-						0 => 'hamburger-toggle',
-					)
-				)
-				->attr( 'aria-label', 'Toggle Menu' )
-				->child(
-					( new HTML_Refactory( 'svg' ) )
-					->attr( 'xmlns', 'http://www.w3.org/2000/svg' )
-					->attr( 'width', '16' )
-					->attr( 'height', '16' )
-					->attr( 'fill', 'currentColor' )
-					->attr(
-						'class',
-						array(
-							0 => 'bi',
-							1 => 'bi-list',
-						)
-					)
-					->attr( 'viewbox', '0 0 16 16' )
+					->attr( 'class', array( 'hamburger-toggle' ) )
+					->attr( 'aria-label', 'Toggle Menu' )
 					->child(
-						( new HTML_Refactory( 'path' ) )
-						->attr( 'fill-rule', 'evenodd' )
-						->attr( 'd', 'M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5' )
-						->render()
+						( new HTML_Refactory( 'svg' ) )
+							->attr( 'xmlns', 'http://www.w3.org/2000/svg' )
+							->attr( 'width', '16' )
+							->attr( 'height', '16' )
+							->attr( 'fill', 'currentColor' )
+							->attr( 'class', array( 'bi', 'bi-list' ) )
+							->attr( 'viewbox', '0 0 16 16' )
+							->child(
+								( new HTML_Refactory( 'path' ) )
+									->attr( 'fill-rule', 'evenodd' )
+									->attr( 'd', 'M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5' )
+									->render()
+							)
+							->render()
 					)
 					->render()
-				)
-				->render()
 			)
 			->child(
 				( new HTML_Refactory( 'div' ) )
-				->attr(
-					'class',
-					array(
-						0 => 'scsc-menu',
-					)
-				)
-				->child(
-					( new HTML_Refactory( 'div' ) )
+					->attr( 'class', array( 'scsc-menu' ) )
 					->child(
-						( new HTML_Refactory( 'a' ) )
-						->attr( 'href', '/wp-admin/admin.php?page=scsc' )
-						->child( esc_html( 'Schema Scalpel&nbsp;' ) )
-						->child(
-							( new HTML_Refactory( 'strong' ) )
-							->child( 'Dashboard' )
-						)
-						->render()
-					)
-					->child(
-						( new HTML_Refactory( 'hr' ) )
-						->render()
-					)
-					->child(
-						( new HTML_Refactory( 'a' ) )
-						->attr( 'href', '/wp-admin/admin.php?page=scsc_settings' )
-						->child( esc_html( 'Schema Scalpel&nbsp;' ) )
-						->child(
-							( new HTML_Refactory( 'strong' ) )
-							->child( 'Settings' )
-						)
-						->render()
-					)
-					->child(
-						( new HTML_Refactory( 'hr' ) )
-						->render()
-					)
-					->child(
-						( new HTML_Refactory( 'a' ) )
-						->attr( 'href', '/wp-admin/admin.php?page=scsc_export' )
-						->child( esc_html( 'Schema Scalpel&nbsp;' ) )
-						->child(
-							( new HTML_Refactory( 'strong' ) )
-							->child( 'Export' )
-						)
-						->render()
+						( new HTML_Refactory( 'div' ) )
+							->child(
+								( new HTML_Refactory( 'a' ) )
+									->attr( 'href', '/wp-admin/admin.php?page=scsc' )
+									->child( esc_html( 'Schema Scalpel&nbsp;' ) )
+									->child(
+										( new HTML_Refactory( 'strong' ) )
+										->child( 'Dashboard' )
+									)
+									->render()
+							)
+							->child(
+								( new HTML_Refactory( 'hr' ) )->render()
+							)
+							->child(
+								( new HTML_Refactory( 'a' ) )
+									->attr( 'href', '/wp-admin/admin.php?page=scsc_settings' )
+									->child( esc_html( 'Schema Scalpel&nbsp;' ) )
+									->child(
+										( new HTML_Refactory( 'strong' ) )
+											->child( 'Settings' )
+											->render()
+									)
+									->render()
+							)
+							->child(
+								( new HTML_Refactory( 'hr' ) )->render()
+							)
+							->child(
+								( new HTML_Refactory( 'a' ) )
+									->attr( 'href', '/wp-admin/admin.php?page=scsc_export' )
+									->child( esc_html( 'Schema Scalpel&nbsp;' ) )
+									->child(
+										( new HTML_Refactory( 'strong' ) )
+											->child( 'Export' )
+											->render()
+									)
+									->render()
+							)
+							->render()
 					)
 					->render()
-				)
-				->render()
 			)
 			->render();
 		echo $hamburger_menu;
@@ -235,86 +193,57 @@ function scsc_render_metabox_preview( $post ) {
 			<?php
 
 			echo ( new HTML_Refactory( 'h3' ) )
-				->attr( 'style', 'margin: 0 0 12px 0;' )
+				->attr( 'style', 'margin:0 0 12px 0' )
 				->child( esc_html( __( 'Structured Data Editor', 'schema-scalpel' ) ) )
 				->render();
 
 			$edit_instructions = ( new HTML_Refactory( 'p' ) )
-				->attr(
-					'class',
-					array(
-						0 => 'description',
-					)
-				)
-				->attr( 'style', 'margin-bottom: 16px;' )
+				->attr( 'class', array( 'description' ) )
+				->attr( 'style', 'margin-bottom:16px' )
 				->child( esc_html( __( 'Add, edit, or delete JSON-LD schema below. Changes are saved immediately.', 'schema-scalpel' ) ) )
 				->render();
 			echo $edit_instructions;
 
 			// CREATE NEW.
 			$create_schema = ( new HTML_Refactory( 'div' ) )
-				->attr(
-					'class',
-					array(
-						0 => 'scsc-section',
-						1 => 'scsc-create',
-					)
-				)
-				->attr( 'style', 'margin-bottom: 20px; padding: 12px; background: #f9f9f9; border: 1px solid #ddd;' )
+				->attr( 'class', array( 'scsc-section', 'scsc-create' ) )
+				->attr( 'style', 'margin-bottom:20px;padding:12px;background:#f9f9f9;border:1px solid #ddd;' )
 				->child(
 					( new HTML_Refactory( 'h4' ) )
-					->attr( 'style', 'margin: 0 0 12px 0;' )
-					->child( '+' . esc_html( __( 'Add New Schema', 'schema-scalpel' ) ) )
-					->render()
+						->attr( 'style', 'margin: 0 0 12px 0;' )
+						->child( '+' . esc_html( __( 'Add New Schema', 'schema-scalpel' ) ) )
+						->render()
 				)
 				->child(
 					( new HTML_Refactory( 'textarea' ) )
-					->attr( 'name', 'scsc_new_schema' )
-					->attr( 'rows', '8' )
-					->attr(
-						'class',
-						array(
-							0 => 'widefat',
-						)
-					)
-					->attr( 'placeholder', esc_attr( 'Example: {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}', 'schema-scalpel' ) )
-					->render()
+						->attr( 'name', 'scsc_new_schema' )
+						->attr( 'rows', '8' )
+						->attr( 'class', array( 'widefat' ) )
+						->attr( 'placeholder', esc_attr( 'Example: {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}', 'schema-scalpel' ) )
+						->render()
 				)
 				->child(
 					( new HTML_Refactory( 'p' ) )
-					->attr( 'style', 'margin: 8px 0 0 0;' )
-					->child(
-						( new HTML_Refactory( 'button' ) )
-						->attr( 'type', 'button' )
-						->attr(
-							'class',
-							array(
-								0 => 'button',
-								1 => 'button-primary',
-								2 => 'scsc-create-new',
-							)
-						)
-						->attr( 'data-post-id', esc_attr( (string) $post_id ) )
+						->attr( 'style', 'margin: 8px 0 0 0;' )
 						->child(
-							esc_html__( 'Create as ' . esc_html( ucfirst( $post_type ) . ' Schema', 'schema-scalpel' ) )
+							( new HTML_Refactory( 'button' ) )
+								->attr( 'type', 'button' )
+								->attr( 'class', array( 'button', 'button-primary', 'scsc-create-new' ) )
+								->attr( 'data-post-id', esc_attr( (string) $post_id ) )
+								->child(
+									esc_html__( 'Create as ' . esc_html( ucfirst( $post_type ) . ' Schema', 'schema-scalpel' ) )
+								)
+								->render()
+						)
+						->child(
+							( new HTML_Refactory( 'button' ) )
+								->attr( 'type', 'button' )
+								->attr( 'class', array( 'button', 'scsc-create-new-global' ) )
+								->attr( 'style', 'margin-left:3px' )
+								->child( esc_html( __( 'Create as Global Schema', 'schema-scalpel' ) ) )
+								->render()
 						)
 						->render()
-					)
-					->child(
-						( new HTML_Refactory( 'button' ) )
-						->attr( 'type', 'button' )
-						->attr(
-							'class',
-							array(
-								0 => 'button',
-								1 => 'scsc-create-new-global',
-							)
-						)
-						->attr( 'style', 'margin-left: 3px' )
-						->child( esc_html( __( 'Create as Global Schema', 'schema-scalpel' ) ) )
-						->render()
-					)
-					->render()
 				)
 				->render();
 			echo $create_schema;
@@ -325,8 +254,8 @@ function scsc_render_metabox_preview( $post ) {
 				echo ( new HTML_Refactory( 'p' ) )
 					->child(
 						( new HTML_Refactory( 'em' ) )
-						->child( esc_html( __( 'No schema found for this post.', 'schema-scalpel' ) ) )
-						->render()
+							->child( esc_html( __( 'No schema found for this post.', 'schema-scalpel' ) ) )
+							->render()
 					)
 					->render();
 
@@ -336,7 +265,9 @@ function scsc_render_metabox_preview( $post ) {
 				foreach ( $schemas as $item ) :
 					// Insert separator only once before the first global schema.
 					if ( 'global' === $item['schema_type'] && 'global' !== $previous_type ) {
-						echo ( new HTML_Refactory( 'hr' ) )->attr( 'style', 'margin: 2rem 0; border: none; border-top: 2px solid #ccc;' )->render();
+						echo ( new HTML_Refactory( 'hr' ) )
+							->attr( 'style', 'margin:2rem 0;border:none;border-top:2px solid #ccc' )
+							->render();
 					}
 
 					$label = ( 'global' === $item['schema_type'] ) ? 'GLOBAL' : strtoupper( $post_type );
@@ -361,93 +292,63 @@ function scsc_render_metabox_preview( $post ) {
 					$label_color = ( 'global' === $item['schema_type'] ) ? '#d63638' : '#2271b1';
 
 					$existing_schema = ( new HTML_Refactory( 'div' ) )
-						->attr(
-							'class',
-							array(
-								0 => 'scsc-section',
-							)
-						)
-						->attr( 'style', 'margin-bottom: 16px; padding: 12px; background: #fff; border: 1px solid #ddd;' )
+						->attr( 'class', array( 'scsc-section' ) )
+						->attr( 'style', 'margin-bottom:16px;padding:12px;background:#fff;border:1px solid #ddd' )
 						->child(
 							( new HTML_Refactory( 'div' ) )
-							->attr( 'style', 'margin-bottom: 12px;' )
-							->child(
-								( new HTML_Refactory( 'strong' ) )
-								->attr( 'style', 'color:' . $label_color )
-								->child( $label . '&nbsp;Schema' )
+								->attr( 'style', 'margin-bottom: 12px' )
+								->child(
+									( new HTML_Refactory( 'strong' ) )
+										->attr( 'style', 'color:' . $label_color )
+										->child( $label . '&nbsp;Schema' )
+										->render()
+								)
+								->child(
+									( new HTML_Refactory( 'span' ) )
+										->attr( 'style', 'color:#666;font-size:12px' )
+										->child( '—' . esc_html( __( 'Updated:', 'schema-scalpel' ) ) . esc_html( $item['updated'] ) )
+										->render()
+								)
 								->render()
-							)
-							->child(
-								( new HTML_Refactory( 'span' ) )
-								->attr( 'style', 'color: #666; font-size: 12px;' )
-								->child( '—' . esc_html( __( 'Updated:', 'schema-scalpel' ) ) . esc_html( $item['updated'] ) )
-								->render()
-							)
-							->render()
 						)
 						->child(
 							( new HTML_Refactory( 'textarea' ) )
-							->attr( 'name', 'scsc_schema[' . esc_attr( (string) $item['id'] ) . ']' )
-							->attr( 'rows', '14' )
-							->attr(
-								'class',
-								array(
-									0 => 'widefat',
-									1 => 'scsc-schema-textarea',
-								)
-							)
-							->attr( 'data-id', (string) $item['id'] )
-							->attr( 'spellcheck', 'false' )
-							->child( esc_textarea( $pretty_json ) )
-							->render()
+								->attr( 'name', 'scsc_schema[' . esc_attr( (string) $item['id'] ) . ']' )
+								->attr( 'rows', '14' )
+								->attr( 'class', array( 'widefat', 'scsc-schema-textarea' ) )
+								->attr( 'data-id', (string) $item['id'] )
+								->attr( 'spellcheck', 'false' )
+								->child( esc_textarea( $pretty_json ) )
+								->render()
 						)
 						->child(
 							( new HTML_Refactory( 'p' ) )
-							->attr( 'style', 'margin: 8px 0 0 0;' )
-							->child(
-								( new HTML_Refactory( 'button' ) )
-								->attr( 'type', 'button' )
-								->attr(
-									'class',
-									array(
-										0 => 'button',
-										1 => 'button-primary',
-										2 => 'scsc-save',
-									)
+								->attr( 'style', 'margin: 8px 0 0 0;' )
+								->child(
+									( new HTML_Refactory( 'button' ) )
+										->attr( 'type', 'button' )
+										->attr( 'class', array( 'button', 'button-primary', 'scsc-save' ) )
+										->attr( 'data-id', (string) $item['id'] )
+										->child( esc_html( __( 'Save Changes', 'schema-scalpel' ) ) )
+										->render()
 								)
-								->attr( 'data-id', (string) $item['id'] )
-								->child( esc_html( __( 'Save Changes', 'schema-scalpel' ) ) )
-								->render()
-							)
-							->child(
-								( new HTML_Refactory( 'span' ) )
-								->attr(
-									'class',
-									array(
-										0 => 'scsc-status',
-									)
+								->child(
+									( new HTML_Refactory( 'span' ) )
+										->attr( 'class', array( 'scsc-status' ) )
+										->attr( 'style', 'margin-left:10px;font-style:italic;color:green;display:none' )
+										->child( esc_html( __( 'Saved.', 'schema-scalpel' ) ) )
+										->render()
 								)
-								->attr( 'style', 'margin-left: 10px; font-style: italic; color: green; display: none;' )
-								->child( esc_html( __( 'Saved.', 'schema-scalpel' ) ) )
-								->render()
-							)
-							->child(
-								( new HTML_Refactory( 'button' ) )
-								->attr( 'type', 'button' )
-								->attr(
-									'class',
-									array(
-										0 => 'button',
-										1 => 'button-link-delete',
-										2 => 'scsc-delete',
-									)
+								->child(
+									( new HTML_Refactory( 'button' ) )
+										->attr( 'type', 'button' )
+										->attr( 'class', array( 'button', 'button-link-delete', 'scsc-delete' ) )
+										->attr( 'style', 'float: right;' )
+										->attr( 'data-id', esc_attr( (string) $item['id'] ) )
+										->child( esc_html( __( 'Delete', 'schema-scalpel' ) ) )
+										->render()
 								)
-								->attr( 'style', 'float: right;' )
-								->attr( 'data-id', esc_attr( (string) $item['id'] ) )
-								->child( esc_html( __( 'Delete', 'schema-scalpel' ) ) )
 								->render()
-							)
-							->render()
 						)
 						->render();
 					echo $existing_schema;
@@ -462,18 +363,13 @@ function scsc_render_metabox_preview( $post ) {
 			<?php
 
 			echo ( new HTML_Refactory( 'h3' ) )
-				->attr( 'style', 'margin: 0 0 12px 0;' )
+				->attr( 'style', 'margin:0 0 12px 0' )
 				->child( esc_html( __( 'Schema Examples', 'schema-scalpel' ) ) )
 				->render();
 
 			echo ( new HTML_Refactory( 'p' ) )
-				->attr(
-					'class',
-					array(
-						0 => 'description',
-					)
-				)
-				->attr( 'style', 'margin-bottom: 16px;' )
+				->attr( 'class', array( 'description' ) )
+				->attr( 'style', 'margin-bottom:16px' )
 				->child( esc_html( __( 'Copy and paste these examples into the schema editor.', 'schema-scalpel' ) ) )
 				->render();
 
@@ -496,49 +392,32 @@ function scsc_render_metabox_preview( $post ) {
 
 					$safe_for_attr = htmlspecialchars( $pretty_json, ENT_QUOTES, 'UTF-8' );
 					$scsc_example  = ( new HTML_Refactory( 'div' ) )
-						->attr(
-							'class',
-							array(
-								0 => 'scsc-example',
-							)
-						)
-						->attr( 'style', 'margin-bottom: 30px; padding: 20px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;' )
+						->attr( 'class', array( 'scsc-example' ) )
+						->attr( 'style', 'margin-bottom:30px;padding:20px;background:#f9f9f9;border:1px solid #ddd;border-radius:8px' )
 						->child(
 							( new HTML_Refactory( 'h4' ) )
-							->attr( 'style', 'margin: 0 0 12px 0; color: #2271b1;' )
-							->child( esc_html( $title ) . '&nbsp;Schema' )
-							->render()
+								->attr( 'style', 'margin0 0 12px 0;color:#2271b1' )
+								->child( esc_html( $title ) . '&nbsp;Schema' )
+								->render()
 						)
 						->child(
 							( new HTML_Refactory( 'pre' ) )
-							->attr(
-								'class',
-								array(
-									0 => 'scsc-example-preview',
-								)
-							)
-							->child( esc_textarea( $pretty_json ) )
-							->render()
+								->attr( 'class', array( 'scsc-example-preview' ) )
+								->child( esc_textarea( $pretty_json ) )
+								->render()
 						)
 						->child(
 							( new HTML_Refactory( 'p' ) )
-							->attr( 'style', 'margin: 12px 0 0 0;' )
-							->child(
-								( new HTML_Refactory( 'button' ) )
-								->attr( 'type', 'button' )
-								->attr(
-									'class',
-									array(
-										0 => 'button',
-										1 => 'button-secondary',
-										2 => 'scsc-copy-example',
-									)
+								->attr( 'style', 'margin:12px 0 0 0' )
+								->child(
+									( new HTML_Refactory( 'button' ) )
+										->attr( 'type', 'button' )
+										->attr( 'class', array( 'button', 'button-secondary', 'scsc-copy-example' ) )
+										->attr( 'data-json', $safe_for_attr )
+										->child( esc_html( __( 'Copy to Editor', 'schema-scalpel' ) ) )
+										->render()
 								)
-								->attr( 'data-json', $safe_for_attr )
-								->child( esc_html( __( 'Copy to Editor', 'schema-scalpel' ) ) )
 								->render()
-							)
-							->render()
 						)
 						->render();
 
@@ -546,7 +425,12 @@ function scsc_render_metabox_preview( $post ) {
 
 				endforeach;
 			else :
-				echo ( new HTML_Refactory( 'p' ) )->child( ( new HTML_Refactory( 'em' ) )->child( esc_html( __( 'No examples available.', 'schema-scalpel' ) ) )->render() )->render();
+				echo ( new HTML_Refactory( 'p' ) )
+					->child(
+						( new HTML_Refactory( 'em' ) )
+							->child( esc_html( __( 'No examples available.', 'schema-scalpel' ) ) )
+							->render()
+					)->render();
 			endif;
 
 			?>
@@ -852,6 +736,7 @@ function scsc_render_metabox_preview( $post ) {
 			background: -o-linear-gradient(45deg, rgb(227, 118, 130) 15%, rgb(95, 77, 147) 85%);
 			background: linear-gradient(45deg, rgb(227, 118, 130) 15%, rgb(95, 77, 147) 85%);
 			padding: 4rem 0;
+			overflow-x: hidden;
 		}
 
 		#scsc_schema_preview .scsc-metabox {
@@ -924,4 +809,9 @@ function scsc_render_metabox_preview( $post ) {
 		}
 	</style>
 	<?php
+	echo '<script>';
+	require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/anime.js';
+	echo '</script><script>';
+	require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/scsc-schema-animation.js';
+	echo '</script>';
 }
