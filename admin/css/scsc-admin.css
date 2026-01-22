@@ -109,7 +109,7 @@ div:disabled {
     color: white;
     font-size: 24px;
     text-shadow: 0 2px 3px black;
-    left: calc((100vw - 100px) / 2.5);
+    left: 50%;
     -webkit-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);

@@ -106,7 +106,7 @@ if ( $schema_results_pages ) :
 			endforeach;
 		$no_cereal           = unserialize( $schema_results_pages[ $key ]['custom_schema'] );
 		$formatted_pre_tags .= ( new HTML_Refactory( 'pre' ) )
-			->attr( 'class', array( 'w-100', 'rounded', 'd-none', 'post-id-' . $wp_post_id, 'edit-block', 'language-json' ) )
+			->attr( 'class', array( 'position-relative', 'w-100', 'rounded', 'd-none', 'post-id-' . $wp_post_id, 'edit-block', 'language-json' ) )
 			->attr( 'data-id', sanitize_text_field( $schema_results_pages[ $key ]['id'] ) )
 			->attr( 'data-post-id', sanitize_text_field( $wp_post_id ) )
 			->attr( 'data-schema', esc_html( $no_cereal ) )

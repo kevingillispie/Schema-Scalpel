@@ -104,7 +104,7 @@ if ( $schema_results_posts ) :
 		$wp_post_id   = $schema_results_posts[ $key ]['post_id'];
 		$no_cereal    = unserialize( $schema_results_posts[ $key ]['custom_schema'] );
 		$post_schema .= ( new HTML_Refactory( 'pre' ) )
-			->attr( 'class', array( 'w-100', 'rounded', 'language-json', 'd-none', 'edit-block', 'post-id-' . esc_attr( $wp_post_id ) ) )
+			->attr( 'class', array( 'position-relative', 'w-100', 'rounded', 'language-json', 'd-none', 'edit-block', 'post-id-' . esc_attr( $wp_post_id ) ) )
 			->attr( 'data-id', esc_attr( $schema_results_posts[ $key ]['id'] ) )
 			->attr( 'data-post-id', esc_attr( $wp_post_id ) )
 			->attr( 'data-schema', $no_cereal )
