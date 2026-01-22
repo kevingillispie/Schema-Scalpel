@@ -28,25 +28,18 @@ $header = ( new HTML_Refactory( 'header' ) )
 			->attr( 'src', plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/schema-scalpel-logo.svg' )
 			->attr( 'width', '300' )
 			->attr( 'height', 'auto' )
+			->attr( 'style', 'z-index:99' )
 			->attr( 'alt', 'Schema Scalpel Logo' )
 			->render()
 	)
 	->render();
 
-echo ( new HTML_Refactory( 'div' ) )
-	->attr( 'class', array( 'container', 'pt-3' ) )
-	->child( $header )
-	->render();
-
-echo '<main class="container mt-5">';
-
-// Title with scalpel icon
 $scalpel_icon = ( new HTML_Refactory( 'img' ) )
 	->attr( 'src', esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/scalpel_title.svg' ) )
 	->attr( 'class', array( 'mt-n4', 'position-absolute' ) )
 	->render();
 
-echo ( new HTML_Refactory( 'div' ) )
+$page_title = ( new HTML_Refactory( 'div' ) )
 	->child(
 		( new HTML_Refactory( 'h1' ) )
 			->text( 'User Tools ' )
@@ -54,21 +47,6 @@ echo ( new HTML_Refactory( 'div' ) )
 			->render()
 	)
 	->render();
-
-echo ( new HTML_Refactory( 'hr' ) )->render();
-
-echo ( new HTML_Refactory( 'h2' ) )
-	->text( 'Database Contents' )
-	->render();
-
-echo ( new HTML_Refactory( 'p' ) )
-	->text( 'This table lists all of your custom schema available for export.' )
-	->render();
-
-// Database contents table.
-echo '<div style="max-height:500px;overflow-y:auto;" class="bg-light border rounded p-3">';
-
-echo '<table id="excluded_schema" class="table table-dark">';
 
 // Table header.
 $th_tags   = '';
@@ -81,7 +59,7 @@ foreach ( $col_names as $name ) {
 		->render();
 }
 
-echo ( new HTML_Refactory( 'thead' ) )
+$table_head = ( new HTML_Refactory( 'thead' ) )
 	->child(
 		( new HTML_Refactory( 'tr' ) )
 			->child( $th_tags )
@@ -89,8 +67,7 @@ echo ( new HTML_Refactory( 'thead' ) )
 	)
 	->render();
 
-// Table body
-echo '<tbody>';
+$table_rows = '';
 
 if ( $results ) {
 	foreach ( $results as $row ) {
@@ -98,11 +75,11 @@ if ( $results ) {
 			continue;
 		}
 
-		// Safely unserialize and prepare truncated display
+		// Safely unserialize and prepare truncated display.
 		$json_string = '';
 		if ( ! empty( $row['custom_schema'] ) ) {
 			$unserialized = unserialize( $row['custom_schema'] );
-			if ( $unserialized !== false ) {
+			if ( false !== $unserialized ) {
 				$json_string = str_replace( '&quot;', '"', $unserialized );
 			}
 		}
@@ -121,7 +98,7 @@ if ( $results ) {
 		);
 
 		foreach ( $columns as $key => $value ) {
-			// Ensure $value is always a string
+			// Ensure $value is always a string.
 			$value = (string) $value;
 
 			$cell = ( new HTML_Refactory( $key === 'id' ? 'th' : 'td' ) )
@@ -134,22 +111,30 @@ if ( $results ) {
 			$cells .= $cell->render();
 		}
 
-		echo ( new HTML_Refactory( 'tr' ) )
+		$table_rows .= ( new HTML_Refactory( 'tr' ) )
 			->child( $cells )
 			->render();
 	}
 }
 
-echo '</tbody></table></div>';
-
-echo ( new HTML_Refactory( 'hr' ) )->render();
-
-// Export Tool Section.
-echo ( new HTML_Refactory( 'h2' ) )
-	->text( 'Export Tool' )
+$table_body = ( new HTML_Refactory( 'tbody' ) )
+	->child( $table_rows )
 	->render();
 
-echo ( new HTML_Refactory( 'fieldset' ) )
+$db_contents_table = ( new HTML_Refactory( 'table' ) )
+	->attr( 'id', 'excluded_schema' )
+	->attr( 'class', array( 'table', 'table-dark' ) )
+	->child( $table_head )
+	->child( $table_body )
+	->render();
+
+$table_container = ( new HTML_Refactory( 'div' ) )
+	->attr( 'style', 'max-height:500px;overflow-y:auto' )
+	->attr( 'class', array( 'bg-light', 'border', 'rounded p-3' ) )
+	->child( $db_contents_table )
+	->render();
+
+$fieldset = ( new HTML_Refactory( 'fieldset' ) )
 	->attr( 'class', array( 'd-flex', 'flex-column', 'justify-content-between', 'bg-light', 'border', 'rounded', 'p-3', 'mt-5' ) )
 	->child(
 		( new HTML_Refactory( 'legend' ) )
@@ -213,14 +198,14 @@ echo ( new HTML_Refactory( 'fieldset' ) )
 				$post_id     = $row['post_id'] ?? '';
 				$raw_schema  = $row['custom_schema'] ?? '';
 
-				// Only process if there's actual schema data
+				// Only process if there's actual schema data.
 				if ( '' === $raw_schema ) {
 					continue;
 				}
 
 				$unserialized = unserialize( $raw_schema );
 				if ( $unserialized === false ) {
-					continue; // skip corrupted data
+					continue; // skip corrupted data.
 				}
 
 				$escaped = htmlentities( $unserialized, ENT_QUOTES, 'UTF-8' );
@@ -260,7 +245,35 @@ echo ( new HTML_Refactory( 'fieldset' ) )
 	)
 	->render();
 
-echo '</main>';
+$main = ( new HTML_Refactory( 'main' ) )
+	->attr( 'class', array( 'container', 'my-5' ) )
+	->child( $page_title )
+	->child( ( new HTML_Refactory( 'hr' ) )->render() )
+	->child(
+		( new HTML_Refactory( 'h2' ) )
+			->text( 'Database Contents' )
+			->render()
+	)
+	->child(
+		( new HTML_Refactory( 'p' ) )
+			->text( 'This table lists all of your custom schema available for export.' )
+			->render()
+	)
+	->child( $table_container )
+	->child( ( new HTML_Refactory( 'hr' ) )->render() )
+	->child(
+		( new HTML_Refactory( 'h2' ) )
+			->text( 'Export Tool' )
+			->render()
+	)
+	->child( $fieldset )
+	->render();
+
+echo ( new HTML_Refactory( 'div' ) )
+	->attr( 'class', array( 'container', 'pt-3' ) )
+	->child( $header )
+	->child( $main )
+	->render();
 
 // Admin footer scripts.
 add_action(
@@ -304,6 +317,10 @@ add_action(
         }
     }();
 </script>
+<script>
 SCRIPTS;
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/anime.js';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/scsc-schema-animation.js';
+		echo '</script>';
 	}
 );

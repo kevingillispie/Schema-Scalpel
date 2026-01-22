@@ -434,7 +434,6 @@ function printJSONLoop(container, jObject, tab) {
 //////////////////////////
 
 function createNewSchema(type, id) {
-    console.log(type, id);
     let schema = "";
     schema = document.querySelector("#schemaTextareaCreate").value;
     document.querySelector("#schemaBlockSave").dataset.id = id;

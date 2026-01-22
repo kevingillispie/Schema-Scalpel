@@ -217,6 +217,7 @@ $header = ( new HTML_Refactory( 'header' ) )
 			->attr( 'src', plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/schema-scalpel-logo.svg' )
 			->attr( 'width', '300' )
 			->attr( 'height', 'auto' )
+			->attr( 'style', 'z-index:99' )
 			->attr( 'alt', 'Schema Scalpel Logo' )
 			->render()
 	)
@@ -418,16 +419,26 @@ $modal_create = ( new HTML_Refactory( 'div' ) )
 
 $spinner = ( new HTML_Refactory( 'div' ) )
 	->attr( 'id', 'tab_spinner' )
-	->attr( 'class', array( 'fixed-top', 'w-100', 'h-100', 'mx-auto', isset( $_GET['update_tab'] ) ? '' : 'd-none' ) )
-	->attr( 'style', 'background-color:rgba(0,0,0,.3)' )
+	->attr(
+		'class',
+		array(
+			'position-absolute',
+			'top-0',
+			'start-0',
+			'end-0',
+			'bottom-0',
+			isset( $_GET['update_tab'] ) ? '' : 'd-none',
+		)
+	)
+	->attr( 'style', 'background-color:rgba(0,0,0,.3);z-index:1050' )
 	->child(
 		( new HTML_Refactory( 'div' ) )
-			->attr( 'class', array( 'd-flex', 'justify-content-center' ) )
+			->attr( 'class', array( 'd-flex', 'justify-content-center', 'align-items-center', 'h-100' ) )
 			->child(
 				( new HTML_Refactory( 'div' ) )
-					->attr( 'style', 'margin-top:50vh' )
-					->attr( 'class', array( 'spinner-border', 'text-danger' ) )
+					->attr( 'class', array( 'spinner-border', 'text-danger', 'position-fixed' ) )
 					->attr( 'role', 'status' )
+					->attr( 'style', 'width:4rem;height:4rem;top:50vh' )
 					->child(
 						( new HTML_Refactory( 'span' ) )
 							->attr( 'class', array( 'visually-hidden' ) )
@@ -3127,11 +3138,12 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 }
 
 $main = ( new HTML_Refactory( 'main' ) )
-	->attr( 'class', array( 'container', 'ms-0', 'mt-5' ) )
+	->attr( 'class', array( 'container', 'ms-0', 'my-5' ) )
 	->child( $nav )
 	->child(
 		( new HTML_Refactory( 'div' ) )
-			->attr( 'class', array( 'tab-content', 'border', 'border-top-0', 'p-5' ) )
+			->attr( 'class', array( 'tab-content', 'border', 'border-top-0', 'p-5', 'position-relative' ) )
+			->attr( 'style', 'z-index:99' )
 			->attr( 'id', 'nav-tabContent' )
 			->child( $tab_content )
 			->render()
@@ -3188,7 +3200,28 @@ add_action(
         document.getElementById('schemaBlockCancelButton').addEventListener('click', ()=>{
             closeSchemaTextareaEditModal(event);
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstSchema = document.querySelector('.active.show pre');
+
+            // Attach the mouseover event listener
+            firstSchema.addEventListener('mouseover', ()=>{});
+
+            // Create a new mouseover event
+            const mouseOverEvent = new MouseEvent('mouseover', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+            });
+
+            // Dispatch the event to trigger mouseover
+            firstSchema.dispatchEvent(mouseOverEvent);
+        });
     </script>
+    <script>
 SCRIPTS;
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/anime.js';
+		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/scsc-schema-animation.js';
+		echo '</script>';
 	}
 );
