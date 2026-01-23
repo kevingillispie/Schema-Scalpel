@@ -1422,7 +1422,7 @@ $settings_form = ( new HTML_Refactory( 'form' ) )
 	->child(
 		( new HTML_Refactory( 'div' ) )
 			->attr( 'class', array( 'fixed-bottom', 'bg-light', 'p-3', 'mb-4', 'shadow', 'rounded' ) )
-			->attr( 'style', 'left:50%;right:inherit;transform:translateX(-50%)' )
+			->attr( 'style', 'left:50%;right:inherit;transform:translateX(-15%)' )
 			->child(
 				( new HTML_Refactory( 'button' ) )
 					->attr( 'class', array( 'btn', 'btn-primary', 'px-5', 'py-2' ) )

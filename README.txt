@@ -66,10 +66,11 @@ Yes — recent updates include full sanitization of dynamic content (post titles
 == Screenshots ==
 
 1. The new Schema Scalpel metabox in the post editor – create and edit JSON-LD right where you write content.
-2. Examples tab with one-click Google-recommended schema templates.
-3. Real-time editing with syntax highlighting and AJAX saves.
-4. Global & homepage schema management in the dashboard.
-5. Example rich snippet (FAQ, stars, etc.) in Google search results.
+2. Global & homepage schema management in the dashboard.
+3. Examples tab with one-click Google-recommended schema templates.
+4. User Settings dashboard where you can fine tune which pages get schema.
+5. Export tool for transferring your schema from one site to another via SQL.
+6. Generate customized schema for posts automatically!
 
 == Changelog ==
 

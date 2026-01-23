@@ -133,8 +133,9 @@ Yes — post-1.6.2, all dynamic content (titles, paths) is sanitized, JSON is se
 
 ## Screenshots
 
-1. New metabox in post editor – edit schema alongside content.
-2. Examples tab with one-click templates.
-3. Real-time editing & AJAX save feedback.
-4. Global schemas in dashboard.
-5. Example rich snippet in Google results.
+1. The new Schema Scalpel metabox in the post editor – create and edit JSON-LD right where you write content.
+2. Global & homepage schema management in the dashboard.
+3. Examples tab with one-click Google-recommended schema templates.
+4. User Settings dashboard where you can fine tune which pages get schema.
+5. Export tool for transferring your schema from one site to another via SQL.
+6. Generate customized schema for posts automatically!
