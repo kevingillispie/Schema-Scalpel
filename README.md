@@ -1,7 +1,7 @@
 # Schema Scalpel
 
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/schema-scalpel?label=WP.org)](https://wordpress.org/plugins/schema-scalpel/)
-[![License](https://img.shields.io/badge/license-GPLv2%20or%20later-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![License](https://img.shields.io/badge/license-GPLv3%20or%20later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 
 Schema Scalpel gives you surgical control over structured data — add custom JSON-LD schema markup precisely where it matters, now with a powerful metabox editor right in the post/page screen.
 
@@ -30,11 +30,11 @@ Support ongoing development at [https://schemascalpel.com/donate/](https://schem
 ## Requirements
 
 - **Requires at least**: WordPress 5.0
-- **Tested up to**: WordPress 6.7 (or latest; update on release)
-- **Stable tag**: 2.0
+- **Tested up to**: WordPress 6.9
+- **Stable tag**: 2.0.1
 - **Requires PHP**: 7.4
-- **License**: GPLv2 or later
-- **License URI**: [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)
+- **License**: GPLv3 or later
+- **License URI**: [https://www.gnu.org/licenses/gpl-3.0.html](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ## Description
 
@@ -99,7 +99,13 @@ Yes — post-1.6.2, all dynamic content (titles, paths) is sanitized, JSON is se
 
 ## Changelog
 
-### 2.0.0 (January 2026)
+### 2.0.1
+
+- **Performance**: Third-party schema disabling (Yoast, All in One SEO, Rank Math) now uses a single efficient database query instead of three separate queries on every page load.
+- Updated query to use the modern `%i` identifier placeholder for table names.
+- Code cleanup and removal of temporary debug logging.
+
+### 2.0.0 (2026)
 
 - **Major**: New **Schema Scalpel metabox** in post/page editor.
   - Create/edit/delete per-post/page JSON-LD schemas on the spot.
@@ -126,6 +132,8 @@ Yes — post-1.6.2, all dynamic content (titles, paths) is sanitized, JSON is se
 (Older entries omitted for brevity; keep full history in repo if desired.)
 
 ## Upgrade Notice
+
+**To 2.0.1**: Small but meaningful performance boost — fewer database queries when disabling third-party SEO schema output.
 
 **To 2.0**: Major feature release — enjoy the new metabox! All existing schemas remain intact. Clear cache if needed after update. Highly recommended.
 

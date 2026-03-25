@@ -3,7 +3,7 @@
  * Plugin Name:       Schema Scalpel
  * Plugin URI:        https://schemascalpel.com/
  * Description:       Boost your site’s SEO with Schema Scalpel, a user-friendly plugin for crafting custom schema markup on a per-page basis.
- * Version:           2.0
+ * Version:           2.0.1
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Tested up to:      6.9
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SCHEMA_SCALPEL_VERSION', '2.0' );
+define( 'SCHEMA_SCALPEL_VERSION', '2.0.1' );
 define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'scsc' );
 define( 'SCHEMA_SCALPEL_SLUG', 'scsc_' );
 define( 'SCHEMA_SCALPEL_PLUGIN', __FILE__ );
@@ -108,39 +108,42 @@ function scsc_disable_third_party_schema() {
 
 	$settings_table = $wpdb->prefix . SCHEMA_SCALPEL_SLUG . 'settings';
 
-	// Early exit if settings table doesn't exist.
+	// Early exit if table doesn't exist.
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) !== $settings_table ) {
 		return;
 	}
 
-	// Helper: returns true if the plugin should be DISABLED (setting value = '1').
-	$should_disable = function ( string $key ) use ( $wpdb, $settings_table ): bool {
-		$value = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT setting_value FROM {$settings_table} WHERE setting_key = %s",
-				$key
-			)
-		);
-		// '1' = disabled, null or '0' = enabled.
+	// Fetch ALL relevant settings in ONE query.
+	$disabled = $wpdb->get_results(
+		$wpdb->prepare(
+			'SELECT setting_key, setting_value 
+             FROM %i 
+             WHERE setting_key IN (%s, %s, %s)',
+			$settings_table,
+			'yoast_schema',
+			'aio_schema',
+			'rankmath_schema'
+		),
+		OBJECT_K
+	);
+
+	// Helper that checks the already-fetched array.
+	$should_disable = function ( string $key ) use ( $disabled ): bool {
+		$value = $disabled[ $key ]->setting_value ?? '0';
 		return '1' === $value;
 	};
 
-	// Disable Yoast SEO schema.
+	// Now the checks are free (no extra DB queries).
 	if ( $should_disable( 'yoast_schema' ) ) {
-		// Modern Yoast: block the entire graph.
 		add_filter( 'wpseo_schema_graph', '__return_false', PHP_INT_MAX );
-
-		// Fallback for older versions.
 		add_filter( 'wpseo_json_ld_output', '__return_false', PHP_INT_MAX );
 	}
 
-	// Disable All in One SEO.
 	if ( $should_disable( 'aio_schema' ) ) {
 		add_filter( 'aioseo_schema_output', '__return_empty_array', PHP_INT_MAX );
 		add_filter( 'aioseo_disable_schema', '__return_true', PHP_INT_MAX );
 	}
 
-	// Disable Rank Math.
 	if ( $should_disable( 'rankmath_schema' ) ) {
 		add_filter( 'rank_math/json_ld', '__return_empty_array', PHP_INT_MAX );
 		add_filter( 'rank_math/frontend/disable_schema', '__return_true', PHP_INT_MAX );

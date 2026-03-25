@@ -3,11 +3,11 @@ Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json-ld, markup, per-page, yoast, rank math, all-in-one-seo, microdata, search engine, rich snippets
 Requires at least: 5.0
-Tested up to: 6.7
-Stable tag: 2.0
+Tested up to: 6.9
+Stable tag: 2.0.1
 Requires PHP: 7.4
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Add custom JSON-LD schema markup per post or page with a powerful new editor metabox – precise, fast, and SEO-boosting.
 
@@ -74,9 +74,12 @@ Yes — recent updates include full sanitization of dynamic content (post titles
 
 == Changelog ==
 
-= 2.0.0 =
-*Date: 2026-01-XX* (adjust to your release date)
+= 2.0.1 =
+* **Performance**: Third-party schema disabling (Yoast, All in One SEO, Rank Math) now uses a single efficient database query instead of three separate queries on every page load.
+* Updated query to use the modern `%i` identifier placeholder for table names.
+* Code cleanup and removal of temporary debug logging.
 
+= 2.0.0 =
 **Major Feature**
 - Introduced full-featured **Schema Scalpel metabox** in the post/page editor.
   - Create, edit, delete per-post/page JSON-LD schemas directly.
@@ -103,8 +106,6 @@ Yes — recent updates include full sanitization of dynamic content (post titles
 = 1.6.2 =
 * **Security**: Fixed Stored XSS vulnerability via post titles in JSON-LD output.
 * Sanitized titles, hardened JSON encoding, secured URL/breadcrumb handling.
-
-(Older entries can be truncated or kept as-is if space allows)
 
 == Upgrade Notice ==
 
