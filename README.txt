@@ -75,10 +75,10 @@ Yes. As of v2.0.2, the plugin uses the latest WordPress database abstraction sta
 == Changelog ==
 
 = 2.0.2 =
-* **Security & Hardening**: Implemented the modern `%i` identifier placeholder across all custom database queries to ensure maximum compatibility and protection against SQL injection.
-* **Performance**: Refactored bulk schema generation to use a single batch DELETE/INSERT logic, reducing database round-trips by up to 98% on large sites.
-* **Compatibility**: Full audit for PHP 8.4 compatibility, including resolving "Undefined Property" notices and refining type-casting for database results.
-* **Maintenance**: Cleaned up the SCSC_Uninstaller and SCSC_Upgrade classes for smoother plugin lifecycle management.
+* **Security & Database Hardening**: Switched all custom table queries to the modern `%i` identifier placeholder for full compatibility with current WordPress standards and stronger protection against SQL injection.
+* **Performance**: Refactored bulk schema generation to use efficient batch DELETE/INSERT operations, dramatically reducing database round-trips on sites with many posts/pages.
+* **Compatibility**: Full audit and fixes for PHP 8.4, including resolution of "Undefined Property" notices and improved type handling for database results.
+* **Maintenance**: Cleaned up the uninstaller and upgrade classes for more reliable plugin activation/deactivation cycles.
 
 = 2.0.1 =
 * **Performance**: Third-party schema disabling (Yoast, All in One SEO, Rank Math) now uses a single efficient database query instead of three separate queries on every page load.
@@ -116,7 +116,7 @@ Yes. As of v2.0.2, the plugin uses the latest WordPress database abstraction sta
 == Upgrade Notice ==
 
 = 2.0.2 =
-This is a high-priority maintenance update that hardens database security and significantly improves performance for sites with large amounts of content. Highly recommended for all users.
+High-priority maintenance release. Improves database security with modern query practices and significantly boosts performance for large sites. Recommended for all users.
 
 = 2.0 =
 Big usability upgrade! Enjoy the new metabox for faster per-page schema editing. All existing data is preserved — no migration needed. Highly recommended for all users.
