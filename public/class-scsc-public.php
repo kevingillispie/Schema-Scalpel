@@ -271,8 +271,8 @@ class SCSC_Public {
 				ARRAY_A
 			);
 		} elseif ( is_home() && ! is_front_page() ) {
-			$target_id = get_option( 'page_for_posts' );
-			if ( $target_id ) {
+			$target_id = absint( get_option( 'page_for_posts' ) );
+			if ( 0 < $target_id ) {
 				$results = $wpdb->get_results(
 					$wpdb->prepare( "SELECT custom_schema FROM %i WHERE post_id = %d AND schema_type = 'pages'", $schema_table, $target_id ),
 					ARRAY_A
@@ -297,29 +297,17 @@ class SCSC_Public {
 		 * Inject homepage schema (including legacy 'pages' type for front page).
 		 */
 		if ( is_front_page() ) {
-			$home_id = get_the_ID();
-
-			// First: explicit 'homepage' type (for future/new installs).
-			$home_schema = $wpdb->get_results(
+			$home_id         = get_the_ID();
+			$all_home_schema = $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT custom_schema FROM %i WHERE schema_type = 'homepage'",
-					$schema_table
-				),
-				ARRAY_A
-			);
-
-			// Second: fallback to 'pages' type with post_id matching the front page (backward compatibility).
-			$page_schema_for_home = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT custom_schema FROM %i WHERE schema_type = 'pages' AND post_id = %d",
+					"SELECT custom_schema FROM %i 
+                    WHERE schema_type = 'homepage' 
+                    OR (schema_type = 'pages' AND post_id = %d)",
 					$schema_table,
 					$home_id
 				),
 				ARRAY_A
 			);
-
-			// Merge both (page-specific takes precedence if both exist? Or just combine).
-			$all_home_schema = array_merge( $home_schema, $page_schema_for_home );
 
 			foreach ( $all_home_schema as $row ) {
 				$schema = maybe_unserialize( $row['custom_schema'] );

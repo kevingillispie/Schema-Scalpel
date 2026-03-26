@@ -115,9 +115,11 @@ class SCSC_Upgrade {
 
 			// Execute ALTER TABLE if needed.
 			if ( $needs_update ) {
-				$alter_sql = $wpdb->prepare(
-					'ALTER TABLE %i ' . implode( ', ', $alter_queries ),
-					$table_name
+				$alter_queries_string = implode( ', ', $alter_queries );
+				$alter_sql            = $wpdb->prepare(
+					'ALTER TABLE %i %s',
+					$table_name,
+					$alter_queries_string
 				);
 				$wpdb->query( $alter_sql );
 

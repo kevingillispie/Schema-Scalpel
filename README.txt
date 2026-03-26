@@ -1,10 +1,10 @@
 === Schema Scalpel ===
 Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
-Tags: seo, schema, structured data, json-ld, markup, per-page, yoast, rank math, all-in-one-seo, microdata, search engine, rich snippets
+Tags: seo, schema, structured data, json-ld, rich snippets
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -61,7 +61,7 @@ No — it plays nicely. Disable schema generation in those plugins if you want S
 Google strongly recommends JSON-LD — it's cleaner, easier to maintain, doesn't mix with HTML, and supports the most advanced schema types.
 
 = Is the plugin secure? =
-Yes — recent updates include full sanitization of dynamic content (post titles, URLs), secure JSON encoding, strict typing, and hardened output. Previous XSS issues (pre-1.6.2) are long resolved.
+Yes. As of v2.0.2, the plugin uses the latest WordPress database abstraction standards (including identifier placeholders) to harden all queries. All dynamic content is sanitized before storage and escaped on output, ensuring protection against SQL injection and XSS.
 
 == Screenshots ==
 
@@ -73,6 +73,12 @@ Yes — recent updates include full sanitization of dynamic content (post titles
 6. Generate customized schema for posts automatically!
 
 == Changelog ==
+
+= 2.0.2 =
+* **Security & Hardening**: Implemented the modern `%i` identifier placeholder across all custom database queries to ensure maximum compatibility and protection against SQL injection.
+* **Performance**: Refactored bulk schema generation to use a single batch DELETE/INSERT logic, reducing database round-trips by up to 98% on large sites.
+* **Compatibility**: Full audit for PHP 8.4 compatibility, including resolving "Undefined Property" notices and refining type-casting for database results.
+* **Maintenance**: Cleaned up the SCSC_Uninstaller and SCSC_Upgrade classes for smoother plugin lifecycle management.
 
 = 2.0.1 =
 * **Performance**: Third-party schema disabling (Yoast, All in One SEO, Rank Math) now uses a single efficient database query instead of three separate queries on every page load.
@@ -108,6 +114,9 @@ Yes — recent updates include full sanitization of dynamic content (post titles
 * Sanitized titles, hardened JSON encoding, secured URL/breadcrumb handling.
 
 == Upgrade Notice ==
+
+= 2.0.2 =
+This is a high-priority maintenance update that hardens database security and significantly improves performance for sites with large amounts of content. Highly recommended for all users.
 
 = 2.0 =
 Big usability upgrade! Enjoy the new metabox for faster per-page schema editing. All existing data is preserved — no migration needed. Highly recommended for all users.

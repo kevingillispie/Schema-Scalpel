@@ -182,7 +182,8 @@ class SCSC_Admin_Page {
 		if ( 'scsc' === sanitize_text_field( wp_unslash( $_GET['page'] ?? '' ) ) && ! isset( $_GET['set_tab'] ) ) {
 			$result = $this->wpdb->get_results(
 				$this->wpdb->prepare(
-					"SELECT setting_value FROM {$this->settings_table} WHERE setting_key = %s;",
+					'SELECT setting_value FROM %i WHERE setting_key = %s;',
+					$this->settings_table,
 					'active_tab'
 				),
 				ARRAY_A

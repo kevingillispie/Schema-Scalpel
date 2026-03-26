@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $wpdb;
 $prefix     = $wpdb->prefix;
 $table_name = $prefix . 'scsc_custom_schemas';
-$results    = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name}" ), ARRAY_A );
+$results    = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i', $table_name ), ARRAY_A );
 
 $header = ( new HTML_Refactory( 'header' ) )
 	->attr( 'class', array( 'mt-3', 'mb-2', 'd-flex', 'justify-content-center' ) )

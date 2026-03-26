@@ -49,9 +49,10 @@ function scsc_render_metabox_preview( $post ) {
 	$rows = $wpdb->get_results(
 		$wpdb->prepare(
 			"SELECT id, schema_type, post_id, custom_schema, updated
-            FROM {$table}
+            FROM %i
             WHERE (post_id = %d OR schema_type = 'global')
             ORDER BY schema_type DESC, created DESC",
+			$table,
 			$post_id
 		),
 		ARRAY_A
@@ -623,7 +624,6 @@ function scsc_render_metabox_preview( $post ) {
 				const hasFinished   = select('core/editor').didPostSaveRequestSucceed();
 
 				if (wasSaving && !isSaving && hasFinished && !isAutosaving) {
-					console.log('Main post saved successfully → auto-saving Schema Scalpel schemas...');
 
 					$('.scsc-save').each(function() {
 						const $btn = $(this);

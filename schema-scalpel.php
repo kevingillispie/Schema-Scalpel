@@ -3,7 +3,7 @@
  * Plugin Name:       Schema Scalpel
  * Plugin URI:        https://schemascalpel.com/
  * Description:       Boost your site’s SEO with Schema Scalpel, a user-friendly plugin for crafting custom schema markup on a per-page basis.
- * Version:           2.0.1
+ * Version:           2.0.2
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Tested up to:      6.9
@@ -14,7 +14,7 @@
  * Text Domain:       schema-scalpel
  *
  * Enhance your site’s structured data with per-page schema control.
- * Copyright (C) 2021 - 2025 Kevin Gillispie
+ * Copyright (C) 2021 - 2026 Kevin Gillispie
  *
  * @link https://schemascalpel.com
  * @package SchemaScalpel
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SCHEMA_SCALPEL_VERSION', '2.0.1' );
+define( 'SCHEMA_SCALPEL_VERSION', '2.0.2' );
 define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'scsc' );
 define( 'SCHEMA_SCALPEL_SLUG', 'scsc_' );
 define( 'SCHEMA_SCALPEL_PLUGIN', __FILE__ );
@@ -79,6 +79,7 @@ function run_schema_scalpel() {
 	// Check plugin version against stored database version.
 	global $wpdb;
 	$settings_table = $wpdb->prefix . 'scsc_settings';
+
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) === $settings_table ) {
 		$stored_db_version = $wpdb->get_var(
 			$wpdb->prepare(
@@ -87,9 +88,11 @@ function run_schema_scalpel() {
 				SCSC_Upgrade::DB_VERSION_KEY
 			)
 		);
+
 		if ( null === $stored_db_version ) {
 			$stored_db_version = '0.0.0';
 		}
+
 		if ( version_compare( $stored_db_version, SCSC_Upgrade::DB_VERSION, '<' ) ) {
 			SCSC_Upgrade::upgrade();
 		}
@@ -108,12 +111,12 @@ function scsc_disable_third_party_schema() {
 
 	$settings_table = $wpdb->prefix . SCHEMA_SCALPEL_SLUG . 'settings';
 
-	// Early exit if table doesn't exist.
+	// Early exit if settings table doesn't exist.
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) !== $settings_table ) {
 		return;
 	}
 
-	// Fetch ALL relevant settings in ONE query.
+	// Fetch ALL relevant settings in ONE query (performance fix).
 	$disabled = $wpdb->get_results(
 		$wpdb->prepare(
 			'SELECT setting_key, setting_value 
@@ -133,7 +136,7 @@ function scsc_disable_third_party_schema() {
 		return '1' === $value;
 	};
 
-	// Now the checks are free (no extra DB queries).
+	// Disable the third-party schemas if the setting is '1'.
 	if ( $should_disable( 'yoast_schema' ) ) {
 		add_filter( 'wpseo_schema_graph', '__return_false', PHP_INT_MAX );
 		add_filter( 'wpseo_json_ld_output', '__return_false', PHP_INT_MAX );

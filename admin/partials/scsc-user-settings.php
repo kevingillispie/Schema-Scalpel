@@ -28,11 +28,12 @@ function starts_with( $haystack, $needle ) {
  * Get database exclusions.
  */
 global $wpdb;
-$current_excluded_results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'exclude';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
-$database_exclusions      = array();
-foreach ( $current_excluded_results as $key => $value ) {
-	array_push( $database_exclusions, $current_excluded_results[ $key ]['setting_value'] );
-}
+$database_exclusions = $wpdb->get_col(
+	$wpdb->prepare(
+		"SELECT setting_value FROM %i WHERE setting_key = 'exclude';",
+		$wpdb->prefix . 'scsc_settings'
+	)
+);
 
 /**
  * Update settings on save.

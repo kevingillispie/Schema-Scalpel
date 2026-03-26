@@ -36,10 +36,14 @@ final class SCSC_Uninstaller {
 	public static function uninstall(): void {
 		global $wpdb;
 
+		$table_settings = $wpdb->prefix . 'scsc_settings';
+		$table_schemas  = $wpdb->prefix . 'scsc_custom_schemas';
+
 		// Retrieve the "delete on uninstall" setting.
 		$setting = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT setting_value FROM {$wpdb->prefix}scsc_settings WHERE setting_key = %s",
+				'SELECT setting_value FROM %i WHERE setting_key = %s',
+				$table_settings,
 				'delete_on_uninstall'
 			),
 			ARRAY_A
@@ -51,15 +55,10 @@ final class SCSC_Uninstaller {
 			return;
 		}
 
-		// Define table names (with prefix).
-		$table_schemas  = $wpdb->prefix . 'scsc_custom_schemas';
-		$table_settings = $wpdb->prefix . 'scsc_settings';
+		// Drop tables if they exist using the identifier placeholder.
+		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table_schemas ) );
+		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table_settings ) );
 
-		// Drop tables if they exist.
-		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table_schemas ) );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table_settings ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-
-		// Flush rewrite rules to clean up any registered rules.
 		flush_rewrite_rules();
 	}
 }

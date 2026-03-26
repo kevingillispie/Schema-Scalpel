@@ -128,12 +128,13 @@ class SCSC_Admin {
 	public static function generate_blogposting_schema( $update_type, $post_type, $author_type, $keywords = 'false' ) {
 		global $wpdb;
 
-		$site_url  = home_url(); // Base site URL.
-		$author_id = esc_url( trailingslashit( $site_url ) . '#' . strtolower( $author_type ) );
+		// 1. DEFINE VARIABLES FIRST
+		$table        = $wpdb->prefix . 'scsc_custom_schemas';
+		$like_pattern = '%' . esc_sql( $post_type ) . '%';
+		$site_url     = home_url();
+		$post_ids     = array();
 
 		// Determine which posts to process.
-		$post_ids = array();
-
 		if ( 'Missing' === $update_type || 'Replace' === $update_type ) {
 			$post_ids = get_posts(
 				array(
@@ -150,17 +151,33 @@ class SCSC_Admin {
 			return;
 		}
 
-		// Retrieve existing post schema IDs for skip/replace logic.
-		$table                    = $wpdb->prefix . 'scsc_custom_schemas';
-		$like_pattern             = '%' . esc_sql( $post_type ) . '%';
-		$existing_results         = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT DISTINCT post_id FROM %i WHERE schema_type = %s AND custom_schema LIKE %s', $table, 'posts', $like_pattern ),
-			ARRAY_A
-		);
-		$existing_post_schema_ids = array_map( 'intval', wp_list_pluck( $existing_results, 'post_id' ) );
+		// 2. BULK DELETE (Safe and modern %i usage)
+		if ( 'Replace' === $update_type || is_numeric( $update_type ) ) {
+			$id_placeholders = implode( ',', array_fill( 0, count( $post_ids ), '%d' ) );
 
+			// Merge the table/type/pattern with the array of IDs
+			$query_args = array_merge( array( $table, 'posts', $like_pattern ), $post_ids );
+
+			$wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM %i WHERE schema_type = %s AND custom_schema LIKE %s AND post_id IN ($id_placeholders)",
+					$query_args
+				)
+			);
+		}
+
+		// 3. FETCH REMAINING (Only needed for 'Missing' logic)
+		$existing_post_schema_ids = array();
+		if ( 'Missing' === $update_type ) {
+			$existing_results         = $wpdb->get_results(
+				$wpdb->prepare( 'SELECT DISTINCT post_id FROM %i WHERE schema_type = %s AND custom_schema LIKE %s', $table, 'posts', $like_pattern ),
+				ARRAY_A
+			);
+			$existing_post_schema_ids = array_map( 'intval', wp_list_pluck( $existing_results, 'post_id' ) );
+		}
+
+		// 4. THE LOOP: Now only handles the heavy JSON construction and INSERTs.
 		foreach ( $post_ids as $p_id ) {
-			// Skip posts that already have schema when only adding missing ones.
 			if ( 'Missing' === $update_type && in_array( $p_id, $existing_post_schema_ids, true ) ) {
 				continue;
 			}
@@ -192,22 +209,56 @@ class SCSC_Admin {
 			}
 
 			// Build the JSON-LD string (HTML-entity encoded for safe storage).
-			$blog_posting = <<<BLOGPOSTING
-{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;{$post_type}&quot;,&quot;@id&quot;:&quot;{$post_permalink}#blogposting&quot;,&quot;headline&quot;:&quot;{$post_title}&quot;,&quot;url&quot;:&quot;{$post_permalink}&quot;,{$post_thumbnail_schema}&quot;datePublished&quot;:&quot;{$post_published_time}&quot;,&quot;dateModified&quot;:&quot;{$post_modified_time}&quot;,&quot;author&quot;:[{&quot;@type&quot;:&quot;{$author_type}&quot;,&quot;name&quot;:&quot;{$author_name}&quot;,&quot;url&quot;:&quot;{$author_url}&quot;}],&quot;publisher&quot;:[{&quot;@type&quot;:&quot;{$author_type}&quot;,&quot;name&quot;:&quot;{$author_name}&quot;,&quot;url&quot;:&quot;{$author_url}&quot;}],&quot;description&quot;:&quot;{$post_excerpt}&quot;,{$post_keywords_schema}&quot;mainEntityOfPage&quot;:{&quot;@id&quot;:&quot;{$post_permalink}&quot;}}
-BLOGPOSTING;
+			// 1. Build a clean PHP array of the data.
+			$schema_data = array(
+				'@context'         => 'https://schema.org',
+				'@type'            => $post_type,
+				'@id'              => $post_permalink . '#blogposting',
+				'headline'         => $post_title,
+				'url'              => $post_permalink,
+				'datePublished'    => $post_published_time,
+				'dateModified'     => $post_modified_time,
+				'author'           => array(
+					array(
+						'@type' => $author_type,
+						'name'  => $author_name,
+						'url'   => $author_url,
+					),
+				),
+				'publisher'        => array(
+					array(
+						'@type' => $author_type,
+						'name'  => $author_name,
+						'url'   => $author_url,
+					),
+				),
+				'description'      => $post_excerpt,
+				'mainEntityOfPage' => array(
+					'@id' => $post_permalink,
+				),
+			);
 
-			// Delete existing schema if replacing or updating a single post that already has one.
-			if ( 'Replace' === $update_type || ( is_numeric( $update_type ) && in_array( $p_id, $existing_post_schema_ids, true ) ) ) {
-				$wpdb->query(
-					$wpdb->prepare(
-						'DELETE FROM %i WHERE post_id = %d AND schema_type = %s AND custom_schema LIKE %s',
-						$table,
-						$p_id,
-						'posts',
-						$like_pattern
-					)
-				);
+			// 2. Add conditional fields if they exist.
+			if ( ! empty( $post_thumbnail_url ) ) {
+				$schema_data['image'] = $post_thumbnail_url;
 			}
+
+			if ( 'Placeholder' === $keywords ) {
+				$schema_data['keywords'] = array();
+			} elseif ( 'Tags' === $keywords && ! empty( $tags ) ) {
+				$schema_data['keywords'] = array_map( 'esc_html', $tags );
+			}
+
+			// 3. Encode safely.
+			// JSON_HEX_TAG turns < and > into unicode so <script> cannot execute.
+			// JSON_HEX_QUOT handles the " breakout attempt.
+			$encoded_json = wp_json_encode(
+				$schema_data,
+				JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS
+			);
+
+			// 4. Convert to entities for your specific storage format.
+			$blog_posting = esc_html( $encoded_json );
 
 			// Insert the new schema.
 			$wpdb->insert(
@@ -216,8 +267,10 @@ BLOGPOSTING;
 					'custom_schema' => serialize( $blog_posting ),
 					'schema_type'   => 'posts',
 					'post_id'       => $p_id,
+					'created'       => current_time( 'mysql' ),
+					'updated'       => current_time( 'mysql' ),
 				),
-				array( '%s', '%s', '%d' )
+				array( '%s', '%s', '%d', '%s', '%s' )
 			);
 		}
 	}
