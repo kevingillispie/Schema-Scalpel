@@ -33,6 +33,12 @@ Support ongoing development at [https://schemascalpel.com/donate/](https://schem
 
 Many sites miss out on rich snippets and stronger entity signals because schema is missing or duplicated. **Schema Scalpel** provides precise, per-page JSON-LD control with zero bloat.
 
+**Schema Scalpel v2.0.2** brings a massive leap in security and performance. While the intuitive metabox workflow remains the same, we have completely re-engineered the data layer:
+
+- **Bulletproof Encoding**: Optimized for PHP 8.4, our new encoding engine uses bitwise flags to neutralize XSS and malformed JSON payloads.
+- **SQL Hardening**: Every database query now uses the modern `%i` identifier placeholder, meeting the highest WordPress security standards.
+- **Performance at Scale**: A new batch-processing logic for bulk schema generation, significantly reducing server load.
+
 **Version 2.0+** features a game-changing **metabox editor** directly in the Gutenberg or Classic editor:
 
 - **Edit In-Situ**: Create and manage schemas without leaving your content screen.
