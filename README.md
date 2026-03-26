@@ -24,8 +24,8 @@ Support ongoing development at [https://schemascalpel.com/donate/](https://schem
 ## Requirements
 
 - **Requires at least**: WordPress 5.0
-- **Tested up to**: WordPress 6.5
-- **Stable tag**: 2.0.2
+- **Tested up to**: WordPress 6.9
+- **Stable tag**: 2.0.3
 - **Requires PHP**: 7.4 (Fully compatible through **PHP 8.4**)
 - **License**: GPLv3 or later
 
@@ -33,11 +33,11 @@ Support ongoing development at [https://schemascalpel.com/donate/](https://schem
 
 Many sites miss out on rich snippets and stronger entity signals because schema is missing or duplicated. **Schema Scalpel** provides precise, per-page JSON-LD control with zero bloat.
 
-**Schema Scalpel v2.0.2** brings a massive leap in security and performance. While the intuitive metabox workflow remains the same, we have completely re-engineered the data layer:
+**Schema Scalpel v2.0.3** reinforces the plugin's reputation for stability and data integrity. We have overhauled the storage engine to support high-density structured data:
 
-- **Bulletproof Encoding**: Optimized for PHP 8.4, our new encoding engine uses bitwise flags to neutralize XSS and malformed JSON payloads.
-- **SQL Hardening**: Every database query now uses the modern `%i` identifier placeholder, meeting the highest WordPress security standards.
-- **Performance at Scale**: A new batch-processing logic for bulk schema generation, significantly reducing server load.
+- **Expanded Storage Capacity**: Upgraded the schema engine to use `MEDIUMBLOB`, allowing up to **16MB** of JSON-LD per post. This eliminates the "64KB truncation" bug found in many other plugins, ensuring massive FAQ and Product schemas remain valid.
+- **SQL Migration Hardening**: Refactored the database upgrade logic to resolve syntax errors on modern MariaDB environments while strictly adhering to WordPress identifier escaping standards.
+- **Scalable Architecture**: Updated the primary keys to `BIGINT UNSIGNED`, future-proofing the plugin for enterprise-level sites with millions of records.
 
 **Version 2.0+** features a game-changing **metabox editor** directly in the Gutenberg or Classic editor:
 
@@ -47,20 +47,26 @@ Many sites miss out on rich snippets and stronger entity signals because schema 
 
 ### Why Schema Scalpel?
 
-- **Hardened Security**: v2.0.2 implements the modern `%i` identifier placeholder and `JSON_HEX_TAG` encoding to neutralize complex XSS threats.
-- **High Performance**: Optimized batch processing reduces database round-trips by up to 98% on large-scale content generation.
+- **Enterprise Reliability**: v2.0.3 ensures your data is never truncated and your migrations are error-free.
+- **Hardened Security**: Implements modern `%i` identifier placeholders and `JSON_HEX_TAG` encoding to neutralize XSS threats.
+- **High Performance**: Optimized batch processing reduces database round-trips by up to 98%.
 - **Deep Compatibility**: Works flawlessly alongside Yoast, Rank Math, and AIOSEO.
-- **Modern Standards**: Strict typing, full WP Coding Standards compliance, and ready for the PHP 8.4 era.
 
 ## Changelog
+
+### 2.0.3 (2026)
+
+- **FIX**: Resolved "SQL Syntax Error" in database migration script affecting specific MariaDB/MySQL configurations.
+- **DATABASE**: Upgraded `custom_schema` storage from `TEXT` to `MEDIUMBLOB` to prevent data truncation for large JSON-LD payloads.
+- **SCALABILITY**: Transitioned `id` columns to `BIGINT UNSIGNED` to support high-volume content databases.
+- **REFACTOR**: Satisfied WP-Coding Standards by using `sprintf` patterns for dynamic table identifiers in migration queries.
 
 ### 2.0.2 (2026)
 
 - **SECURITY**: Implemented modern `%i` identifier placeholders for all custom database queries.
-- **HARDENING**: Enhanced JSON encoding with bitwise flags (`JSON_HEX_TAG`, `JSON_HEX_QUOT`) to neutralize advanced XSS payloads in post titles.
-- **PERFORMANCE**: Refactored `generate_blogposting_schema` to use efficient batch `DELETE`/`INSERT` logic.
-- **COMPATIBILITY**: Full audit for **PHP 8.4** support, resolving property access notices and refining type-casting.
-- **REFACTOR**: Replaced manual SQL operations with native `$wpdb->replace()` and `$wpdb->insert()` for improved stability.
+- **HARDENING**: Enhanced JSON encoding with bitwise flags to neutralize advanced XSS payloads.
+- **PERFORMANCE**: Refactored bulk generation to use efficient batch logic.
+- **COMPATIBILITY**: Full audit for **PHP 8.4** support.
 
 ### 2.0.1
 
@@ -75,6 +81,6 @@ Many sites miss out on rich snippets and stronger entity signals because schema 
 
 ## Upgrade Notice
 
-**To 2.0.2**: **Recommended Update.** Implements critical database hardening and performance optimizations for large sites.
+**To 2.0.3**: **Critical Maintenance Update.** Fixes database migration errors and prevents schema data truncation for large files. Highly recommended for all users.
 
-**To 2.0**: Major feature release — enjoy the new editor metabox!
+**To 2.0.2**: Implements critical database hardening and performance optimizations.

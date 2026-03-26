@@ -25,7 +25,7 @@ class SCSC_Upgrade {
 	 *
 	 * @var string
 	 */
-	const DB_VERSION = '1.6.0';
+	const DB_VERSION = '2.0.3';
 
 	/**
 	 * Setting key for storing the database version in wp_scsc_settings.
@@ -50,7 +50,7 @@ class SCSC_Upgrade {
 		$table_name     = $wpdb->prefix . 'scsc_custom_schemas';
 		$settings_table = $wpdb->prefix . 'scsc_settings';
 
-		// Check if settings table exists.
+		// Check if settings table exists (safe pattern).
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) !== $settings_table ) {
 			return;
 		}
@@ -87,13 +87,13 @@ class SCSC_Upgrade {
 			$id_type            = '';
 			$custom_schema_type = '';
 			foreach ( $columns as $column ) {
-                // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- MySQL returns Field and Type, cannot rename.
+                // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- MySQL returns Field and Type.
 				if ( 'id' === $column->Field ) {
-                    // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- MySQL returns Type, cannot rename.
+                    // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$id_type = strtolower( $column->Type );
-                // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- MySQL returns Field and Type, cannot rename.
+                // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				} elseif ( 'custom_schema' === $column->Field ) {
-                    // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- MySQL returns Type, cannot rename.
+                    // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$custom_schema_type = strtolower( $column->Type );
 				}
 			}
@@ -114,59 +114,20 @@ class SCSC_Upgrade {
 			}
 
 			// Execute ALTER TABLE if needed.
-			if ( $needs_update ) {
-				$alter_queries_string = implode( ', ', $alter_queries );
-				$alter_sql            = $wpdb->prepare(
-					'ALTER TABLE %i %s',
-					$table_name,
-					$alter_queries_string
+			if ( $needs_update && ! empty( $alter_queries ) ) {
+				$modify_part = implode( ', ', $alter_queries );
+
+				$query_template = sprintf( 'ALTER TABLE %%i %s', $modify_part );
+
+				$alter_sql = $wpdb->prepare(
+					$query_template,
+					$table_name
 				);
-				$wpdb->query( $alter_sql );
 
-				if ( empty( $wpdb->last_error ) ) {
-					// Update or insert database version in wp_scsc_settings.
-					$existing_version = $wpdb->get_var(
-						$wpdb->prepare(
-							'SELECT setting_key FROM %i WHERE setting_key = %s',
-							$settings_table,
-							self::DB_VERSION_KEY
-						)
-					);
+				$result = $wpdb->query( $alter_sql );
 
-					if ( $existing_version ) {
-						$wpdb->update(
-							$settings_table,
-							array(
-								'setting_value' => self::DB_VERSION,
-								'updated'       => current_time( 'mysql' ),
-							),
-							array( 'setting_key' => self::DB_VERSION_KEY ),
-							array( '%s', '%s' ),
-							array( '%s' )
-						);
-					} else {
-						$wpdb->insert(
-							$settings_table,
-							array(
-								'setting_key'   => self::DB_VERSION_KEY,
-								'setting_value' => self::DB_VERSION,
-								'updated'       => current_time( 'mysql' ),
-							),
-							array( '%s', '%s', '%s' )
-						);
-					}
+				if ( false === $result || ! empty( $wpdb->last_error ) ) {
 
-					add_action(
-						'admin_notices',
-						function () {
-							?>
-							<div class="notice notice-success is-dismissible">
-								<p><?php printf( esc_html__( 'Schema Scalpel database schema updated to version %s.', 'schema-scalpel' ), esc_html( self::DB_VERSION ) ); ?></p>
-							</div>
-							<?php
-						}
-					);
-				} else {
 					add_action(
 						'admin_notices',
 						function () use ( $wpdb ) {
@@ -174,42 +135,57 @@ class SCSC_Upgrade {
 							<div class="notice notice-error is-dismissible">
 								<p><?php printf( esc_html__( 'Schema Scalpel database schema update failed: %s', 'schema-scalpel' ), esc_html( $wpdb->last_error ) ); ?></p>
 							</div>
-							<?php
+										<?php
 						}
 					);
+					return;
 				}
-			} else {
-				// Update version even if no changes were needed.
-				$existing_version = $wpdb->get_var(
-					$wpdb->prepare(
-						'SELECT setting_key FROM %i WHERE setting_key = %s',
-						$settings_table,
-						self::DB_VERSION_KEY
-					)
-				);
+			}
 
-				if ( $existing_version ) {
-					$wpdb->update(
-						$settings_table,
-						array(
-							'setting_value' => self::DB_VERSION,
-							'updated'       => current_time( 'mysql' ),
-						),
-						array( 'setting_key' => self::DB_VERSION_KEY ),
-						array( '%s', '%s' ),
-						array( '%s' )
-					);
-				} else {
-					$wpdb->insert(
-						$settings_table,
-						array(
-							'setting_key'   => self::DB_VERSION_KEY,
-							'setting_value' => self::DB_VERSION,
-							'updated'       => current_time( 'mysql' ),
-						),
-						array( '%s', '%s', '%s' )
-					);
-				}
+			// === Update (or insert) the stored DB version — always run on successful upgrade path ===
+			$existing_version = $wpdb->get_var(
+				$wpdb->prepare(
+					'SELECT setting_key FROM %i WHERE setting_key = %s',
+					$settings_table,
+					self::DB_VERSION_KEY
+				)
+			);
+
+			if ( $existing_version ) {
+				$wpdb->update(
+					$settings_table,
+					array(
+						'setting_value' => self::DB_VERSION,
+						'updated'       => current_time( 'mysql' ),
+					),
+					array( 'setting_key' => self::DB_VERSION_KEY ),
+					array( '%s', '%s' ),
+					array( '%s' )
+				);
+			} else {
+				$wpdb->insert(
+					$settings_table,
+					array(
+						'setting_key'   => self::DB_VERSION_KEY,
+						'setting_value' => self::DB_VERSION,
+						'updated'       => current_time( 'mysql' ),
+					),
+					array( '%s', '%s', '%s' )
+				);
+			}
+
+			// Success notice (only show on admin).
+			if ( is_admin() ) {
+				add_action(
+					'admin_notices',
+					function () {
+						?>
+						<div class="notice notice-success is-dismissible">
+							<p><?php printf( esc_html__( 'Schema Scalpel database schema updated to version %s.', 'schema-scalpel' ), esc_html( self::DB_VERSION ) ); ?></p>
+						</div>
+						<?php
+					}
+				);
 			}
 		}
 	}

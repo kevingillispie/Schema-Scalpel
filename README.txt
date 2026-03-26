@@ -4,7 +4,7 @@ Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json-ld, rich snippets
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -61,7 +61,7 @@ No — it plays nicely. Disable schema generation in those plugins if you want S
 Google strongly recommends JSON-LD — it's cleaner, easier to maintain, doesn't mix with HTML, and supports the most advanced schema types.
 
 = Is the plugin secure? =
-Yes. As of v2.0.2, the plugin uses the latest WordPress database abstraction standards (including identifier placeholders) to harden all queries. All dynamic content is sanitized before storage and escaped on output, ensuring protection against SQL injection and XSS.
+Yes. As of v2.0.3, the plugin utilizes strict `$wpdb->prepare()` patterns for all migrations and queries. We have hardened the database schema to use `MEDIUMBLOB` for schema storage, preventing data truncation and ensuring large, complex JSON-LD payloads remain intact and valid.
 
 == Screenshots ==
 
@@ -74,11 +74,16 @@ Yes. As of v2.0.2, the plugin uses the latest WordPress database abstraction sta
 
 == Changelog ==
 
+= 2.0.3 =
+* **Fix**: Resolved SQL syntax error during database migration on certain MariaDB/MySQL environments.
+* **Database Enhancement**: Upgraded `custom_schema` column to `MEDIUMBLOB` (16MB capacity). This fixes "Invalid JSON" errors caused by large schema payloads being truncated at 64KB.
+* **Database Enhancement**: Upgraded `id` column to `BIGINT UNSIGNED` for better scalability on high-volume sites.
+* **Standards Compliance**: Refactored migration queries to satisfy WordPress Coding Standards (PHPCS) while maintaining strict identifier escaping.
+
 = 2.0.2 =
 * **Security & Database Hardening**: Switched all custom table queries to the modern `%i` identifier placeholder for full compatibility with current WordPress standards and stronger protection against SQL injection.
-* **Performance**: Refactored bulk schema generation to use efficient batch DELETE/INSERT operations, dramatically reducing database round-trips on sites with many posts/pages.
-* **Compatibility**: Full audit and fixes for PHP 8.4, including resolution of "Undefined Property" notices and improved type handling for database results.
-* **Maintenance**: Cleaned up the uninstaller and upgrade classes for more reliable plugin activation/deactivation cycles.
+* **Performance**: Refactored bulk schema generation to use efficient batch DELETE/INSERT operations.
+* **Compatibility**: Full audit and fixes for PHP 8.4 compatibility.
 
 = 2.0.1 =
 * **Performance**: Third-party schema disabling (Yoast, All in One SEO, Rank Math) now uses a single efficient database query instead of three separate queries on every page load.
@@ -115,11 +120,8 @@ Yes. As of v2.0.2, the plugin uses the latest WordPress database abstraction sta
 
 == Upgrade Notice ==
 
+= 2.0.3 =
+Critical fix for database migration errors and schema truncation. This update ensures large schema files are saved correctly and fixes potential SQL errors during the upgrade process. Highly recommended.
+
 = 2.0.2 =
-High-priority maintenance release. Improves database security with modern query practices and significantly boosts performance for large sites. Recommended for all users.
-
-= 2.0 =
-Big usability upgrade! Enjoy the new metabox for faster per-page schema editing. All existing data is preserved — no migration needed. Highly recommended for all users.
-
-= 1.6.2 =
-**Security update** — patches a Stored XSS vulnerability. Update immediately.
+High-priority maintenance release. Improves database security and significantly boosts performance for large sites.
