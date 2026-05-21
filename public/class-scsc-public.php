@@ -121,60 +121,8 @@ class SCSC_Public {
 		);
 	}
 
-	// =====================================================
-	// NEW: CACHING HELPER METHODS
-	// =====================================================
-
 	/**
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-	 * Generate a unique cache key for the current page.
-	 *
-	 * @return string
-	 */
-	private function get_schema_cache_key(): string {
-		global $post;
-
-		if ( is_front_page() ) {
-			return 'scsc_schema_frontpage';
-		}
-
-		if ( is_home() && ! is_front_page() ) {
-			$blog_page_id = absint( get_option( 'page_for_posts' ) );
-			return 'scsc_schema_blog_' . $blog_page_id;
-		}
-
-		if ( $post && $post->ID ) {
-			return 'scsc_schema_post_' . $post->ID;
-		}
-
-		return 'scsc_schema_global_' . md5( $_SERVER['REQUEST_URI'] ?? '' );
-	}
-
-	/**
-	 * Clear schema cache (call this after saving/deleting schemas).
-	 *
-	 * @param int|null $post_id Optional post ID to clear specific cache.
-	 */
-	public static function clear_schema_cache( $post_id = null ) {
-		if ( $post_id ) {
-			wp_cache_delete( 'scsc_schema_post_' . $post_id, 'schema_scalpel' );
-			delete_transient( 'scsc_schema_post_' . $post_id );
-		} else {
-			// Clear all known schema caches (simple approach).
-			wp_cache_flush_group( 'schema_scalpel' ); // Works with object cache.
-			// For sites without persistent cache, we rely on transient expiration.
-		}
-	}
-
-	/**
-	 * Enqueue inline schema markup (with caching).
-=======
 	 * Output inline schema markup (always fresh - no caching).
->>>>>>> Stashed changes
-=======
-	 * Output inline schema markup (always fresh - no caching).
->>>>>>> Stashed changes
 	 */
 	public function enqueue_inline_scripts() {
 		global $post;
@@ -183,24 +131,6 @@ class SCSC_Public {
 			return;
 		}
 
-		// === CACHING: Try to serve from cache first ===
-		$cache_key = $this->get_schema_cache_key();
-		$cached    = wp_cache_get( $cache_key, 'schema_scalpel' );
-
-		if ( false !== $cached ) {
-			// Cache hit — output immediately (best performance).
-			echo $cached; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			return;
-		}
-
-		// Also check transient as fallback (for sites without object cache).
-		$cached_transient = get_transient( $cache_key );
-		if ( false !== $cached_transient ) {
-			echo $cached_transient; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			return;
-		}
-
-		// === CACHE MISS: Build schema output ===
 		global $wpdb;
 
 		$site_title     = sanitize_text_field( get_bloginfo( 'name' ) );
@@ -243,15 +173,7 @@ class SCSC_Public {
 		);
 		$search_key           = $search_param_results ? $search_param_results : 's';
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-		// Build all schemas (same logic as before)
-=======
 		// Build default schemas
->>>>>>> Stashed changes
-=======
-		// Build default schemas
->>>>>>> Stashed changes
 		$website_schema = wp_json_encode(
 			array(
 				'@context'        => 'https://schema.org',
@@ -285,18 +207,8 @@ class SCSC_Public {
 		$breadcrumbs       = array_filter( explode( '/', trim( $path, '/' ) ) );
 		$breadcrumb_schema = $this->format_breadcrumbs( $root_domain, $breadcrumbs );
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-		// Start output buffer to capture all schema tags.
-		ob_start();
-=======
 		// Build output
 		$output = '';
->>>>>>> Stashed changes
-=======
-		// Build output
-		$output = '';
->>>>>>> Stashed changes
 
 		// Inject global schema.
 		$global_schema = $wpdb->get_results(
@@ -396,22 +308,7 @@ class SCSC_Public {
 			$output .= $this->format_schema_html( $breadcrumb_schema );
 		}
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-		// Get the full output.
-		$output = ob_get_clean();
-
-		// === CACHING: Store the result ===
-		wp_cache_set( $cache_key, $output, 'schema_scalpel', HOUR_IN_SECONDS * 6 ); // 6 hours.
-		set_transient( $cache_key, $output, HOUR_IN_SECONDS * 6 );
-
-		// Output the schema.
-=======
 		// Output the schema (always fresh).
->>>>>>> Stashed changes
-=======
-		// Output the schema (always fresh).
->>>>>>> Stashed changes
 		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
