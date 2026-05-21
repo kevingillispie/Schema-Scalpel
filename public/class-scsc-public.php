@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class that outputs saved schema.
+ * Class that outputs saved schema (no caching - always fresh).
  */
 class SCSC_Public {
 
@@ -106,12 +106,13 @@ class SCSC_Public {
 	}
 
 	/**
-	 * Output a JSON-LD script tag.
+	 * Build a JSON-LD script tag.
 	 *
 	 * @param string $json JSON-LD payload.
+	 * @return string
 	 */
-	private function format_schema_html( string $json ) {
-		wp_print_inline_script_tag(
+	private function format_schema_html( string $json ): string {
+		return wp_get_inline_script_tag(
 			$json,
 			array(
 				'class' => 'schema-scalpel',
@@ -125,6 +126,7 @@ class SCSC_Public {
 	// =====================================================
 
 	/**
+<<<<<<< Updated upstream
 	 * Generate a unique cache key for the current page.
 	 *
 	 * @return string
@@ -166,6 +168,9 @@ class SCSC_Public {
 
 	/**
 	 * Enqueue inline schema markup (with caching).
+=======
+	 * Output inline schema markup (always fresh - no caching).
+>>>>>>> Stashed changes
 	 */
 	public function enqueue_inline_scripts() {
 		global $post;
@@ -234,7 +239,11 @@ class SCSC_Public {
 		);
 		$search_key           = $search_param_results ? $search_param_results : 's';
 
+<<<<<<< Updated upstream
 		// Build all schemas (same logic as before)
+=======
+		// Build default schemas
+>>>>>>> Stashed changes
 		$website_schema = wp_json_encode(
 			array(
 				'@context'        => 'https://schema.org',
@@ -268,8 +277,13 @@ class SCSC_Public {
 		$breadcrumbs       = array_filter( explode( '/', trim( $path, '/' ) ) );
 		$breadcrumb_schema = $this->format_breadcrumbs( $root_domain, $breadcrumbs );
 
+<<<<<<< Updated upstream
 		// Start output buffer to capture all schema tags.
 		ob_start();
+=======
+		// Build output
+		$output = '';
+>>>>>>> Stashed changes
 
 		// Inject global schema.
 		$global_schema = $wpdb->get_results(
@@ -280,9 +294,9 @@ class SCSC_Public {
 		foreach ( $global_schema as $row ) {
 			$schema = maybe_unserialize( $row['custom_schema'] );
 			if ( is_string( $schema ) ) {
-				$schema = html_entity_decode( $schema );
-				$schema = str_replace( '&apos;', "'", $schema );
-				$this->format_schema_html( $schema );
+				$schema  = html_entity_decode( $schema );
+				$schema  = str_replace( '&apos;', "'", $schema );
+				$output .= $this->format_schema_html( $schema );
 			}
 		}
 
@@ -314,9 +328,9 @@ class SCSC_Public {
 		foreach ( $results as $row ) {
 			$schema = maybe_unserialize( $row['custom_schema'] );
 			if ( is_string( $schema ) ) {
-				$schema = html_entity_decode( $schema );
-				$schema = str_replace( '&apos;', "'", $schema );
-				$this->format_schema_html( $schema );
+				$schema  = html_entity_decode( $schema );
+				$schema  = str_replace( '&apos;', "'", $schema );
+				$output .= $this->format_schema_html( $schema );
 			}
 		}
 
@@ -337,9 +351,9 @@ class SCSC_Public {
 			foreach ( $all_home_schema as $row ) {
 				$schema = maybe_unserialize( $row['custom_schema'] );
 				if ( is_string( $schema ) ) {
-					$schema = html_entity_decode( $schema );
-					$schema = str_replace( '&apos;', "'", $schema );
-					$this->format_schema_html( $schema );
+					$schema  = html_entity_decode( $schema );
+					$schema  = str_replace( '&apos;', "'", $schema );
+					$output .= $this->format_schema_html( $schema );
 				}
 			}
 		}
@@ -350,7 +364,7 @@ class SCSC_Public {
 		);
 
 		if ( '1' === $website_enabled ) {
-			$this->format_schema_html( $website_schema );
+			$output .= $this->format_schema_html( $website_schema );
 		}
 
 		$webpage_enabled = $wpdb->get_var(
@@ -358,7 +372,7 @@ class SCSC_Public {
 		);
 
 		if ( '1' === $webpage_enabled ) {
-			$this->format_schema_html( $webpage_schema );
+			$output .= $this->format_schema_html( $webpage_schema );
 		}
 
 		$breadcrumb_enabled = $wpdb->get_var(
@@ -366,9 +380,10 @@ class SCSC_Public {
 		);
 
 		if ( '/' !== $path && '1' === $breadcrumb_enabled ) {
-			$this->format_schema_html( $breadcrumb_schema );
+			$output .= $this->format_schema_html( $breadcrumb_schema );
 		}
 
+<<<<<<< Updated upstream
 		// Get the full output.
 		$output = ob_get_clean();
 
@@ -377,6 +392,9 @@ class SCSC_Public {
 		set_transient( $cache_key, $output, HOUR_IN_SECONDS * 6 );
 
 		// Output the schema.
+=======
+		// Output the schema (always fresh).
+>>>>>>> Stashed changes
 		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
