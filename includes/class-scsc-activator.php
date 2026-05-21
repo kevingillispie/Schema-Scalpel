@@ -49,7 +49,7 @@ class SCSC_Activator {
 			$wpdb->update( $custom_schema_table, array( 'schema_type' => 'homepage' ), array( 'schema_type' => 'home' ) );
 		endif;
 
-		$schema_settings_table = $wpdb->prefix . 'scsc_settings';
+		$schema_settings_table = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings';
 		$settings_sql          = "CREATE TABLE $schema_settings_table (
             updated datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
             setting_key varchar(100) DEFAULT '' NOT NULL,

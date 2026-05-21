@@ -46,32 +46,6 @@ class SCSC_Public {
 	}
 
 	/**
-	 * Register CSS stylesheet.
-	 */
-	public function enqueue_styles() {
-		wp_enqueue_style(
-			$this->schema_scalpel,
-			SCHEMA_SCALPEL_DIRECTORY . '/public/css/scsc-public.css',
-			array(),
-			$this->version,
-			'all'
-		);
-	}
-
-	/**
-	 * Register JavaScript.
-	 */
-	public function enqueue_scripts() {
-		wp_enqueue_script(
-			$this->schema_scalpel,
-			SCHEMA_SCALPEL_DIRECTORY . '/public/js/scsc-public.js',
-			array(),
-			$this->version,
-			false
-		);
-	}
-
-	/**
 	 * Return the page title for a given URL.
 	 *
 	 * @param string $url Page URL.
@@ -146,16 +120,78 @@ class SCSC_Public {
 		);
 	}
 
+	// =====================================================
+	// NEW: CACHING HELPER METHODS
+	// =====================================================
+
 	/**
-	 * Enqueue inline schema markup.
+	 * Generate a unique cache key for the current page.
+	 *
+	 * @return string
+	 */
+	private function get_schema_cache_key(): string {
+		global $post;
+
+		if ( is_front_page() ) {
+			return 'scsc_schema_frontpage';
+		}
+
+		if ( is_home() && ! is_front_page() ) {
+			$blog_page_id = absint( get_option( 'page_for_posts' ) );
+			return 'scsc_schema_blog_' . $blog_page_id;
+		}
+
+		if ( $post && $post->ID ) {
+			return 'scsc_schema_post_' . $post->ID;
+		}
+
+		return 'scsc_schema_global_' . md5( $_SERVER['REQUEST_URI'] ?? '' );
+	}
+
+	/**
+	 * Clear schema cache (call this after saving/deleting schemas).
+	 *
+	 * @param int|null $post_id Optional post ID to clear specific cache.
+	 */
+	public static function clear_schema_cache( $post_id = null ) {
+		if ( $post_id ) {
+			wp_cache_delete( 'scsc_schema_post_' . $post_id, 'schema_scalpel' );
+			delete_transient( 'scsc_schema_post_' . $post_id );
+		} else {
+			// Clear all known schema caches (simple approach).
+			wp_cache_flush_group( 'schema_scalpel' ); // Works with object cache.
+			// For sites without persistent cache, we rely on transient expiration.
+		}
+	}
+
+	/**
+	 * Enqueue inline schema markup (with caching).
 	 */
 	public function enqueue_inline_scripts() {
 		global $post;
 
-		if ( ! $post || is_admin() || is_customize_preview() ) {
+		if ( is_admin() || is_customize_preview() ) {
 			return;
 		}
 
+		// === CACHING: Try to serve from cache first ===
+		$cache_key = $this->get_schema_cache_key();
+		$cached    = wp_cache_get( $cache_key, 'schema_scalpel' );
+
+		if ( false !== $cached ) {
+			// Cache hit — output immediately (best performance).
+			echo $cached; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			return;
+		}
+
+		// Also check transient as fallback (for sites without object cache).
+		$cached_transient = get_transient( $cache_key );
+		if ( false !== $cached_transient ) {
+			echo $cached_transient; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			return;
+		}
+
+		// === CACHE MISS: Build schema output ===
 		global $wpdb;
 
 		$site_title     = sanitize_text_field( get_bloginfo( 'name' ) );
@@ -180,7 +216,7 @@ class SCSC_Public {
 			}
 
 			if ( is_home() || ( is_front_page() && 'posts' === get_option( 'show_on_front' ) ) ) {
-				$blog_page_id = absint( get_option( 'page_for_posts' ) ); // Ensure int
+				$blog_page_id = absint( get_option( 'page_for_posts' ) );
 				if ( $blog_page_id > 0 && in_array( $blog_page_id, $excluded_ids, true ) ) {
 					return;
 				}
@@ -198,9 +234,7 @@ class SCSC_Public {
 		);
 		$search_key           = $search_param_results ? $search_param_results : 's';
 
-		/**
-		 * Website schema.
-		 */
+		// Build all schemas (same logic as before)
 		$website_schema = wp_json_encode(
 			array(
 				'@context'        => 'https://schema.org',
@@ -220,9 +254,6 @@ class SCSC_Public {
 			JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
 		);
 
-		/**
-		 * WebPage schema.
-		 */
 		$webpage_schema = wp_json_encode(
 			array(
 				'@context' => 'https://schema.org',
@@ -234,15 +265,13 @@ class SCSC_Public {
 			JSON_UNESCAPED_SLASHES | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS
 		);
 
-		/**
-		 * Breadcrumb schema.
-		 */
 		$breadcrumbs       = array_filter( explode( '/', trim( $path, '/' ) ) );
 		$breadcrumb_schema = $this->format_breadcrumbs( $root_domain, $breadcrumbs );
 
-		/**
-		 * Inject global schema.
-		 */
+		// Start output buffer to capture all schema tags.
+		ob_start();
+
+		// Inject global schema.
 		$global_schema = $wpdb->get_results(
 			$wpdb->prepare( "SELECT custom_schema FROM %i WHERE schema_type = 'global'", $schema_table ),
 			ARRAY_A
@@ -257,9 +286,7 @@ class SCSC_Public {
 			}
 		}
 
-		/**
-		 * Inject post/page schema.
-		 */
+		// Inject post/page schema.
 		if ( is_single() ) {
 			$results = $wpdb->get_results(
 				$wpdb->prepare( "SELECT custom_schema FROM %i WHERE post_id = %d AND schema_type = 'posts'", $schema_table, $page_id ),
@@ -293,9 +320,7 @@ class SCSC_Public {
 			}
 		}
 
-		/**
-		 * Inject homepage schema (including legacy 'pages' type for front page).
-		 */
+		// Inject homepage schema.
 		if ( is_front_page() ) {
 			$home_id         = get_the_ID();
 			$all_home_schema = $wpdb->get_results(
@@ -319,9 +344,7 @@ class SCSC_Public {
 			}
 		}
 
-		/**
-		 * Inject default schemas based on settings.
-		 */
+		// Inject default schemas based on settings.
 		$website_enabled = $wpdb->get_var(
 			$wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key = 'website_schema'", $settings_table )
 		);
@@ -345,5 +368,15 @@ class SCSC_Public {
 		if ( '/' !== $path && '1' === $breadcrumb_enabled ) {
 			$this->format_schema_html( $breadcrumb_schema );
 		}
+
+		// Get the full output.
+		$output = ob_get_clean();
+
+		// === CACHING: Store the result ===
+		wp_cache_set( $cache_key, $output, 'schema_scalpel', HOUR_IN_SECONDS * 6 ); // 6 hours.
+		set_transient( $cache_key, $output, HOUR_IN_SECONDS * 6 );
+
+		// Output the schema.
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

@@ -77,7 +77,7 @@ function scsc_render_metabox_preview( $post ) {
 		->child(
 			( new HTML_Refactory( 'img' ) )
 				->attr( 'src', esc_url( plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . '/admin/images/schema-scalpel-logo.svg' ) )
-				->attr( 'alt', esc_attr( 'Schema Scalpel Logo', 'schema-scalpel' ) )
+				->attr( 'alt', esc_attr( 'Schema Scalpel Logo', SCHEMA_SCALPEL_TEXT_DOMAIN ) )
 				->attr( 'style', 'max-width:300px;z-index:99' )
 				->render()
 		)
@@ -94,14 +94,14 @@ function scsc_render_metabox_preview( $post ) {
 					( new HTML_Refactory( 'a' ) )
 						->attr( 'href', '#scsc-tab-schema' )
 						->attr( 'class', array( 'nav-tab', 'nav-tab-active' ) )
-						->child( esc_html( __( 'Schema', 'schema-scalpel' ) ) )
+						->child( esc_html( __( 'Schema', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 						->render()
 				)
 				->child(
 					( new HTML_Refactory( 'a' ) )
 						->attr( 'href', '#scsc-tab-examples' )
 						->attr( 'class', array( 'nav-tab' ) )
-						->child( esc_html( __( 'Examples', 'schema-scalpel' ) ) )
+						->child( esc_html( __( 'Examples', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 						->render()
 				)
 				->render()
@@ -146,7 +146,7 @@ function scsc_render_metabox_preview( $post ) {
 						( new HTML_Refactory( 'div' ) )
 							->child(
 								( new HTML_Refactory( 'a' ) )
-									->attr( 'href', '/wp-admin/admin.php?page=scsc' )
+									->attr( 'href', '/wp-admin/admin.php?page=' . SCHEMA_SCALPEL_SLUG )
 									->child( esc_html( 'Schema Scalpel&nbsp;' ) )
 									->child(
 										( new HTML_Refactory( 'strong' ) )
@@ -159,7 +159,7 @@ function scsc_render_metabox_preview( $post ) {
 							)
 							->child(
 								( new HTML_Refactory( 'a' ) )
-									->attr( 'href', '/wp-admin/admin.php?page=scsc_settings' )
+									->attr( 'href', '/wp-admin/admin.php?page=' . SCHEMA_SCALPEL_PREFIX . 'settings' )
 									->child( esc_html( 'Schema Scalpel&nbsp;' ) )
 									->child(
 										( new HTML_Refactory( 'strong' ) )
@@ -173,7 +173,7 @@ function scsc_render_metabox_preview( $post ) {
 							)
 							->child(
 								( new HTML_Refactory( 'a' ) )
-									->attr( 'href', '/wp-admin/admin.php?page=scsc_export' )
+									->attr( 'href', '/wp-admin/admin.php?page=' . SCHEMA_SCALPEL_PREFIX . 'export' )
 									->child( esc_html( 'Schema Scalpel&nbsp;' ) )
 									->child(
 										( new HTML_Refactory( 'strong' ) )
@@ -195,13 +195,13 @@ function scsc_render_metabox_preview( $post ) {
 
 			echo ( new HTML_Refactory( 'h3' ) )
 				->attr( 'style', 'margin:0 0 12px 0' )
-				->child( esc_html( __( 'Structured Data Editor', 'schema-scalpel' ) ) )
+				->child( esc_html( __( 'Structured Data Editor', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 				->render();
 
 			$edit_instructions = ( new HTML_Refactory( 'p' ) )
 				->attr( 'class', array( 'description' ) )
 				->attr( 'style', 'margin-bottom:16px' )
-				->child( esc_html( __( 'Add, edit, or delete JSON-LD schema below. Changes are saved immediately.', 'schema-scalpel' ) ) )
+				->child( esc_html( __( 'Add, edit, or delete JSON-LD schema below. Changes are saved immediately.', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 				->render();
 			echo $edit_instructions;
 
@@ -212,7 +212,7 @@ function scsc_render_metabox_preview( $post ) {
 				->child(
 					( new HTML_Refactory( 'h4' ) )
 						->attr( 'style', 'margin: 0 0 12px 0;' )
-						->child( '+' . esc_html( __( 'Add New Schema', 'schema-scalpel' ) ) )
+						->child( '+' . esc_html( __( 'Add New Schema', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 						->render()
 				)
 				->child(
@@ -220,7 +220,7 @@ function scsc_render_metabox_preview( $post ) {
 						->attr( 'name', 'scsc_new_schema' )
 						->attr( 'rows', '8' )
 						->attr( 'class', array( 'widefat' ) )
-						->attr( 'placeholder', esc_attr( 'Example: {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}', 'schema-scalpel' ) )
+						->attr( 'placeholder', esc_attr( 'Example: {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}', SCHEMA_SCALPEL_TEXT_DOMAIN ) )
 						->render()
 				)
 				->child(
@@ -232,7 +232,7 @@ function scsc_render_metabox_preview( $post ) {
 								->attr( 'class', array( 'button', 'button-primary', 'scsc-create-new' ) )
 								->attr( 'data-post-id', esc_attr( (string) $post_id ) )
 								->child(
-									esc_html__( 'Create as ' . esc_html( ucfirst( $post_type ) . ' Schema', 'schema-scalpel' ) )
+									esc_html__( 'Create as ' . esc_html( ucfirst( $post_type ) . ' Schema', SCHEMA_SCALPEL_TEXT_DOMAIN ) )
 								)
 								->render()
 						)
@@ -241,7 +241,7 @@ function scsc_render_metabox_preview( $post ) {
 								->attr( 'type', 'button' )
 								->attr( 'class', array( 'button', 'scsc-create-new-global' ) )
 								->attr( 'style', 'margin-left:3px' )
-								->child( esc_html( __( 'Create as Global Schema', 'schema-scalpel' ) ) )
+								->child( esc_html( __( 'Create as Global Schema', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 								->render()
 						)
 						->render()
@@ -255,7 +255,7 @@ function scsc_render_metabox_preview( $post ) {
 				echo ( new HTML_Refactory( 'p' ) )
 					->child(
 						( new HTML_Refactory( 'em' ) )
-							->child( esc_html( __( 'No schema found for this post.', 'schema-scalpel' ) ) )
+							->child( esc_html( __( 'No schema found for this post.', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 							->render()
 					)
 					->render();
@@ -307,7 +307,7 @@ function scsc_render_metabox_preview( $post ) {
 								->child(
 									( new HTML_Refactory( 'span' ) )
 										->attr( 'style', 'color:#666;font-size:12px' )
-										->child( '—' . esc_html( __( 'Updated:', 'schema-scalpel' ) ) . esc_html( $item['updated'] ) )
+										->child( '—' . esc_html( __( 'Updated:', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) . esc_html( $item['updated'] ) )
 										->render()
 								)
 								->render()
@@ -330,14 +330,14 @@ function scsc_render_metabox_preview( $post ) {
 										->attr( 'type', 'button' )
 										->attr( 'class', array( 'button', 'button-primary', 'scsc-save' ) )
 										->attr( 'data-id', (string) $item['id'] )
-										->child( esc_html( __( 'Save Changes', 'schema-scalpel' ) ) )
+										->child( esc_html( __( 'Save Changes', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 										->render()
 								)
 								->child(
 									( new HTML_Refactory( 'span' ) )
 										->attr( 'class', array( 'scsc-status' ) )
 										->attr( 'style', 'margin-left:10px;font-style:italic;color:green;display:none' )
-										->child( esc_html( __( 'Saved.', 'schema-scalpel' ) ) )
+										->child( esc_html( __( 'Saved.', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 										->render()
 								)
 								->child(
@@ -346,7 +346,7 @@ function scsc_render_metabox_preview( $post ) {
 										->attr( 'class', array( 'button', 'button-link-delete', 'scsc-delete' ) )
 										->attr( 'style', 'float: right;' )
 										->attr( 'data-id', esc_attr( (string) $item['id'] ) )
-										->child( esc_html( __( 'Delete', 'schema-scalpel' ) ) )
+										->child( esc_html( __( 'Delete', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 										->render()
 								)
 								->render()
@@ -365,13 +365,13 @@ function scsc_render_metabox_preview( $post ) {
 
 			echo ( new HTML_Refactory( 'h3' ) )
 				->attr( 'style', 'margin:0 0 12px 0' )
-				->child( esc_html( __( 'Schema Examples', 'schema-scalpel' ) ) )
+				->child( esc_html( __( 'Schema Examples', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 				->render();
 
 			echo ( new HTML_Refactory( 'p' ) )
 				->attr( 'class', array( 'description' ) )
 				->attr( 'style', 'margin-bottom:16px' )
-				->child( esc_html( __( 'Copy and paste these examples into the schema editor.', 'schema-scalpel' ) ) )
+				->child( esc_html( __( 'Copy and paste these examples into the schema editor.', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 				->render();
 
 			// Load the examples array.
@@ -415,7 +415,7 @@ function scsc_render_metabox_preview( $post ) {
 										->attr( 'type', 'button' )
 										->attr( 'class', array( 'button', 'button-secondary', 'scsc-copy-example' ) )
 										->attr( 'data-json', $safe_for_attr )
-										->child( esc_html( __( 'Copy to Editor', 'schema-scalpel' ) ) )
+										->child( esc_html( __( 'Copy to Editor', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 										->render()
 								)
 								->render()
@@ -429,7 +429,7 @@ function scsc_render_metabox_preview( $post ) {
 				echo ( new HTML_Refactory( 'p' ) )
 					->child(
 						( new HTML_Refactory( 'em' ) )
-							->child( esc_html( __( 'No examples available.', 'schema-scalpel' ) ) )
+							->child( esc_html( __( 'No examples available.', SCHEMA_SCALPEL_TEXT_DOMAIN ) ) )
 							->render()
 					)->render();
 			endif;

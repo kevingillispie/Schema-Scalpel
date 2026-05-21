@@ -151,16 +151,16 @@ final class SCSC_Security {
 
 		if ( ! $valid ) {
 			wp_die(
-				esc_html__( 'Invalid security token. Please try again.', 'schema-scalpel' ),
-				esc_html__( 'Security Error', 'schema-scalpel' ),
+				esc_html__( 'Invalid security token. Please try again.', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+				esc_html__( 'Security Error', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 				array( 'response' => 403 )
 			);
 		}
 
 		if ( ! current_user_can( $capability ) ) {
 			wp_die(
-				esc_html__( 'Insufficient permissions.', 'schema-scalpel' ),
-				esc_html__( 'Access Denied', 'schema-scalpel' ),
+				esc_html__( 'Insufficient permissions.', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+				esc_html__( 'Access Denied', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 				array( 'response' => 403 )
 			);
 		}
@@ -183,11 +183,11 @@ final class SCSC_Security {
 		$valid = self::verify_nonce( $action, $nonce_field, false );
 
 		if ( ! $valid ) {
-			return new \WP_Error( 'invalid_nonce', __( 'Invalid security token.', 'schema-scalpel' ) );
+			return new \WP_Error( 'invalid_nonce', __( 'Invalid security token.', SCHEMA_SCALPEL_TEXT_DOMAIN ) );
 		}
 
 		if ( ! current_user_can( $capability ) ) {
-			return new \WP_Error( 'no_permission', __( 'Insufficient permissions.', 'schema-scalpel' ) );
+			return new \WP_Error( 'no_permission', __( 'Insufficient permissions.', SCHEMA_SCALPEL_TEXT_DOMAIN ) );
 		}
 
 		return true;

@@ -10,9 +10,13 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
+if ( ! defined( 'SCHEMA_SCALPEL_PREFIX' ) ) {
+	define( 'SCHEMA_SCALPEL_PREFIX', 'scsc_' );
+}
+
 global $wpdb;
 
-$settings_table = $wpdb->prefix . 'scsc_settings';
+$settings_table = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings';
 
 // Check if settings table exists.
 if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) !== $settings_table ) {

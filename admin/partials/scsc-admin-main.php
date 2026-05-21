@@ -58,8 +58,8 @@ class SCSC_Admin_Page {
 	public function __construct() {
 		global $wpdb;
 		$this->wpdb                 = $wpdb;
-		$this->custom_schemas_table = $wpdb->prefix . 'scsc_custom_schemas';
-		$this->settings_table       = $wpdb->prefix . 'scsc_settings';
+		$this->custom_schemas_table = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'custom_schemas';
+		$this->settings_table       = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings';
 	}
 
 	/**
@@ -83,8 +83,8 @@ class SCSC_Admin_Page {
 
 			if ( empty( $custom_schema ) || empty( $schema_type ) || $post_id_num <= 0 ) {
 				wp_die(
-					esc_html__( 'Missing or invalid required fields.', 'schema-scalpel' ),
-					esc_html__( 'Invalid Input', 'schema-scalpel' ),
+					esc_html__( 'Missing or invalid required fields.', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+					esc_html__( 'Invalid Input', SCHEMA_SCALPEL_TEXT_DOMAIN ),
 					array( 'response' => 400 )
 				);
 			} else {
@@ -155,7 +155,7 @@ class SCSC_Admin_Page {
 
 			SCSC_Admin::generate_blogposting_schema( $update_type, $schema_post_type, $author_type, $keywords );
 
-			echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=posts">';
+			echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=schema-scalpel&set_tab=posts">';
 		}
 
 		// GET/SET TABS (UI state persistence).
@@ -179,7 +179,7 @@ class SCSC_Admin_Page {
 			exit();
 		}
 
-		if ( 'scsc' === sanitize_text_field( wp_unslash( $_GET['page'] ?? '' ) ) && ! isset( $_GET['set_tab'] ) ) {
+		if ( SCHEMA_SCALPEL_TEXT_DOMAIN === sanitize_text_field( wp_unslash( $_GET['page'] ?? '' ) ) && ! isset( $_GET['set_tab'] ) ) {
 			$result = $this->wpdb->get_results(
 				$this->wpdb->prepare(
 					'SELECT setting_value FROM %i WHERE setting_key = %s;',
@@ -192,7 +192,7 @@ class SCSC_Admin_Page {
 			$tab_param = ! empty( $result ) ? $result[0]['setting_value'] : '';
 
 			if ( $tab_param ) {
-				echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . sanitize_text_field( $tab_param ) . '">';
+				echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=schema-scalpel&set_tab=' . sanitize_text_field( $tab_param ) . '">';
 			}
 		}
 
@@ -203,7 +203,7 @@ class SCSC_Admin_Page {
 				array( 'setting_value' => $tab_param ),
 				array( 'setting_key' => 'active_tab' )
 			);
-			echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc&set_tab=' . sanitize_text_field( $tab_param ) . '">';
+			echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=schema-scalpel&set_tab=' . sanitize_text_field( $tab_param ) . '">';
 		}
 	}
 }
@@ -281,7 +281,7 @@ $alert = ( new HTML_Refactory( 'p' ) )
 			->text( 'This plugin ' )
 			->child(
 				( new HTML_Refactory( 'a' ) )
-					->attr( 'href', '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' )
+					->attr( 'href', '/wp-admin/admin.php?page=schema-scalpel_settings#disable_yoast_schema' )
 					->text( "automatically overrides Yoast's and AIOSEO's schema" )
 					->render()
 			)
@@ -549,7 +549,7 @@ if ( ! empty( $_GET['set_tab'] ) && 'posts' === $_GET['set_tab'] ) {
 							( new HTML_Refactory( 'input' ) )
 								->attr( 'type', 'hidden' )
 								->attr( 'name', 'page' )
-								->attr( 'value', 'scsc' )
+								->attr( 'value', 'scsc_' )
 								->render()
 						)
 						->child(
@@ -2037,9 +2037,9 @@ add_action(
 		<?php
 		echo '<script>';
 		global $wpdb;
-		$result_page = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='active_page';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+		$result_page = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='active_page';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 		$_page       = $result_page[0]['setting_value'];
-		$result_post = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='active_post';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+		$result_post = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='active_post';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 		$_post       = $result_post[0]['setting_value'];
 		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/scsc-admin-main.js';
 		require_once SCHEMA_SCALPEL_DIRECTORY . '/admin/js/prism.js';
