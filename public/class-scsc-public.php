@@ -127,6 +127,7 @@ class SCSC_Public {
 
 	/**
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	 * Generate a unique cache key for the current page.
 	 *
 	 * @return string
@@ -168,6 +169,9 @@ class SCSC_Public {
 
 	/**
 	 * Enqueue inline schema markup (with caching).
+=======
+	 * Output inline schema markup (always fresh - no caching).
+>>>>>>> Stashed changes
 =======
 	 * Output inline schema markup (always fresh - no caching).
 >>>>>>> Stashed changes
@@ -240,7 +244,11 @@ class SCSC_Public {
 		$search_key           = $search_param_results ? $search_param_results : 's';
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		// Build all schemas (same logic as before)
+=======
+		// Build default schemas
+>>>>>>> Stashed changes
 =======
 		// Build default schemas
 >>>>>>> Stashed changes
@@ -278,8 +286,13 @@ class SCSC_Public {
 		$breadcrumb_schema = $this->format_breadcrumbs( $root_domain, $breadcrumbs );
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		// Start output buffer to capture all schema tags.
 		ob_start();
+=======
+		// Build output
+		$output = '';
+>>>>>>> Stashed changes
 =======
 		// Build output
 		$output = '';
@@ -384,6 +397,7 @@ class SCSC_Public {
 		}
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		// Get the full output.
 		$output = ob_get_clean();
 
@@ -392,6 +406,9 @@ class SCSC_Public {
 		set_transient( $cache_key, $output, HOUR_IN_SECONDS * 6 );
 
 		// Output the schema.
+=======
+		// Output the schema (always fresh).
+>>>>>>> Stashed changes
 =======
 		// Output the schema (always fresh).
 >>>>>>> Stashed changes
