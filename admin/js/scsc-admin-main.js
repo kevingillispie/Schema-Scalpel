@@ -63,7 +63,7 @@ const SYNTAX = {
 
 function setActiveTab(tab) {
     document.getElementById("tab_spinner").classList.remove("d-none");
-    window.location.href = `/wp-admin/admin.php?page=scsc&update_tab=${tab}`;
+    window.location.href = `/wp-admin/admin.php?page=schema-scalpel&update_tab=${tab}`;
 }
 
 /**
@@ -290,7 +290,7 @@ function deleteCurrentSchema(id, event) {
             location.reload();
         }
     }
-    request.open("GET", "/wp-admin/admin.php?page=scsc&delete=" + id + `&nonce=${encodeURIComponent(scscNonces.delete)}`);
+    request.open("GET", "/wp-admin/admin.php?page=schema-scalpel&delete=" + id + `&nonce=${encodeURIComponent(scscNonces.delete)}`);
     request.send();
 }
 
@@ -367,7 +367,7 @@ function onPostSelectChange(el) {
 
     let activePageOrPost = (type == "pages") ? "active_page" : "active_post";
     let request = new XMLHttpRequest();
-    request.open("GET", "/wp-admin/admin.php?page=scsc&" + activePageOrPost + "=" + postID);
+    request.open("GET", "/wp-admin/admin.php?page=schema-scalpel&" + activePageOrPost + "=" + postID);
     request.send();
 }
 
@@ -442,7 +442,7 @@ function createNewSchema(type, id) {
     request.onreadystatechange = () => {
         if (request.readyState == 4) location.reload();
     }
-    request.open("POST", "/wp-admin/admin.php?page=scsc");
+    request.open("POST", "/wp-admin/admin.php?page=schema-scalpel");
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     let data = `schemaType=${encodeURIComponent(type)}&postID=${encodeURIComponent(id)}&create=${encodeURIComponent(formatted)}&nonce=${encodeURIComponent(scscNonces.create)}`;
     request.send(data);
@@ -460,7 +460,7 @@ function updateCurrentSchema(id, event) {
         }
     }
 
-    request.open("POST", "/wp-admin/admin.php?page=scsc");
+    request.open("POST", "/wp-admin/admin.php?page=schema-scalpel");
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     let data = `update=${encodeURIComponent(id)}&schema=${encodeURIComponent(formatted)}&nonce=${encodeURIComponent(scscNonces.update)}`;
     request.send(data);

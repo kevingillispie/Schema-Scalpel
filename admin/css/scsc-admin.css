@@ -50,12 +50,6 @@ div:disabled {
     cursor: not-allowed;
 }
 
-[id*="_schema"] button:not([id*="new_line"]):not(.edit-line):not(.delete-line),
-[id*="_schema"] div:not([id*="new_line"]):not(.edit-line):not(.delete-line),
-.insert-line-label {
-    min-width: 167px;
-}
-
 .editor-container>div:first-child {
     margin-right: 20px;
 }

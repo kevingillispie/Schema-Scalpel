@@ -31,7 +31,7 @@ global $wpdb;
 $database_exclusions = $wpdb->get_col(
 	$wpdb->prepare(
 		"SELECT setting_value FROM %i WHERE setting_key = 'exclude';",
-		$wpdb->prefix . 'scsc_settings'
+		$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings'
 	)
 );
 
@@ -55,17 +55,17 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'enable_website' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_ws_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'website_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_ws_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'website_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 			if ( ! $has_ws_setting[0] ) {
 				$wpdb->insert(
-					$wpdb->prefix . 'scsc_settings',
+					$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 					array(
 						'setting_key'   => 'website_schema',
 						'setting_value' => $all_params[ $key ][1],
 					)
 				);
 			} else {
-				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'website_schema' ) );
+				$wpdb->update( $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'website_schema' ) );
 			}
 		}
 	}
@@ -76,17 +76,17 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'enable_webpage' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_wp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'webpage_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_wp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'webpage_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 			if ( ! $has_wp_setting[0] ) {
 				$wpdb->insert(
-					$wpdb->prefix . 'scsc_settings',
+					$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 					array(
 						'setting_key'   => 'webpage_schema',
 						'setting_value' => $all_params[ $key ][1],
 					)
 				);
 			} else {
-				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'webpage_schema' ) );
+				$wpdb->update( $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'webpage_schema' ) );
 			}
 		}
 	}
@@ -97,17 +97,17 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'enable_breadcrumbs' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'breadcrumb_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 			if ( ! $has_bc_setting[0] ) {
 				$wpdb->insert(
-					$wpdb->prefix . 'scsc_settings',
+					$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 					array(
 						'setting_key'   => 'breadcrumb_schema',
 						'setting_value' => $all_params[ $key ][1],
 					)
 				);
 			} else {
-				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'breadcrumb_schema' ) );
+				$wpdb->update( $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'breadcrumb_schema' ) );
 			}
 		}
 	}
@@ -118,17 +118,17 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'disable_yoast' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'yoast_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_yoast_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'yoast_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 			if ( ! $has_yoast_setting[0] ) {
 				$wpdb->insert(
-					$wpdb->prefix . 'scsc_settings',
+					$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 					array(
 						'setting_key'   => 'yoast_schema',
 						'setting_value' => $all_params[ $key ][1],
 					)
 				);
 			} else {
-				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'yoast_schema' ) );
+				$wpdb->update( $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'yoast_schema' ) );
 			}
 		}
 	}
@@ -139,17 +139,17 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'disable_aio' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'aio_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_aio_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'aio_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 			if ( ! $has_aio_setting[0] ) {
 				$wpdb->insert(
-					$wpdb->prefix . 'scsc_settings',
+					$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 					array(
 						'setting_key'   => 'aio_schema',
 						'setting_value' => $all_params[ $key ][1],
 					)
 				);
 			} else {
-				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'aio_schema' ) );
+				$wpdb->update( $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'aio_schema' ) );
 			}
 		}
 	}
@@ -160,17 +160,17 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'disable_rankmath' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_rankmath_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'rankmath_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_rankmath_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'rankmath_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 			if ( ! $has_rankmath_setting[0] ) {
 				$wpdb->insert(
-					$wpdb->prefix . 'scsc_settings',
+					$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 					array(
 						'setting_key'   => 'rankmath_schema',
 						'setting_value' => $all_params[ $key ][1],
 					)
 				);
 			} else {
-				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'rankmath_schema' ) );
+				$wpdb->update( $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'rankmath_schema' ) );
 			}
 		}
 	}
@@ -191,7 +191,7 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $user_selected_exclusions as $key => $value ) {
 		if ( ! in_array( $user_selected_exclusions[ $key ], $database_exclusions ) ) {
 			$wpdb->insert(
-				$wpdb->prefix . 'scsc_settings',
+				$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 				array(
 					'setting_key'   => 'exclude',
 					'setting_value' => $user_selected_exclusions[ $key ],
@@ -206,7 +206,7 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $database_exclusions as $key => $value ) {
 		if ( ! in_array( $database_exclusions[ $key ], $user_selected_exclusions ) ) {
 			$wpdb->delete(
-				$wpdb->prefix . 'scsc_settings',
+				$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 				array(
 					'setting_key'   => 'exclude',
 					'setting_value' => $database_exclusions[ $key ],
@@ -221,17 +221,17 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'delete_on_uninstall' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'delete_on_uninstall';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_bc_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'delete_on_uninstall';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 			if ( ! $has_bc_setting[0] ) {
 				$wpdb->insert(
-					$wpdb->prefix . 'scsc_settings',
+					$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 					array(
 						'setting_key'   => 'delete_on_uninstall',
 						'setting_value' => $all_params[ $key ][1],
 					)
 				);
 			} else {
-				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'delete_on_uninstall' ) );
+				$wpdb->update( $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'delete_on_uninstall' ) );
 			}
 		}
 	}
@@ -242,21 +242,21 @@ if ( isset( $_POST['save'] ) ) {
 	foreach ( $all_params as $key => $value ) {
 		if ( 'search_param' === $all_params[ $key ][0] ) {
 			global $wpdb;
-			$has_sp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'search_param';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+			$has_sp_setting = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE setting_key = 'search_param';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 			if ( ! $has_sp_setting[0] ) {
 				$wpdb->insert(
-					$wpdb->prefix . 'scsc_settings',
+					$wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings',
 					array(
 						'setting_key'   => 'search_param',
 						'setting_value' => $all_params[ $key ][1],
 					)
 				);
 			} else {
-				$wpdb->update( $wpdb->prefix . 'scsc_settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'search_param' ) );
+				$wpdb->update( $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings', array( 'setting_value' => $all_params[ $key ][1] ), array( 'setting_key' => 'search_param' ) );
 			}
 		}
 	}
-	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=scsc_settings">';
+	echo '<meta http-equiv="refresh" content="0;url=/wp-admin/admin.php?page=' . SCHEMA_SCALPEL_SLUG . '_settings">';
 	exit;
 }
 
@@ -276,19 +276,19 @@ $all_posts = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE post_ty
 * Get website setting.
 */
 $is_website_enabled = 1;
-$ws_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='website_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$ws_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='website_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 if ( '0' === $ws_setting[0]['setting_value'] ) {
 	$is_website_enabled = 0;
 }
 
-$search_query_param = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='search_param';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$search_query_param = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='search_param';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 $search_key         = $search_query_param[0]['setting_value'];
 
 /**
 * Get webpage setting.
 */
 $is_webpage_enabled = 1;
-$wp_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='webpage_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$wp_setting         = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='webpage_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 if ( '0' === $wp_setting[0]['setting_value'] ) {
 	$is_webpage_enabled = 0;
 }
@@ -297,7 +297,7 @@ if ( '0' === $wp_setting[0]['setting_value'] ) {
 * Get breadcrumb setting.
 */
 $are_breadcrumbs_enabled = 1;
-$bc_setting              = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='breadcrumb_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$bc_setting              = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='breadcrumb_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 if ( '0' === $bc_setting[0]['setting_value'] ) {
 	$are_breadcrumbs_enabled = 0;
 }
@@ -306,7 +306,7 @@ if ( '0' === $bc_setting[0]['setting_value'] ) {
 * Get Yoast setting.
 */
 $is_yoast_disabled = 1;
-$yoast_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='yoast_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$yoast_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='yoast_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 if ( '0' === $yoast_setting[0]['setting_value'] ) {
 	$is_yoast_disabled = 0;
 }
@@ -315,7 +315,7 @@ if ( '0' === $yoast_setting[0]['setting_value'] ) {
 * Get AIOSEO setting.
 */
 $is_aio_disabled = 1;
-$aio_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='aio_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$aio_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='aio_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 if ( '0' === $aio_setting[0]['setting_value'] ) {
 	$is_aio_disabled = 0;
 }
@@ -324,7 +324,7 @@ if ( '0' === $aio_setting[0]['setting_value'] ) {
 * Get Rank Math setting.
 */
 $is_rankmath_disabled = 1;
-$rankmath_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='rankmath_schema';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$rankmath_setting     = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='rankmath_schema';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 if ( '0' === $rankmath_setting[0]['setting_value'] ) {
 	$is_rankmath_disabled = 0;
 }
@@ -333,7 +333,7 @@ if ( '0' === $rankmath_setting[0]['setting_value'] ) {
 * Get data delete setting.
 */
 $is_data_deleted = 0;
-$delete_setting  = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='delete_on_uninstall';", $wpdb->prefix . 'scsc_settings' ), ARRAY_A );
+$delete_setting  = $wpdb->get_results( $wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key='delete_on_uninstall';", $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings' ), ARRAY_A );
 if ( '1' === $delete_setting[0]['setting_value'] ) {
 	$is_data_deleted = 1;
 }
@@ -409,7 +409,7 @@ $notice = ( new HTML_Refactory( 'p' ) )
 			->text( 'This plugin ' )
 			->child(
 				( new HTML_Refactory( 'a' ) )
-					->attr( 'href', esc_url( '/wp-admin/admin.php?page=scsc_settings#disable_yoast_schema' ) )
+					->attr( 'href', esc_url( '/wp-admin/admin.php?page=' . SCHEMA_SCALPEL_SLUG . '_settings#disable_yoast_schema' ) )
 					->text( 'automatically overrides Yoast, AIOSEO, and Rank Math schema' )
 					->render()
 			)
@@ -995,7 +995,7 @@ $settings_form = ( new HTML_Refactory( 'form' ) )
 		( new HTML_Refactory( 'input' ) )
 			->attr( 'type', 'hidden' )
 			->attr( 'name', 'page' )
-			->attr( 'value', 'scsc_settings' )
+			->attr( 'value', SCHEMA_SCALPEL_SLUG . '_settings' )
 			->render()
 	)
 	->child(

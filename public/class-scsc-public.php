@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class that outputs saved schema.
+ * Class that outputs saved schema (no caching - always fresh).
  */
 class SCSC_Public {
 
@@ -43,32 +43,6 @@ class SCSC_Public {
 	public function __construct( string $schema_scalpel, string $version ) {
 		$this->schema_scalpel = $schema_scalpel;
 		$this->version        = $version;
-	}
-
-	/**
-	 * Register CSS stylesheet.
-	 */
-	public function enqueue_styles() {
-		wp_enqueue_style(
-			$this->schema_scalpel,
-			SCHEMA_SCALPEL_DIRECTORY . '/public/css/scsc-public.css',
-			array(),
-			$this->version,
-			'all'
-		);
-	}
-
-	/**
-	 * Register JavaScript.
-	 */
-	public function enqueue_scripts() {
-		wp_enqueue_script(
-			$this->schema_scalpel,
-			SCHEMA_SCALPEL_DIRECTORY . '/public/js/scsc-public.js',
-			array(),
-			$this->version,
-			false
-		);
 	}
 
 	/**
@@ -132,12 +106,13 @@ class SCSC_Public {
 	}
 
 	/**
-	 * Output a JSON-LD script tag.
+	 * Build a JSON-LD script tag.
 	 *
 	 * @param string $json JSON-LD payload.
+	 * @return string
 	 */
-	private function format_schema_html( string $json ) {
-		wp_print_inline_script_tag(
+	private function format_schema_html( string $json ): string {
+		return wp_get_inline_script_tag(
 			$json,
 			array(
 				'class' => 'schema-scalpel',
@@ -147,12 +122,12 @@ class SCSC_Public {
 	}
 
 	/**
-	 * Enqueue inline schema markup.
+	 * Output inline schema markup (always fresh - no caching).
 	 */
 	public function enqueue_inline_scripts() {
 		global $post;
 
-		if ( ! $post || is_admin() || is_customize_preview() ) {
+		if ( is_admin() || is_customize_preview() ) {
 			return;
 		}
 
@@ -180,7 +155,7 @@ class SCSC_Public {
 			}
 
 			if ( is_home() || ( is_front_page() && 'posts' === get_option( 'show_on_front' ) ) ) {
-				$blog_page_id = absint( get_option( 'page_for_posts' ) ); // Ensure int
+				$blog_page_id = absint( get_option( 'page_for_posts' ) );
 				if ( $blog_page_id > 0 && in_array( $blog_page_id, $excluded_ids, true ) ) {
 					return;
 				}
@@ -198,9 +173,7 @@ class SCSC_Public {
 		);
 		$search_key           = $search_param_results ? $search_param_results : 's';
 
-		/**
-		 * Website schema.
-		 */
+		// Build default schemas
 		$website_schema = wp_json_encode(
 			array(
 				'@context'        => 'https://schema.org',
@@ -220,9 +193,6 @@ class SCSC_Public {
 			JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
 		);
 
-		/**
-		 * WebPage schema.
-		 */
 		$webpage_schema = wp_json_encode(
 			array(
 				'@context' => 'https://schema.org',
@@ -234,15 +204,13 @@ class SCSC_Public {
 			JSON_UNESCAPED_SLASHES | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS
 		);
 
-		/**
-		 * Breadcrumb schema.
-		 */
 		$breadcrumbs       = array_filter( explode( '/', trim( $path, '/' ) ) );
 		$breadcrumb_schema = $this->format_breadcrumbs( $root_domain, $breadcrumbs );
 
-		/**
-		 * Inject global schema.
-		 */
+		// Build output
+		$output = '';
+
+		// Inject global schema.
 		$global_schema = $wpdb->get_results(
 			$wpdb->prepare( "SELECT custom_schema FROM %i WHERE schema_type = 'global'", $schema_table ),
 			ARRAY_A
@@ -251,15 +219,13 @@ class SCSC_Public {
 		foreach ( $global_schema as $row ) {
 			$schema = maybe_unserialize( $row['custom_schema'] );
 			if ( is_string( $schema ) ) {
-				$schema = html_entity_decode( $schema );
-				$schema = str_replace( '&apos;', "'", $schema );
-				$this->format_schema_html( $schema );
+				$schema  = html_entity_decode( $schema );
+				$schema  = str_replace( '&apos;', "'", $schema );
+				$output .= $this->format_schema_html( $schema );
 			}
 		}
 
-		/**
-		 * Inject post/page schema.
-		 */
+		// Inject post/page schema.
 		if ( is_single() ) {
 			$results = $wpdb->get_results(
 				$wpdb->prepare( "SELECT custom_schema FROM %i WHERE post_id = %d AND schema_type = 'posts'", $schema_table, $page_id ),
@@ -287,15 +253,13 @@ class SCSC_Public {
 		foreach ( $results as $row ) {
 			$schema = maybe_unserialize( $row['custom_schema'] );
 			if ( is_string( $schema ) ) {
-				$schema = html_entity_decode( $schema );
-				$schema = str_replace( '&apos;', "'", $schema );
-				$this->format_schema_html( $schema );
+				$schema  = html_entity_decode( $schema );
+				$schema  = str_replace( '&apos;', "'", $schema );
+				$output .= $this->format_schema_html( $schema );
 			}
 		}
 
-		/**
-		 * Inject homepage schema (including legacy 'pages' type for front page).
-		 */
+		// Inject homepage schema.
 		if ( is_front_page() ) {
 			$home_id         = get_the_ID();
 			$all_home_schema = $wpdb->get_results(
@@ -312,22 +276,20 @@ class SCSC_Public {
 			foreach ( $all_home_schema as $row ) {
 				$schema = maybe_unserialize( $row['custom_schema'] );
 				if ( is_string( $schema ) ) {
-					$schema = html_entity_decode( $schema );
-					$schema = str_replace( '&apos;', "'", $schema );
-					$this->format_schema_html( $schema );
+					$schema  = html_entity_decode( $schema );
+					$schema  = str_replace( '&apos;', "'", $schema );
+					$output .= $this->format_schema_html( $schema );
 				}
 			}
 		}
 
-		/**
-		 * Inject default schemas based on settings.
-		 */
+		// Inject default schemas based on settings.
 		$website_enabled = $wpdb->get_var(
 			$wpdb->prepare( "SELECT setting_value FROM %i WHERE setting_key = 'website_schema'", $settings_table )
 		);
 
 		if ( '1' === $website_enabled ) {
-			$this->format_schema_html( $website_schema );
+			$output .= $this->format_schema_html( $website_schema );
 		}
 
 		$webpage_enabled = $wpdb->get_var(
@@ -335,7 +297,7 @@ class SCSC_Public {
 		);
 
 		if ( '1' === $webpage_enabled ) {
-			$this->format_schema_html( $webpage_schema );
+			$output .= $this->format_schema_html( $webpage_schema );
 		}
 
 		$breadcrumb_enabled = $wpdb->get_var(
@@ -343,7 +305,10 @@ class SCSC_Public {
 		);
 
 		if ( '/' !== $path && '1' === $breadcrumb_enabled ) {
-			$this->format_schema_html( $breadcrumb_schema );
+			$output .= $this->format_schema_html( $breadcrumb_schema );
 		}
+
+		// Output the schema (always fresh).
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

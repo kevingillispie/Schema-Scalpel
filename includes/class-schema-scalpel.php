@@ -53,7 +53,7 @@ class Schema_Scalpel {
 	 */
 	public function __construct() {
 		$this->version        = SCHEMA_SCALPEL_VERSION;
-		$this->schema_scalpel = 'schema-scalpel';
+		$this->schema_scalpel = SCHEMA_SCALPEL_TEXT_DOMAIN;
 
 		$this->load_dependencies();
 		$this->define_admin_hooks();
@@ -157,7 +157,7 @@ class Schema_Scalpel {
 			'admin_head',
 			function () {
 				echo <<<STYLE
-            <style>img[src*="menu_icon.svg"]{padding: 0 !important;}</style>
+            <style>img[src*="menu_icon.svg"]{padding: 6px 0 0 !important;}</style>
             STYLE;
 			}
 		);
@@ -196,49 +196,45 @@ class Schema_Scalpel {
 	 * @since 1.0
 	 */
 	public function add_admin_pages() {
-		$default_page_title = __( SCHEMA_SCALPEL_TEXT_DOMAIN, SCHEMA_SCALPEL_TEXT_DOMAIN );
-		add_action(
-			'admin_head',
-			function () {
-				echo '<style class="scsc-admin">.toplevel_page_scsc img[src*="menu_icon.svg"] {margin-top:6px}</style>';
-			}
-		);
+		$text_domain        = SCHEMA_SCALPEL_TEXT_DOMAIN;
+		$slug               = SCHEMA_SCALPEL_SLUG;
+		$default_page_title = __( 'Schema Scalpel Plugin', $text_domain );
 
 		add_menu_page(
-			__( 'Schema Scalpel Plugin', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			$default_page_title,
 			'Schema Scalpel',
 			'manage_options',
-			SCHEMA_SCALPEL_TEXT_DOMAIN,
+			$slug,
 			array( $this, 'admin_index_page' ),
 			plugin_dir_url( SCHEMA_SCALPEL_PLUGIN ) . 'admin/images/menu_icon.svg',
 			100
 		);
 
 		add_submenu_page(
-			$default_page_title,
-			__( 'Schema Scalpel | Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN ),
-			__( 'Add New / Edit', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			$slug,
+			__( 'Schema Scalpel | Add New / Edit', $text_domain ),
+			__( 'Add New / Edit', $text_domain ),
 			'manage_options',
-			SCHEMA_SCALPEL_TEXT_DOMAIN,
+			$slug,
 			array( $this, 'admin_index_page' )
 		);
 
 		add_submenu_page(
-			$default_page_title,
-			__( 'Schema Scalpel | Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ),
-			__( 'Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			$slug,
+			__( 'Schema Scalpel | Settings', $text_domain ),
+			__( 'Settings', $text_domain ),
 			'manage_options',
-			SCHEMA_SCALPEL_SLUG . 'settings',
+			$slug . '_settings',
 			array( $this, 'user_settings_page' ),
 			1
 		);
 
 		add_submenu_page(
-			$default_page_title,
-			__( 'Schema Scalpel | Export', SCHEMA_SCALPEL_TEXT_DOMAIN ),
-			__( 'Export', SCHEMA_SCALPEL_TEXT_DOMAIN ),
+			$slug,
+			__( 'Schema Scalpel | Export', $text_domain ),
+			__( 'Export', $text_domain ),
 			'manage_options',
-			SCHEMA_SCALPEL_SLUG . 'export',
+			$slug . '_export',
 			array( $this, 'user_export_page' ),
 			2
 		);
@@ -252,13 +248,16 @@ class Schema_Scalpel {
 	 * @return array Modified action links with Settings link added.
 	 */
 	public function add_plugin_action_links( $links ) {
-		$schema_url    = admin_url( 'admin.php?page=' . SCHEMA_SCALPEL_TEXT_DOMAIN );
-		$schema_link   = '<a href="' . esc_url( $schema_url ) . '">' . esc_html__( 'View All', SCHEMA_SCALPEL_TEXT_DOMAIN ) . '</a>';
-		$settings_url  = admin_url( 'admin.php?page=scsc_settings' );
-		$settings_link = '<a href="' . esc_url( $settings_url ) . '">' . esc_html__( 'Settings', SCHEMA_SCALPEL_TEXT_DOMAIN ) . '</a>';
+		$text_domain   = SCHEMA_SCALPEL_TEXT_DOMAIN;
+		$schema_url    = admin_url( 'admin.php?page=' . SCHEMA_SCALPEL_SLUG );
+		$schema_link   = '<a href="' . esc_url( $schema_url ) . '">' . esc_html__( 'View All', $text_domain ) . '</a>';
+		$settings_url  = admin_url( 'admin.php?page=' . SCHEMA_SCALPEL_SLUG . '_settings' );
+		$settings_link = '<a href="' . esc_url( $settings_url ) . '">' . esc_html__( 'Settings', $text_domain ) . '</a>';
+		$export_url    = admin_url( 'admin.php?page=' . SCHEMA_SCALPEL_SLUG . '_export' );
+		$export_link   = '<a href="' . esc_url( $export_url ) . '">' . esc_html__( 'Export', $text_domain ) . '</a>';
 
 		// Add Settings link before other links.
-		array_unshift( $links, $schema_link, $settings_link );
+		array_unshift( $links, $schema_link, $settings_link, $export_link );
 
 		return $links;
 	}

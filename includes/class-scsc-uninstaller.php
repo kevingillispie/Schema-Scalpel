@@ -36,8 +36,8 @@ final class SCSC_Uninstaller {
 	public static function uninstall(): void {
 		global $wpdb;
 
-		$table_settings = $wpdb->prefix . 'scsc_settings';
-		$table_schemas  = $wpdb->prefix . 'scsc_custom_schemas';
+		$table_settings = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings';
+		$table_schemas  = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'custom_schemas';
 
 		// Retrieve the "delete on uninstall" setting.
 		$setting = $wpdb->get_row(

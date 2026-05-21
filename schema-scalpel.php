@@ -3,10 +3,10 @@
  * Plugin Name:       Schema Scalpel
  * Plugin URI:        https://schemascalpel.com/
  * Description:       Boost your site’s SEO with Schema Scalpel, a user-friendly plugin for crafting custom schema markup on a per-page basis.
- * Version:           2.0.3
- * Requires at least: 5.0
- * Requires PHP:      7.4
- * Tested up to:      6.9
+ * Version:           2.0.4
+ * Requires at least: 6.2
+ * Requires PHP:      8.0
+ * Tested up to:      7.0
  * Author:            Kevin Gillispie
  * Author URI:        https://kevingillispie.com
  * License:           GPLv3 or later
@@ -26,9 +26,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SCHEMA_SCALPEL_VERSION', '2.0.3' );
-define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'scsc' );
-define( 'SCHEMA_SCALPEL_SLUG', 'scsc_' );
+define( 'SCHEMA_SCALPEL_VERSION', '2.0.4' );
+define( 'SCHEMA_SCALPEL_TEXT_DOMAIN', 'schema-scalpel' );
+define( 'SCHEMA_SCALPEL_SLUG', 'schema-scalpel' );
+define( 'SCHEMA_SCALPEL_PREFIX', 'scsc_' );
 define( 'SCHEMA_SCALPEL_PLUGIN', __FILE__ );
 define( 'SCHEMA_SCALPEL_DIRECTORY', untrailingslashit( dirname( SCHEMA_SCALPEL_PLUGIN ) ) );
 
@@ -78,7 +79,7 @@ function run_schema_scalpel() {
 
 	// Check plugin version against stored database version.
 	global $wpdb;
-	$settings_table = $wpdb->prefix . 'scsc_settings';
+	$settings_table = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings';
 
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) === $settings_table ) {
 		$stored_db_version = $wpdb->get_var(
@@ -109,7 +110,7 @@ add_action( 'plugins_loaded', __NAMESPACE__ . '\\run_schema_scalpel' );
 function scsc_disable_third_party_schema() {
 	global $wpdb;
 
-	$settings_table = $wpdb->prefix . SCHEMA_SCALPEL_SLUG . 'settings';
+	$settings_table = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings';
 
 	// Early exit if settings table doesn't exist.
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) !== $settings_table ) {

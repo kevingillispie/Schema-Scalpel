@@ -25,7 +25,7 @@ class SCSC_Upgrade {
 	 *
 	 * @var string
 	 */
-	const DB_VERSION = '2.0.3';
+	const DB_VERSION = '2.0.4';
 
 	/**
 	 * Setting key for storing the database version in wp_scsc_settings.
@@ -47,8 +47,8 @@ class SCSC_Upgrade {
 			return;
 		}
 
-		$table_name     = $wpdb->prefix . 'scsc_custom_schemas';
-		$settings_table = $wpdb->prefix . 'scsc_settings';
+		$table_name     = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'custom_schemas';
+		$settings_table = $wpdb->prefix . SCHEMA_SCALPEL_PREFIX . 'settings';
 
 		// Check if settings table exists (safe pattern).
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $settings_table ) ) !== $settings_table ) {
@@ -133,7 +133,7 @@ class SCSC_Upgrade {
 						function () use ( $wpdb ) {
 							?>
 							<div class="notice notice-error is-dismissible">
-								<p><?php printf( esc_html__( 'Schema Scalpel database schema update failed: %s', 'schema-scalpel' ), esc_html( $wpdb->last_error ) ); ?></p>
+								<p><?php printf( esc_html__( 'Schema Scalpel database schema update failed: %s', SCHEMA_SCALPEL_TEXT_DOMAIN ), esc_html( $wpdb->last_error ) ); ?></p>
 							</div>
 										<?php
 						}
@@ -181,7 +181,7 @@ class SCSC_Upgrade {
 					function () {
 						?>
 						<div class="notice notice-success is-dismissible">
-							<p><?php printf( esc_html__( 'Schema Scalpel database schema updated to version %s.', 'schema-scalpel' ), esc_html( self::DB_VERSION ) ); ?></p>
+							<p><?php printf( esc_html__( 'Schema Scalpel database schema updated to version %s.', SCHEMA_SCALPEL_TEXT_DOMAIN ), esc_html( self::DB_VERSION ) ); ?></p>
 						</div>
 						<?php
 					}

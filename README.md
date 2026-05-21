@@ -23,17 +23,17 @@ Support ongoing development at [https://schemascalpel.com/donate/](https://schem
 
 ## Requirements
 
-- **Requires at least**: WordPress 5.0
-- **Tested up to**: WordPress 6.9
-- **Stable tag**: 2.0.3
-- **Requires PHP**: 7.4 (Fully compatible through **PHP 8.4**)
+- **Requires at least**: WordPress 6.2
+- **Tested up to**: WordPress 7.0
+- **Stable tag**: 2.0.4
+- **Requires PHP**: 8.0 (Fully compatible through **PHP 8.4**)
 - **License**: GPLv3 or later
 
 ## Description
 
 Many sites miss out on rich snippets and stronger entity signals because schema is missing or duplicated. **Schema Scalpel** provides precise, per-page JSON-LD control with zero bloat.
 
-**Schema Scalpel v2.0.3** reinforces the plugin's reputation for stability and data integrity. We have overhauled the storage engine to support high-density structured data:
+**Schema Scalpel v2.0.4** brings full compatibility with WordPress 7.0 and modernizes the minimum requirements for better security and performance.
 
 - **Expanded Storage Capacity**: Upgraded the schema engine to use `MEDIUMBLOB`, allowing up to **16MB** of JSON-LD per post. This eliminates the "64KB truncation" bug found in many other plugins, ensuring massive FAQ and Product schemas remain valid.
 - **SQL Migration Hardening**: Refactored the database upgrade logic to resolve syntax errors on modern MariaDB environments while strictly adhering to WordPress identifier escaping standards.
@@ -47,12 +47,19 @@ Many sites miss out on rich snippets and stronger entity signals because schema 
 
 ### Why Schema Scalpel?
 
-- **Enterprise Reliability**: v2.0.3 ensures your data is never truncated and your migrations are error-free.
+- **Enterprise Reliability**: v2.0.4 ensures maximum compatibility with the latest WordPress releases.
 - **Hardened Security**: Implements modern `%i` identifier placeholders and `JSON_HEX_TAG` encoding to neutralize XSS threats.
 - **High Performance**: Optimized batch processing reduces database round-trips by up to 98%.
 - **Deep Compatibility**: Works flawlessly alongside Yoast, Rank Math, and AIOSEO.
 
 ## Changelog
+
+### 2.0.4 (2026)
+
+- **Compatibility**: Full support for WordPress 7.0.
+- **Requirements**: Raised minimum to WordPress 6.2 and PHP 8.0.
+- **Code Quality**: Removed unused public enqueue methods and fixed minor uninstall issues.
+- **Maintenance**: General cleanup and modern WordPress standards compliance.
 
 ### 2.0.3 (2026)
 

@@ -2,10 +2,10 @@
 Contributors: kevingillispie
 Donate link: https://schemascalpel.com/donate/
 Tags: seo, schema, structured data, json-ld, rich snippets
-Requires at least: 5.0
-Tested up to: 6.9
-Stable tag: 2.0.3
-Requires PHP: 7.4
+Requires at least: 6.2
+Tested up to: 7.0
+Stable tag: 2.0.4
+Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -73,6 +73,12 @@ Yes. As of v2.0.3, the plugin utilizes strict `$wpdb->prepare()` patterns for al
 6. Generate customized schema for posts automatically!
 
 == Changelog ==
+
+= 2.0.4 =
+* **Compatibility**: Full support for WordPress 7.0.
+* **Requirements Update**: Raised minimum WordPress version to 6.2 and PHP to 8.0.
+* **Code Quality**: Removed unused public enqueue methods and fixed minor issues in uninstall process for better stability.
+* **General Maintenance**: Updated headers, improved code comments, and ensured full compatibility with modern WordPress coding standards.
 
 = 2.0.3 =
 * **Fix**: Resolved SQL syntax error during database migration on certain MariaDB/MySQL environments.
