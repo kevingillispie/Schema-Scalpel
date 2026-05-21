@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class that outputs saved schema (no caching - always fresh).
+ * Class that outputs saved schema.
  */
 class SCSC_Public {
 
@@ -106,13 +106,12 @@ class SCSC_Public {
 	}
 
 	/**
-	 * Build a JSON-LD script tag.
+	 * Output a JSON-LD script tag.
 	 *
 	 * @param string $json JSON-LD payload.
-	 * @return string
 	 */
-	private function format_schema_html( string $json ): string {
-		return wp_get_inline_script_tag(
+	private function format_schema_html( string $json ) {
+		wp_print_inline_script_tag(
 			$json,
 			array(
 				'class' => 'schema-scalpel',
@@ -121,8 +120,52 @@ class SCSC_Public {
 		);
 	}
 
+	// =====================================================
+	// NEW: CACHING HELPER METHODS
+	// =====================================================
+
 	/**
-	 * Output inline schema markup (always fresh - no caching).
+	 * Generate a unique cache key for the current page.
+	 *
+	 * @return string
+	 */
+	private function get_schema_cache_key(): string {
+		global $post;
+
+		if ( is_front_page() ) {
+			return 'scsc_schema_frontpage';
+		}
+
+		if ( is_home() && ! is_front_page() ) {
+			$blog_page_id = absint( get_option( 'page_for_posts' ) );
+			return 'scsc_schema_blog_' . $blog_page_id;
+		}
+
+		if ( $post && $post->ID ) {
+			return 'scsc_schema_post_' . $post->ID;
+		}
+
+		return 'scsc_schema_global_' . md5( $_SERVER['REQUEST_URI'] ?? '' );
+	}
+
+	/**
+	 * Clear schema cache (call this after saving/deleting schemas).
+	 *
+	 * @param int|null $post_id Optional post ID to clear specific cache.
+	 */
+	public static function clear_schema_cache( $post_id = null ) {
+		if ( $post_id ) {
+			wp_cache_delete( 'scsc_schema_post_' . $post_id, 'schema_scalpel' );
+			delete_transient( 'scsc_schema_post_' . $post_id );
+		} else {
+			// Clear all known schema caches (simple approach).
+			wp_cache_flush_group( 'schema_scalpel' ); // Works with object cache.
+			// For sites without persistent cache, we rely on transient expiration.
+		}
+	}
+
+	/**
+	 * Enqueue inline schema markup (with caching).
 	 */
 	public function enqueue_inline_scripts() {
 		global $post;
@@ -131,6 +174,24 @@ class SCSC_Public {
 			return;
 		}
 
+		// === CACHING: Try to serve from cache first ===
+		$cache_key = $this->get_schema_cache_key();
+		$cached    = wp_cache_get( $cache_key, 'schema_scalpel' );
+
+		if ( false !== $cached ) {
+			// Cache hit — output immediately (best performance).
+			echo $cached; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			return;
+		}
+
+		// Also check transient as fallback (for sites without object cache).
+		$cached_transient = get_transient( $cache_key );
+		if ( false !== $cached_transient ) {
+			echo $cached_transient; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			return;
+		}
+
+		// === CACHE MISS: Build schema output ===
 		global $wpdb;
 
 		$site_title     = sanitize_text_field( get_bloginfo( 'name' ) );
@@ -173,7 +234,7 @@ class SCSC_Public {
 		);
 		$search_key           = $search_param_results ? $search_param_results : 's';
 
-		// Build default schemas
+		// Build all schemas (same logic as before)
 		$website_schema = wp_json_encode(
 			array(
 				'@context'        => 'https://schema.org',
@@ -207,8 +268,8 @@ class SCSC_Public {
 		$breadcrumbs       = array_filter( explode( '/', trim( $path, '/' ) ) );
 		$breadcrumb_schema = $this->format_breadcrumbs( $root_domain, $breadcrumbs );
 
-		// Build output
-		$output = '';
+		// Start output buffer to capture all schema tags.
+		ob_start();
 
 		// Inject global schema.
 		$global_schema = $wpdb->get_results(
@@ -219,9 +280,9 @@ class SCSC_Public {
 		foreach ( $global_schema as $row ) {
 			$schema = maybe_unserialize( $row['custom_schema'] );
 			if ( is_string( $schema ) ) {
-				$schema  = html_entity_decode( $schema );
-				$schema  = str_replace( '&apos;', "'", $schema );
-				$output .= $this->format_schema_html( $schema );
+				$schema = html_entity_decode( $schema );
+				$schema = str_replace( '&apos;', "'", $schema );
+				$this->format_schema_html( $schema );
 			}
 		}
 
@@ -253,9 +314,9 @@ class SCSC_Public {
 		foreach ( $results as $row ) {
 			$schema = maybe_unserialize( $row['custom_schema'] );
 			if ( is_string( $schema ) ) {
-				$schema  = html_entity_decode( $schema );
-				$schema  = str_replace( '&apos;', "'", $schema );
-				$output .= $this->format_schema_html( $schema );
+				$schema = html_entity_decode( $schema );
+				$schema = str_replace( '&apos;', "'", $schema );
+				$this->format_schema_html( $schema );
 			}
 		}
 
@@ -276,9 +337,9 @@ class SCSC_Public {
 			foreach ( $all_home_schema as $row ) {
 				$schema = maybe_unserialize( $row['custom_schema'] );
 				if ( is_string( $schema ) ) {
-					$schema  = html_entity_decode( $schema );
-					$schema  = str_replace( '&apos;', "'", $schema );
-					$output .= $this->format_schema_html( $schema );
+					$schema = html_entity_decode( $schema );
+					$schema = str_replace( '&apos;', "'", $schema );
+					$this->format_schema_html( $schema );
 				}
 			}
 		}
@@ -289,7 +350,7 @@ class SCSC_Public {
 		);
 
 		if ( '1' === $website_enabled ) {
-			$output .= $this->format_schema_html( $website_schema );
+			$this->format_schema_html( $website_schema );
 		}
 
 		$webpage_enabled = $wpdb->get_var(
@@ -297,7 +358,7 @@ class SCSC_Public {
 		);
 
 		if ( '1' === $webpage_enabled ) {
-			$output .= $this->format_schema_html( $webpage_schema );
+			$this->format_schema_html( $webpage_schema );
 		}
 
 		$breadcrumb_enabled = $wpdb->get_var(
@@ -305,10 +366,17 @@ class SCSC_Public {
 		);
 
 		if ( '/' !== $path && '1' === $breadcrumb_enabled ) {
-			$output .= $this->format_schema_html( $breadcrumb_schema );
+			$this->format_schema_html( $breadcrumb_schema );
 		}
 
-		// Output the schema (always fresh).
+		// Get the full output.
+		$output = ob_get_clean();
+
+		// === CACHING: Store the result ===
+		wp_cache_set( $cache_key, $output, 'schema_scalpel', HOUR_IN_SECONDS * 6 ); // 6 hours.
+		set_transient( $cache_key, $output, HOUR_IN_SECONDS * 6 );
+
+		// Output the schema.
 		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
